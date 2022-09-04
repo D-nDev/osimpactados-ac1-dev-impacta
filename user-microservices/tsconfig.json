@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "target": "ESNext",
+    "module": "CommonJS",
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "checkJs": true,
+    "experimentalDecorators": true,
+    "maxNodeModuleJsDepth": 0,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "useUnknownInCatchVariables": true,
+    "alwaysStrict": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@app/*": ["*"],
+      "@infra/*": ["./src/infra/*"],
+      "@domain/*": ["./src/domain/*"],
+      "@logs/*": ["./logs/*"],
+      "@application/*": ["./src/application/*"],
+      "@validations/*": ["./validations/*"],
+      "@utils/*": ["./utils/*"],
+      "@shared/*": ["./shared/*"],
+      "@main/*": ["./src/main/*"],
+      "@presentation/*": ["./src/presentation/*"]
+    },
+    "plugins": [
+      {
+        "transform": "typescript-transform-paths"
+      }
+    ]
+  },
+  "include": ["./src", "./test", "."],
+  "exclude": ["./node_modules"]
+}
