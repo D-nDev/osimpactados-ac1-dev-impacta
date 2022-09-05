@@ -1,49 +1,94 @@
-import { userMapper, AddressMapper } from '@infra/mappers/userMapper';
-import { userDto } from '@application/ports/userDto';
 import { PrismaClient } from '@prisma/client';
+import { IUserRepository } from '@app/src/application/ports/userRepository';
+import UserEntity from '@app/src/domain/entities/User';
 
-export default class UserRepository {
+export default class UserRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  public async createUser(userDto: userDto) {
-    const usermapper = userMapper();
-    const userEntity = usermapper.fromDtoToEntity(userDto);
-    const userAddresses = AddressMapper().fromDtoToPersistence(userDto.addresses);
-
+  public async createUser(user: UserEntity) {
     const createUser = await this.prisma.user.create({
       data: {
-        name: userEntity.getEmail(),
-        email: userEntity.getEmail(),
-        mobileNumber: userEntity.getMobileNumber(),
-        password: userEntity.getPassword(),
-        cpf: userEntity.getCpf(),
+        name: user.getName(),
+        email: user.getEmail(),
+        cpf: user.getCpf(),
+        mobileNumber: user.getMobileNumber(),
+        password: user.getPassword(),
         addresses: {
           createMany: {
-            data: [...userAddresses]
-          }
-        }
+            data: [
+              ...user.getAddresses().map((address) => {
+                return address;
+              }),
+            ],
+          },
+        },
       },
-      include: {
-        addresses: true,
-      }
     });
-
-    const result = usermapper.fromPersistenceToDto(createUser);
-    return result;
+    return { id: createUser.id };
   }
 
-  public getUser(id: string) {
-    return this.prisma.user.findUnique({
+  public async getUser(id: string) {
+    const user = await this.prisma.user.findUnique({
       where: {
         id,
       },
-      include: {
+      select: {
+        email: true,
+        name: true,
+        mobileNumber: true,
         addresses: true,
+        cpf: true,
+      },
+    });
+
+    return user;
+  }
+
+  public async getUsers() {
+    return await this.prisma.user.findMany({
+      select: {
+        email: true,
+        name: true,
+        mobileNumber: true,
+        addresses: {
+          select: {
+            address: true,
+            addressComplement: true,
+            addressDistrict: true,
+            addressNumber: true,
+            cep: true,
+            city: true,
+            state: true,
+          },
+        },
+        cpf: true,
       },
     });
   }
 
-  public getUsers() {
-    return this.prisma.user.findMany({ include: { addresses: true } });
+  public async getFullUserData(id: string) {
+    return await this.prisma.user.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        email: true,
+        name: true,
+        mobileNumber: true,
+        password: true,
+        addresses: {
+          select: {
+            address: true,
+            addressComplement: true,
+            addressDistrict: true,
+            addressNumber: true,
+            cep: true,
+            city: true,
+            state: true,
+          },
+        },
+        cpf: true,
+      },
+    });
   }
 }
