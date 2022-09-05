@@ -10,9 +10,9 @@ export default class CreateUserController implements BaseController {
 
   async handle(request: Record<string, any>): Promise<HttpResponse> {
     try {
-      const { email, name, mobileNumber, address, addressNumber, password, state, city, cpf } = request.body;
+      const { email, name, mobileNumber, addresses, password, cpf } = request.body;
 
-      const user = new userDto(email, name, mobileNumber, address, addressNumber, password, state, city, cpf);
+      const user = new userDto(email, name, mobileNumber, addresses, password, cpf);
       const result = await this.validator.validate(user);
       if (result.length > 0) {
         const errors: any = [];

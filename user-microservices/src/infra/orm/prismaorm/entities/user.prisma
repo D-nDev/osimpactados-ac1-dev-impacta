@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets   = ["native"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
 }
 
 datasource db {
@@ -9,20 +9,17 @@ datasource db {
 }
 
 model User {
-  id            String        @id @default(uuid())
-  name          String
-  email         String
-  mobileNumber  String
-  address       String
-  addressNumber Int
-  password      String
-  state         String
-  city          String
-  cpf           String
-  created_at    DateTime      @default(now())
-  updated_at    DateTime      @default(now()) @updatedAt
-  deleted_at    DateTime?
-  RecoverCodes  RecoverCodes?
+  id           String        @id @default(uuid())
+  name         String
+  email        String
+  mobileNumber String
+  addresses    Address[]
+  password     String
+  cpf          String
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @default(now()) @updatedAt
+  deleted_at   DateTime?
+  RecoverCodes RecoverCodes?
 }
 
 model RecoverCodes {
@@ -31,4 +28,17 @@ model RecoverCodes {
   userId         String   @unique
   expires_at     DateTime
   is_blacklisted Boolean  @default(false)
+}
+
+model Address {
+  id                String  @id @default(uuid())
+  address           String
+  addressNumber     Int
+  addressComplement String?
+  addressDistrict   String
+  city              String
+  state             String
+  cep               String
+  user              User    @relation(fields: [userId], references: [id])
+  userId            String  @unique
 }

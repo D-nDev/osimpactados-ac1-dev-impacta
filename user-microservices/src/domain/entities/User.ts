@@ -1,36 +1,28 @@
 import { IsCpf } from '@main/decorators/isCpf';
-import { IsEmail, IsInt, IsMobilePhone, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+import { IsEmail, IsMobilePhone, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+import AddressEntity from './Address';
 
 export default class UserEntity {
   constructor({
     email,
     name,
     mobileNumber,
-    address,
-    addressNumber = 0,
+    addresses,
     password,
-    state,
-    city,
     cpf,
   }: {
     email: string;
     name: string;
     mobileNumber: string;
-    address: string;
-    addressNumber: number;
+    addresses: AddressEntity[];
     password: string;
-    state: string;
-    city: string;
     cpf: string;
   }) {
     this.email = email;
     this.name = name;
     this.mobileNumber = mobileNumber;
-    this.address = address;
-    this.addressNumber = addressNumber | 0;
+    this.addresses = addresses;
     this.password = password;
-    this.state = state;
-    this.city = city;
     this.cpf = cpf;
     Object.freeze(this);
   }
@@ -48,23 +40,12 @@ export default class UserEntity {
 
   @IsNotEmpty()
   @IsString()
-  private readonly address: string;
-
-  @IsInt()
-  private readonly addressNumber: number;
+  private readonly addresses: AddressEntity[];
 
   @IsNotEmpty()
   @Min(6)
   @Max(25)
   private readonly password: string;
-
-  @IsNotEmpty()
-  @IsString()
-  private readonly state: string;
-
-  @IsNotEmpty()
-  @IsString()
-  private readonly city: string;
 
   @IsNotEmpty()
   @IsString()
@@ -83,24 +64,12 @@ export default class UserEntity {
     return this.mobileNumber;
   }
 
-  public getAddress(): string {
-    return this.address;
-  }
-
-  public getAddressNumber(): number {
-    return this.addressNumber;
+  public getAddresses(): AddressEntity[] {
+    return this.addresses;
   }
 
   public getPassword(): string {
     return this.password;
-  }
-
-  public getState(): string {
-    return this.state;
-  }
-
-  public getCity(): string {
-    return this.city;
   }
 
   public getCpf(): string {

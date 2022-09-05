@@ -1,35 +1,74 @@
-import UserEntity from '@domain/entities/User';
-import { userDto } from '@application/ports/userDto';
-import { User } from '@prisma/client';
+import AddressEntity from '@app/src/domain/entities/Address';
+import UserEntity from '@app/src/domain/entities/User';
+import { AddressesDto, userDto } from '@application/ports/userDto';
+import { Address, User } from '@prisma/client';
 
 export const userMapper = () => {
   return {
     fromDtoToEntity: (dto: userDto) => {
-      return {
+      const user = {
         email: dto.email,
         name: dto.name,
         mobileNumber: dto.mobileNumber,
-        address: dto.address,
-        addressNumber: dto.addressNumber || 0,
+        addresses: AddressMapper().fromDtoToPersistence(dto.addresses),
         password: dto.password,
-        state: dto.state,
-        city: dto.city,
         cpf: dto.cpf,
       };
+      return new UserEntity({...user})
     },
-    fromPersistenceToDto: (userPersistence: User): UserEntity => {
+    fromPersistenceToDto: (userPersistence: User & { addresses: Address[] | [] }): userDto => {
       const user = {
         email: userPersistence.email,
         name: userPersistence.name,
         mobileNumber: userPersistence.mobileNumber,
-        address: userPersistence.address,
-        addressNumber: userPersistence.addressNumber || 0,
+        addresses: AddressMapper().fromPersistenceToDto(userPersistence.addresses),
         password: userPersistence.password,
-        state: userPersistence.state,
-        city: userPersistence.city,
         cpf: userPersistence.cpf,
       };
-      return new UserEntity(user);
+      return new userDto(user.email, user.name, user.mobileNumber, user.addresses, user.password, user.cpf);
+    },
+  };
+};
+
+export const AddressMapper = () => {
+  return {
+    fromPersistenceToDto: (userAddress: Address[] | []): AddressesDto[] | [] => {
+      if(!userAddress) {
+        return []
+      }
+      const adresses: AddressesDto[] = []
+      userAddress.forEach(eachAddress => {
+        const address = {
+          address: eachAddress.address,
+          addressNumber: eachAddress.addressNumber,
+          addressComplement: eachAddress.addressComplement,
+          addressDistrict: eachAddress.addressDistrict,
+          city: eachAddress.city,
+          state: eachAddress.state,
+          cep: eachAddress.cep,
+        };
+        adresses.push(address)
+      })
+      return adresses;
+    },
+    fromDtoToPersistence: (userAddress: AddressesDto[] | []) => {
+      if(!userAddress) {
+        return []
+      }
+      const adresses: any = []
+      userAddress.forEach(eachAddress => {
+        const address = {
+          address: eachAddress.address,
+          addressNumber: eachAddress.addressNumber,
+          addressComplement: eachAddress.addressComplement,
+          addressDistrict: eachAddress.addressDistrict,
+          city: eachAddress.city,
+          state: eachAddress.state,
+          cep: eachAddress.cep,
+        };
+        adresses.push(address)
+      })
+      return adresses;
     },
   };
 };
