@@ -8,14 +8,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum userType {
+  USER
+  ADMIN
+}
+
 model User {
   id           String        @id @default(uuid())
   name         String
-  email        String
-  mobileNumber String
+  email        String        @unique
+  mobileNumber String        @unique
   addresses    Address[]
   password     String
   cpf          String
+  type         userType      @default(USER)
   created_at   DateTime      @default(now())
   updated_at   DateTime      @default(now()) @updatedAt
   deleted_at   DateTime?

@@ -10,6 +10,11 @@ export const created = (data: any): HttpResponse => ({
   body: data
 })
 
+export const noContent = (): HttpResponse => ({
+  statusCode: 204,
+  body: {}
+})
+
 export const forbidden = (error: Error | any): HttpResponse => ({
   statusCode: 403,
   body: error

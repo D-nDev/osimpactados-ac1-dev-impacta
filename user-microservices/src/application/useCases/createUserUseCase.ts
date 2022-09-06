@@ -8,7 +8,7 @@ import { IUserRepository } from '../ports/userRepository';
 export default class CreateUserUseCase implements useCase {
   constructor(private readonly userRepo: IUserRepository, private readonly encoder: bcryptEncoder, private readonly mapper: IMapper) {}
 
-  async execute(user: userDto): Promise<any> {
+  async execute(user: userDto): Promise<{ id: string }> {
     const userAddresses = this.mapper.fromAddressDtoToEntity(user.addresses);
     const userEntity = new UserEntity({...user, addresses: userAddresses, password: await this.encoder.hash(user.password)})
     return await this.userRepo.createUser(userEntity);

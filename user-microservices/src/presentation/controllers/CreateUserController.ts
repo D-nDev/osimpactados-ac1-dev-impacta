@@ -1,14 +1,16 @@
 import { userDto } from '@app/src/application/ports/userDto';
 import { useCase } from '@application/ports/useCase';
+import { CreateUserErrors } from '../errors/CreateUserErrorsEnum';
 import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
 import { IValidator } from './contracts/validator';
 import { badRequest, created, serverError } from './helpers/httpHelper';
+import { Request } from "express";
 
 export default class CreateUserController implements BaseController {
   constructor(private readonly useCase: useCase, private readonly validator: IValidator) {}
 
-  async handle(request: Record<string, any>): Promise<HttpResponse> {
+  async handle(request: Request): Promise<HttpResponse> {
     try {
       const { email, name, mobileNumber, addresses, password, cpf } = request.body;
 
@@ -26,8 +28,18 @@ export default class CreateUserController implements BaseController {
       const execute = await this.useCase.execute(user);
 
       return created(execute);
+
     } catch (err: any) {
-      return serverError(err.message || 'Unexpected error');
+      const errorType = CreateUserErrors[err.code];
+
+      switch(errorType) {
+        case errorType:
+          return badRequest(CreateUserErrors[err.code]);
+        case !errorType && err.message:
+          return serverError(err.message);
+        default:
+          return serverError("Unknown server error");
+      }
     }
   }
 }

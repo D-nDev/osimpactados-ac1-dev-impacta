@@ -1,6 +1,7 @@
+import { bcryptEncoder } from "@app/src/application/ports/bcrypt";
 import * as bcrypt from "bcrypt";
 
-export default class BcryptAdapter {
+export default class BcryptAdapter implements bcryptEncoder {
   public async hash(password: string) {
     try {
       const result = await bcrypt.hash(password, 10);
@@ -10,7 +11,7 @@ export default class BcryptAdapter {
     }
   }
 
-  public async unhash(password: string, hash: string) {
+  public async compare(password: string, hash: string) {
     try {
       const result = await bcrypt.compare(password, hash);
       return result;

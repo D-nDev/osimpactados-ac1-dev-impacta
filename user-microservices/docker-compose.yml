@@ -35,6 +35,7 @@ services:
     platform: "linux/amd64"
     environment:
         - DATABASE_URL=postgresql://postgres:postgres@pg:5432/user?schema=public
+        - SECRET=ultrasecret
     volumes:
         - .:/usr/app
         - /usr/app/node_modules/

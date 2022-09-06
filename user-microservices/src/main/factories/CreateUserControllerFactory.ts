@@ -2,7 +2,7 @@ import CreateUserUseCase from "@app/src/application/useCases/createUserUseCase";
 import { Mapper } from "@app/src/infra/mappers/userMapper";
 import CreateUserController from "@app/src/presentation/controllers/CreateUserController";
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
-import BcryptAdapter from "../adapters/bcrypt-adapter";
+import BcryptAdapter from "@infra/adapters/bcrypt-adapter";
 import ValidatorAdapter from "../adapters/classValidator-adapter";
 import { createUserRepository } from "./CreateUserRepositoryFactory";
 

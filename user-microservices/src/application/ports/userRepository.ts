@@ -13,5 +13,8 @@ export interface IUserRepository {
   createUser(user: UserEntity): Promise<{ id: string }>;
   getUser(id: string): Promise<userWithoutPassword | null>;
   getUsers(): Promise<userWithoutPassword[] | null>;
-  getFullUserData(id: string): Promise<userDto | null>
+  getFullUserData(id: string): Promise<userDto | null>;
+  getFullUserDataByEmail(email: string): Promise<userDto | null>;
+  deleteUser(id: string): Promise<void>;
+  getUserByEmail(email: string): Promise<{ email: string, name: string, type: string } | null>;
 }

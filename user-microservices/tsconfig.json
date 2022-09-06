@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "ESNext",
+    "target": "ES6",
     "module": "CommonJS",
     "baseUrl": ".",
     "moduleResolution": "node",
