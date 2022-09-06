@@ -19,7 +19,6 @@ export default class SendValidationEmailUseCase implements useCase {
 
       return true;
     } catch (err: any) {
-      console.log(err);
       return false;
     }
   }

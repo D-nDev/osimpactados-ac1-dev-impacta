@@ -7,7 +7,7 @@ export default class ValidateUserUseCase implements useCase {
   async execute(email: string, token: string): Promise<boolean> {
     try {
       let currentUTCDate: any = new Date();
-      currentUTCDate = currentUTCDate.toUTCString();
+      currentUTCDate = new Date(currentUTCDate.toUTCString());
 
       const tokenexists = await this.userRepo.getUserValidateToken(email);
 
@@ -21,7 +21,6 @@ export default class ValidateUserUseCase implements useCase {
 
       return false;
     } catch (err: any) {
-      console.log(err);
       return false;
     }
   }

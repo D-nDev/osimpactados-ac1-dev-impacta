@@ -26,11 +26,15 @@ export default class CreateUserController implements BaseController {
       }
 
       const execute = await this.useCase.execute(user);
-      const validateEmail = await this.validateUseCase.execute(execute.email);
-      if (validateEmail) {
-        return created(execute);
+      if (!!execute) {
+        const validateEmail = await this.validateUseCase.execute(execute.email);
+        if (validateEmail) {
+          return created(execute);
+        } else {
+          return serverError('Cannot send validation account code');
+        }
       } else {
-        return serverError('Cannot send validation account code');
+        return badRequest("Account already exists");
       }
     } catch (err: any) {
       const errorType = CreateUserErrors[err.code];

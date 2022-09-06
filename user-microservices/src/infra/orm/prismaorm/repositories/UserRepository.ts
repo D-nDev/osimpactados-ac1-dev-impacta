@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { IUserRepository } from '@app/src/application/ports/userRepository';
 import UserEntity from '@app/src/domain/entities/User';
+import AddressEntity from '@app/src/domain/entities/Address';
 
 export default class UserRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -39,6 +40,49 @@ export default class UserRepository implements IUserRepository {
       },
     });
     return { id: createUser.id, email: createUser.email };
+  }
+
+  public async overrideUser(user: UserEntity) {
+    if (user.getAddresses()) {
+      const overrideUser = await this.prisma.user.update({
+        where: {
+          email: user.getEmail(),
+        },
+        data: {
+          name: user.getName(),
+          cpf: user.getCpf(),
+          mobileNumber: user.getMobileNumber(),
+          password: user.getPassword(),
+        },
+      });
+
+      await this.prisma.address.deleteMany({ where: { userId: overrideUser.id } });
+      await this.prisma.recoverCodes.deleteMany({ where: { userId: overrideUser.id } });
+
+      await this.prisma.address.createMany({
+        data: [
+          ...user.getAddresses().map((address) => {
+            address['userId'] = overrideUser.id;
+            return address;
+          }),
+        ] as unknown as AddressEntity & { userId: string },
+      });
+
+      return { id: overrideUser.id, email: overrideUser.email };
+    } else {
+      const overrideUser = await this.prisma.user.update({
+        where: {
+          email: user.getEmail(),
+        },
+        data: {
+          name: user.getName(),
+          cpf: user.getCpf(),
+          mobileNumber: user.getMobileNumber(),
+          password: user.getPassword(),
+        },
+      });
+      return { id: overrideUser.id, email: overrideUser.email };
+    }
   }
 
   public async getUser(id: string) {
@@ -148,9 +192,20 @@ export default class UserRepository implements IUserRepository {
         id,
       },
       data: {
-        ...args
-      }
-    })
+        ...args,
+      },
+    });
+  }
+
+  public async updateUserByEmail(email: string, ...args: any) {
+    await this.prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        ...args,
+      },
+    });
   }
 
   public async updateValidationCode(email: string, code: string | null, expire: Date | null) {

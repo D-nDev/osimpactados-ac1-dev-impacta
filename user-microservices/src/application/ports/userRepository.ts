@@ -20,4 +20,6 @@ export interface IUserRepository {
   updateValidationCode(email: string, code: string | null, expire: Date | null): Promise<void>;
   getUserValidateToken(email: string): Promise<{ token: string; expireDate: Date | null } | null>;
   updateUser(email: string, ...args: any): Promise<void>;
+  updateUserByEmail(email: string, ...args: any): Promise<void>;
+  overrideUser(user: UserEntity): Promise<{ id: string; email: string }>;
 }
