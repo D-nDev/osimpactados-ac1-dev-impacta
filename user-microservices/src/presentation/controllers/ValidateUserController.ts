@@ -1,19 +1,24 @@
 import { useCase } from '@application/ports/useCase';
 import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
-import { ok, serverError } from './helpers/httpHelper';
+import { badRequest, ok, serverError } from './helpers/httpHelper';
 import { Request } from 'express';
 
-export default class GetUserController implements BaseController {
+export default class ValidateUserController implements BaseController {
   constructor(private readonly useCase: useCase) {}
 
   async handle(request: Request): Promise<HttpResponse> {
     try {
-      const { id } = request.params;
+      const { email, token } = request.body;
       
-      const execute = await this.useCase.execute(id);
+      const result = await this.useCase.execute(email, token);
 
-      return ok(execute);
+      if(result) {
+        return ok(true);
+      } else {
+        return badRequest("Expired or invalid validate code");
+      }
+
     } catch (err: any) {
       return serverError(err.message || 'Unexpected error');
     }

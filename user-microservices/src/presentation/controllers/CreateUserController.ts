@@ -5,10 +5,10 @@ import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
 import { IValidator } from './contracts/validator';
 import { badRequest, created, serverError } from './helpers/httpHelper';
-import { Request } from "express";
+import { Request } from 'express';
 
 export default class CreateUserController implements BaseController {
-  constructor(private readonly useCase: useCase, private readonly validator: IValidator) {}
+  constructor(private readonly useCase: useCase, private readonly validator: IValidator, private readonly validateUseCase: useCase) {}
 
   async handle(request: Request): Promise<HttpResponse> {
     try {
@@ -24,21 +24,24 @@ export default class CreateUserController implements BaseController {
         }
         return badRequest(errors);
       }
-      
+
       const execute = await this.useCase.execute(user);
-
-      return created(execute);
-
+      const validateEmail = await this.validateUseCase.execute(execute.email);
+      if (validateEmail) {
+        return created(execute);
+      } else {
+        return serverError('Cannot send validation account code');
+      }
     } catch (err: any) {
       const errorType = CreateUserErrors[err.code];
 
-      switch(errorType) {
+      switch (errorType) {
         case errorType:
           return badRequest(CreateUserErrors[err.code]);
         case !errorType && err.message:
           return serverError(err.message);
         default:
-          return serverError("Unknown server error");
+          return serverError('Unknown server error');
       }
     }
   }

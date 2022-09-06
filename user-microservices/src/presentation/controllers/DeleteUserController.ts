@@ -2,11 +2,12 @@ import { useCase } from '@application/ports/useCase';
 import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
 import { noContent, serverError } from './helpers/httpHelper';
+import { Request } from 'express';
 
 export default class DeleteUserController implements BaseController {
   constructor(private readonly useCase: useCase) {}
 
-  async handle(request: Record<string, any>): Promise<HttpResponse> {
+  async handle(request: Request): Promise<HttpResponse> {
     try {
       const { id } = request.params;
       

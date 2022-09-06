@@ -14,18 +14,20 @@ enum userType {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  name         String
-  email        String        @unique
-  mobileNumber String        @unique
-  addresses    Address[]
-  password     String
-  cpf          String
-  type         userType      @default(USER)
-  created_at   DateTime      @default(now())
-  updated_at   DateTime      @default(now()) @updatedAt
-  deleted_at   DateTime?
-  RecoverCodes RecoverCodes?
+  id                   String        @id @default(uuid())
+  name                 String
+  email                String        @unique
+  mobileNumber         String        @unique
+  addresses            Address[]
+  password             String
+  cpf                  String
+  type                 userType      @default(USER)
+  validate_code        String?
+  validate_expire_date DateTime?
+  created_at           DateTime      @default(now())
+  updated_at           DateTime      @default(now()) @updatedAt
+  deleted_at           DateTime?
+  RecoverCodes         RecoverCodes?
 }
 
 model RecoverCodes {

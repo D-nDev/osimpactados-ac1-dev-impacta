@@ -17,7 +17,7 @@ export default class LoginUserController implements BaseController {
         return ok(execute);
       }
       
-      return badRequest('Invalid email or password');
+      return badRequest('Invalid email or password, or account not validated yet');
     } catch (err: any) {
       return serverError(err.message || 'Unexpected error');
     }

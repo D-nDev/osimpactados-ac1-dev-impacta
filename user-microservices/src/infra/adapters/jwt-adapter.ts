@@ -1,6 +1,5 @@
 import { jwtToken } from '@application/ports/jwt';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
-import { userDto } from '@application/ports/userDto';
 
 export default class jwtAdapter implements jwtToken {
   public verify(token: string): boolean {
@@ -12,7 +11,7 @@ export default class jwtAdapter implements jwtToken {
     }
   }
 
-  public sign(user: userDto): any {
+  public sign(user: { email: string, name: string, type: string }): any {
     try {
       const token = sign(
         {

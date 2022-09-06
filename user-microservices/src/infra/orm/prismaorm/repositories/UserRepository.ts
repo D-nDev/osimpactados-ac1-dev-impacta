@@ -5,7 +5,7 @@ import UserEntity from '@app/src/domain/entities/User';
 export default class UserRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  public async getUserByEmail(email: string): Promise<{ email: string, name: string, type: string } | null> {
+  public async getUserByEmail(email: string): Promise<{ email: string; name: string; type: string } | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         email,
@@ -38,7 +38,7 @@ export default class UserRepository implements IUserRepository {
         },
       },
     });
-    return { id: createUser.id };
+    return { id: createUser.id, email: createUser.email };
   }
 
   public async getUser(id: string) {
@@ -116,6 +116,8 @@ export default class UserRepository implements IUserRepository {
         name: true,
         mobileNumber: true,
         password: true,
+        validate_code: true,
+        validate_expire_date: true,
         addresses: {
           select: {
             address: true,
@@ -138,5 +140,45 @@ export default class UserRepository implements IUserRepository {
         id,
       },
     });
+  }
+
+  public async updateUser(id: string, ...args: any) {
+    await this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        ...args
+      }
+    })
+  }
+
+  public async updateValidationCode(email: string, code: string | null, expire: Date | null) {
+    await this.prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        validate_code: code,
+        validate_expire_date: expire,
+      },
+    });
+  }
+
+  public async getUserValidateToken(email: string): Promise<{ token: string; expireDate: Date } | null> {
+    const token = await this.prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        validate_code: true,
+        validate_expire_date: true,
+      },
+    });
+
+    if (token?.validate_code && token.validate_expire_date) {
+      return { token: token?.validate_code, expireDate: token?.validate_expire_date };
+    }
+    return null;
   }
 }

@@ -9,7 +9,7 @@ export default class LoginUserUseCase implements useCase {
   async execute(email: string, password: string): Promise<string | null> {
     const userExists = await this.userRepo.getFullUserDataByEmail(email);
 
-    if(userExists) {
+    if(userExists && !userExists.validate_code && !userExists.validate_expire_date) {
       const checkpw = await this.encoder.compare(password, userExists.password);
       if(checkpw) {
         const userData = await this.userRepo.getUserByEmail(userExists.email);
