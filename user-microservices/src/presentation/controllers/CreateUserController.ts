@@ -39,13 +39,12 @@ export default class CreateUserController implements BaseController {
     } catch (err: any) {
       const errorType = CreateUserErrors[err.code];
 
-      switch (errorType) {
-        case errorType:
-          return badRequest(CreateUserErrors[err.code]);
-        case !errorType && err.message:
-          return serverError(err.message);
-        default:
-          return serverError('Unknown server error');
+      if (!!errorType) {
+        return badRequest(CreateUserErrors[err.code]);
+      } else if (!errorType && err.message) {
+        return serverError(err.message);
+      } else {
+        return serverError('Unknown server error');
       }
     }
   }

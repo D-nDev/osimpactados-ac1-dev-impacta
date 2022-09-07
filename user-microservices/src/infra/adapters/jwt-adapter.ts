@@ -26,9 +26,9 @@ export default class jwtAdapter implements jwtToken {
     }
   }
 
-  public decode(token: any): string | JwtPayload {
+  public decode(token: any): JwtPayload & { email: string, name: string, type: string } {
     try {
-      const decodedtoken = verify(token, process.env.SECRET as string);
+      const decodedtoken = verify(token, process.env.SECRET as string) as JwtPayload & { email: string, name: string, type: string };
       return decodedtoken;
     } catch (err: any) {
       throw new Error(err.message || 'Cannot decode token');

@@ -25,6 +25,11 @@ export const badRequest = (error: Error | any): HttpResponse => ({
   body: error
 })
 
+export const unauthorized = (error: Error | any): HttpResponse => ({
+  statusCode: 401,
+  body: error
+})
+
 export const serverError = (error: Error | any): HttpResponse => ({
   statusCode: 500,
   body: error
