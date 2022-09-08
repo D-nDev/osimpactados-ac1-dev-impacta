@@ -3,7 +3,7 @@ import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, created, serverError } from './helpers/httpHelper';
 import { Request } from 'express';
-import { TokenUserRecoverErrorsEnum } from '../errors/TokenUserRecoverErrorsEnum';
+import { TokenEstablishmentRecoverErrorsEnum } from '../errors/TokenEstablishmentRecoverErrorsEnum';
 
 export default class SendEmailRecoverCodeController implements BaseController {
   constructor(private readonly useCase: useCase) {}
@@ -19,10 +19,10 @@ export default class SendEmailRecoverCodeController implements BaseController {
       return badRequest("Provide a email");
 
     } catch (err: any) {
-      const errorType = TokenUserRecoverErrorsEnum[err.code];
+      const errorType = TokenEstablishmentRecoverErrorsEnum[err.code];
 
       if (!!errorType) {
-        return badRequest(TokenUserRecoverErrorsEnum[err.code]);
+        return badRequest(TokenEstablishmentRecoverErrorsEnum[err.code]);
       } else if (!errorType && err.message) {
         return serverError(err.message);
       } else {

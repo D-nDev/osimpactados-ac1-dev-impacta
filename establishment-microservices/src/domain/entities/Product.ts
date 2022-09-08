@@ -9,12 +9,8 @@ export default class ProductEntity {
   }: {
     name: string,
     stock: number,
-    value?: number
-    photo?: string | null,
-    addressDistrict: string,
-    city: string,
-    state: string,
-    cep: string,
+    value: number,
+    photo: string,
   }) {
     this.name = name;
     this.stock = stock;
@@ -36,7 +32,7 @@ export default class ProductEntity {
 
   @IsOptional()
   @IsString()
-  public readonly photo: string | null;
+  public readonly photo: string;
 
   public getName(): string {
     return this.name;

@@ -19,26 +19,27 @@ services:
     volumes:
       - pgdata:/data/postgres
       
-  user-api:
-    container_name: user-api
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
-      - 9229:9229
-    depends_on:
-      pg:
-        condition: service_healthy
-    links:
-      - pg
-    platform: "linux/amd64"
-    environment:
-        - DATABASE_URL=postgresql://postgres:postgres@pg:5432/user?schema=public
-        - SECRET=ultrasecret
-    volumes:
-        - .:/usr/app
-        - /usr/app/node_modules/
+  # user-api:
+  #   container_name: user-api
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 3000:3000
+  #     - 9229:9229
+  #   depends_on:
+  #     pg:
+  #       condition: service_healthy
+  #   links:
+  #     - pg
+  #   platform: "linux/amd64"
+  #   environment:
+  #       - DATABASE_URL=postgresql://postgres:postgres@pg:5432/user?schema=public
+  #       - SECRET=ultrasecret
+  #       - MAILPASS=enuwyarsjcqmssog
+  #   volumes:
+  #       - .:/usr/app
+  #       - /usr/app/node_modules/
 
 volumes:
   pgdata:

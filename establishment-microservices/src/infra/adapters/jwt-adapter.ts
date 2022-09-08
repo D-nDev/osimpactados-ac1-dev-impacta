@@ -11,18 +11,18 @@ export default class jwtAdapter implements jwtToken {
     }
   }
 
-  public sign(user: { email: string, name: string, type: string }): any {
+  public sign(establishment: { email: string, name: string, type: string }): any {
     try {
       const token = sign(
         {
-          ...user,
+          ...establishment,
         },
         process.env.SECRET as string,
         { expiresIn: '2d' },
       );
       return { token };
     } catch (err: any) {
-      throw new Error(err.message || 'Cannot sign user');
+      throw new Error(err.message || 'Cannot sign establishment');
     }
   }
 

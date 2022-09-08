@@ -1,17 +1,19 @@
 import express from "express";
+import cors from "cors";
 import * as dotenv from 'dotenv';
 dotenv.config()
 import cookieParser from 'cookie-parser';
-import PublicUserRoutes from "../routes/public/PublicUserRoutes";
-import PrivateUserRoutes from "../routes/private/PrivateUserRoutes";
+import PublicEstablishmentRoutes from "../routes/public/PublicEstablishmentRoutes";
+import PrivateEstablishmentRoutes from "../routes/private/PrivateEstablishmentRoutes";
 
 const app = express();
-const userRoutes = new PublicUserRoutes()
-const privateUserRoutes = new PrivateUserRoutes();
+const establishmentRoutes = new PublicEstablishmentRoutes()
+const privateestablishmentRoutes = new PrivateEstablishmentRoutes();
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(userRoutes.router);
-app.use(privateUserRoutes.router);
+app.use(cors());
+app.use(establishmentRoutes.router);
+app.use(privateestablishmentRoutes.router);
 
 export { app }

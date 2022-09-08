@@ -9,10 +9,10 @@ import {
 import { cnpj } from 'cpf-cnpj-validator'; 
 
 @ValidatorConstraint()
-export class IsCpfConstraint implements ValidatorConstraintInterface {
-  validate(usercpf: any, args: ValidationArguments) {
-    const isValidCpf = cnpj.isValid(usercpf)
-    return isValidCpf;
+export class IsCnpjConstraint implements ValidatorConstraintInterface {
+  validate(establishmentcnpj: any, args: ValidationArguments) {
+    const isValidCnpj = cnpj.isValid(establishmentcnpj)
+    return isValidCnpj;
   }
 }
 
@@ -23,7 +23,7 @@ export function IsCnpj(validationOptions?: ValidationOptions) {
       propertyName: propertyName,
       options: validationOptions,
       constraints: [],
-      validator: IsCpfConstraint,
+      validator: IsCnpjConstraint,
     });
   };
 }

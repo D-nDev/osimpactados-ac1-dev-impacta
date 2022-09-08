@@ -1,16 +1,22 @@
-import ProductEntity from '@app/src/domain/entities/Product';
 import { IsEmail, IsMobilePhone, IsNotEmpty } from 'class-validator';
 
 export type SubsidiaryDto = {
   name: string;
   address: string;
+  addressComplement: string | null;
   addressNumber: number;
-  addressComplement?: string | null;
   addressDistrict: string;
-  products: ProductEntity[] | [];
+  products: productDto[];
   city: string;
   state: string;
   cep: string;
+};
+
+export type productDto = {
+  name: string;
+  stock: number;
+  value: number;
+  photo: string;
 };
 
 export class establishmentDto {

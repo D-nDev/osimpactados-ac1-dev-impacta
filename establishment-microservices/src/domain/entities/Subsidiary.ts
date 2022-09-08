@@ -15,10 +15,10 @@ export default class SubsidiaryEntity {
   }: {
     name: string,
     address: string,
-    addressNumber?: number
-    addressComplement?: string | null,
+    addressNumber: number
+    addressComplement: string | null,
     addressDistrict: string,
-    products: ProductEntity[] | [],
+    products: any,
     city: string,
     state: string,
     cep: string,
@@ -56,7 +56,7 @@ export default class SubsidiaryEntity {
 
   @IsNotEmpty()
   @IsObject()
-  public readonly products: ProductEntity[] | [];
+  public readonly products: any;
 
   @IsNotEmpty()
   @IsString()

@@ -8,28 +8,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum EstablishmentType {
+  USER
+  ADMIN
+}
+
 model Establishment {
-  id                   String        @id @default(auto()) @map("_id") @db.ObjectId
+  id                   String            @id @default(auto()) @map("_id") @db.ObjectId
   name                 String
-  email                String        @unique
-  mobileNumber         String        @unique
-  subsidiary           Subsidiary[]
+  email                String            @unique
+  mobileNumber         String            @unique
+  subsidiaries         Subsidiary[]
   password             String
   cnpj                 String
+  type                 EstablishmentType @default(USER)
   validate_code        String?
   validate_expire_date DateTime?
-  created_at           DateTime      @default(now())
-  updated_at           DateTime      @default(now()) @updatedAt
+  created_at           DateTime          @default(now())
+  updated_at           DateTime          @default(now()) @updatedAt
   deleted_at           DateTime?
   RecoverCodes         RecoverCodes?
 }
 
 model RecoverCodes {
-  token          String        @id @map("_id") @db.ObjectId
-  user           Establishment @relation(fields: [userId], references: [id])
-  userId         String        @unique
-  expires_at     DateTime
-  is_blacklisted Boolean       @default(false)
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  token           String        @map("token")
+  establishment   Establishment @relation(fields: [establishmentId], references: [id])
+  establishmentId String        @unique
+  expires_at      DateTime
+  is_blacklisted  Boolean       @default(false)
 }
 
 model Subsidiary {
@@ -39,7 +46,7 @@ model Subsidiary {
   addressNumber     Int
   addressComplement String?
   addressDistrict   String
-  products          Products[]
+  products          Json[]
   city              String
   state             String
   cep               String
@@ -53,6 +60,4 @@ model Products {
   stock        Int
   value        Float
   photo        String
-  subsidiary   Subsidiary @relation(fields: [subsidiaryId], references: [id])
-  subsidiaryId String     @unique
 }

@@ -1,10 +1,10 @@
 import { useCase } from '../ports/useCase';
-import { IUserRepository } from '../ports/userRepository';
+import { IEstablishmentRepository } from '../ports/establishmentRepository';
 import * as crypto from 'crypto';
 import EmailAdapter from '@app/src/infra/adapters/email-adapter';
 
 export default class SendRecoverEmailUseCase implements useCase {
-  constructor(private readonly emailprovider: EmailAdapter, private readonly userRepo: IUserRepository) {}
+  constructor(private readonly emailprovider: EmailAdapter, private readonly establishmentRepo: IEstablishmentRepository) {}
 
   async execute(to: string): Promise<boolean> {
     try {
@@ -12,14 +12,14 @@ export default class SendRecoverEmailUseCase implements useCase {
       const expireDate = new Date();
       expireDate.setTime(expireDate.getTime() + 2 * 60 * 60 * 1000);
 
-      const userId = await this.userRepo.getUserIdByEmail(to);
-      if (userId) {
-        const tokenAlreadyExists = await this.userRepo.getUserRecoverTokenByEmail(to);
+      const establishmentId = await this.establishmentRepo.getEstablishmentIdByEmail(to);
+      if (establishmentId) {
+        const tokenAlreadyExists = await this.establishmentRepo.getEstablishmentRecoverTokenByEmail(to);
         if (tokenAlreadyExists) {
-          await this.userRepo.updateRecoverCodeById(userId!.id, token, expireDate);
+          await this.establishmentRepo.updateRecoverCodeById(establishmentId!.id, token, expireDate);
           await this.emailprovider.sendRecoverEmail(to, token);
         } else {
-          await this.userRepo.createRecoverCodeById(userId!.id, token, expireDate);
+          await this.establishmentRepo.createRecoverCodeById(establishmentId!.id, token, expireDate);
           await this.emailprovider.sendRecoverEmail(to, token);
         }
 

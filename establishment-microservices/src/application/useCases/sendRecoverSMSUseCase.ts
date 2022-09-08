@@ -1,9 +1,9 @@
 import { useCase } from '../ports/useCase';
-import { IUserRepository } from '../ports/userRepository';
+import { IEstablishmentRepository } from '../ports/establishmentRepository';
 import { ITwilioAdapter } from '../ports/twilio';
 
 export default class SendRecoverSMSUseCase implements useCase {
-  constructor(private readonly smsprovider: ITwilioAdapter, private readonly userRepo: IUserRepository) {}
+  constructor(private readonly smsprovider: ITwilioAdapter, private readonly establishmentRepo: IEstablishmentRepository) {}
 
   async execute(to: string): Promise<boolean> {
     try {
@@ -11,14 +11,14 @@ export default class SendRecoverSMSUseCase implements useCase {
       const expireDate = new Date();
       expireDate.setTime(expireDate.getTime() + 2 * 60 * 60 * 1000);
 
-      const userId = await this.userRepo.getUserIdByMobileNumber(to);
-      if (userId) {
-        const tokenAlreadyExists = await this.userRepo.getUserRecoverTokenByNumber(to);
+      const establishmentId = await this.establishmentRepo.getEstablishmentIdByMobileNumber(to);
+      if (establishmentId) {
+        const tokenAlreadyExists = await this.establishmentRepo.getEstablishmentRecoverTokenByNumber(to);
         if (tokenAlreadyExists) {
-          await this.userRepo.updateRecoverCodeById(userId!.id, token, expireDate);
+          await this.establishmentRepo.updateRecoverCodeById(establishmentId!.id, token, expireDate);
           await this.smsprovider.sendRecoverSMS(to, token);
         } else {
-          await this.userRepo.createRecoverCodeById(userId!.id, token, expireDate);
+          await this.establishmentRepo.createRecoverCodeById(establishmentId!.id, token, expireDate);
           await this.smsprovider.sendRecoverSMS(to, token);
         }
 

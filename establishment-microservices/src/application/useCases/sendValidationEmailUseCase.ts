@@ -1,10 +1,10 @@
 import { MailAdapter } from '../ports/nodemailer';
 import { useCase } from '../ports/useCase';
 import * as crypto from 'crypto';
-import { IUserRepository } from '../ports/userRepository';
+import { IEstablishmentRepository } from '../ports/establishmentRepository';
 
 export default class SendValidationEmailUseCase implements useCase {
-  constructor(private readonly mailerprovider: MailAdapter, private readonly userRepo: IUserRepository) {}
+  constructor(private readonly mailerprovider: MailAdapter, private readonly establishmentRepo: IEstablishmentRepository) {}
 
   async execute(to: string): Promise<boolean> {
     try {
@@ -13,7 +13,7 @@ export default class SendValidationEmailUseCase implements useCase {
       expireDate.setTime(expireDate.getTime() + 2 * 60 * 60 * 1000);
 
       const sendEmail = this.mailerprovider.sendValidateEmail(to, token);
-      const updateToken = this.userRepo.updateValidationCode(to, token, expireDate);
+      const updateToken = this.establishmentRepo.updateValidationCode(to, token, expireDate);
 
       await Promise.all([await sendEmail, await updateToken]);
 
