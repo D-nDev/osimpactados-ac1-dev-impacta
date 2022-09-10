@@ -16,7 +16,7 @@ export default class SendEmailRecoverCodeController implements BaseController {
         await this.useCase.execute(email);
         return created(true);
       }
-      return badRequest("Provide a email");
+      return badRequest("Please provide an email");
 
     } catch (err: any) {
       const errorType = TokenUserRecoverErrorsEnum[err.code];

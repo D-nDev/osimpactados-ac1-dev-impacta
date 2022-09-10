@@ -16,7 +16,7 @@ export default class SendSMSRecoverCodeController implements BaseController {
         await this.useCase.execute(mobileNumber);
         return created(true);
       }
-      return badRequest("Provide a mobile number");
+      return badRequest("Please provide a mobile number");
 
     } catch (err: any) {
       const errorType = TokenUserRecoverErrorsEnum[err.code];

@@ -4,21 +4,26 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, serverError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { bcryptEncoder } from '@app/src/application/ports/bcrypt';
+import { IValidator } from './contracts/validator';
+import { changePassDto } from '@app/src/application/ports/changePassDto';
 
 export default class ChangeUserPassController implements BaseController {
-  constructor(private readonly emailUseCase: useCase, private readonly numberUseCase: useCase, private readonly encoder: bcryptEncoder) {}
+  constructor(private readonly emailUseCase: useCase, private readonly numberUseCase: useCase, private readonly validator: IValidator, private readonly encoder: bcryptEncoder) {}
 
   async handle(request: Request): Promise<HttpResponse> {
     try {
       const { mobileNumber, email, token, password } = request.body;
       let execute: any;
 
-      if(!token) {
-        return badRequest("Provide a token");
-      }
-
-      if(!password) {
-        return badRequest("Provide new password");
+      const validate = new changePassDto(mobileNumber, email, token, password);
+      const result = await this.validator.validate(validate);
+      if (result.length > 0) {
+        const errors: any = [];
+        for (const key in result) {
+          const values = Object.values(result[key].constraints!);
+          errors.push(values.toString());
+        }
+        return badRequest(errors);
       }
       
       if(mobileNumber) {

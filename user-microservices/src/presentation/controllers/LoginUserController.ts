@@ -10,6 +10,11 @@ export default class LoginUserController implements BaseController {
   async handle(request: Request): Promise<HttpResponse> {
     try {
       const [, hash]: any = request.headers.authorization?.split(' ');
+
+      if(!hash) {
+        return badRequest("Please provide a login basic auth token");
+      }
+
       const [email, password] = Buffer.from(hash, 'base64').toString().split(':');
 
       const execute = await this.useCase.execute(email, password);
@@ -18,7 +23,7 @@ export default class LoginUserController implements BaseController {
         return ok(execute);
       }
 
-      return badRequest('Invalid email or password, or account not validated yet');
+      return badRequest('Invalid email/password, or account not validated yet');
     } catch (err: any) {
       return serverError(err.message || 'Unexpected error');
     }
