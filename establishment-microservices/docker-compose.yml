@@ -1,42 +1,40 @@
 version: '3'
 services:
-  pg:
-    image: postgres:13
-    container_name: pg
-    restart: always
-    command: postgres -c listen_addresses='*'
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d user"]
-      interval: 10s
-      timeout: 7s
-      retries: 5
-    ports:
-      - 5432:5432
-    environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
-        - POSTGRES_DB=user
-    volumes:
-      - pgdata:/data/postgres
+  # pg:
+  #   image: postgres:13
+  #   container_name: pg
+  #   restart: always
+  #   command: postgres -c listen_addresses='*'
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres -d user"]
+  #     interval: 10s
+  #     timeout: 7s
+  #     retries: 5
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #       - POSTGRES_USER=postgres
+  #       - POSTGRES_PASSWORD=postgres
+  #       - POSTGRES_DB=user
+  #   volumes:
+  #     - pgdata:/data/postgres
       
-  user-api:
-    container_name: user-api
+  establishment-api:
+    container_name: establishment-api
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - 3002:3002
       - 9229:9229
-    depends_on:
-      pg:
-        condition: service_healthy
-    links:
-      - pg
+    # depends_on:
+    #   pg:
+    #     condition: service_healthy
+    # links:
+    #   - pg
     platform: "linux/amd64"
-    environment:
-        - DATABASE_URL=postgresql://postgres:postgres@pg:5432/user?schema=public
-        - SECRET=ultrasecret
-        - MAILPASS=enuwyarsjcqmssog
+    env_file:
+      - .env
     volumes:
         - .:/usr/app
         - /usr/app/node_modules/
