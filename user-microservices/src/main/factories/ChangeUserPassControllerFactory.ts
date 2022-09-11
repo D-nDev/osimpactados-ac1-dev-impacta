@@ -5,6 +5,7 @@ import ChangeUserPassController from "@presentation/controllers/ChangeUserPassCo
 import ChangeUserPassByMobileNumberUseCase from "@usecases/changeUserPassByMobileNumberUseCase";
 import BcryptAdapter from "@infra/adapters/bcrypt-adapter";
 import ValidatorAdapter from "../adapters/classValidator-adapter";
+import PinoAdapter from "@app/infra/adapters/pino-adapter";
 
 export const changeUserPassControllerFactory = (): BaseController => {
   const userRepository = createUserRepository();
@@ -12,8 +13,9 @@ export const changeUserPassControllerFactory = (): BaseController => {
   const numberUseCase = new ChangeUserPassByMobileNumberUseCase(userRepository);
   const bcryptHash = new BcryptAdapter();
   const validator = new ValidatorAdapter();
+  const logger = new PinoAdapter();
 
-  const controller = new ChangeUserPassController(emailUseCase, numberUseCase, validator, bcryptHash);
+  const controller = new ChangeUserPassController(emailUseCase, numberUseCase, validator, bcryptHash, logger);
 
   return controller;
 }

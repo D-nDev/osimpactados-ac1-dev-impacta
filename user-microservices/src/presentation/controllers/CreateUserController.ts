@@ -6,9 +6,10 @@ import { HttpResponse } from './contracts/httpResponse';
 import { IValidator } from './contracts/validator';
 import { badRequest, created, serverError } from './helpers/httpHelper';
 import { Request } from 'express';
+import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
 
 export default class CreateUserController implements BaseController {
-  constructor(private readonly useCase: useCase, private readonly validator: IValidator, private readonly validateUseCase: useCase) {}
+  constructor(private readonly useCase: useCase, private readonly validator: IValidator, private readonly validateUseCase: useCase, private readonly logger: ILoggerAdapter) {}
 
   async handle(request: Request): Promise<HttpResponse> {
     try {
@@ -37,6 +38,7 @@ export default class CreateUserController implements BaseController {
         return badRequest("Account already exists");
       }
     } catch (err: any) {
+      this.logger.error("Cannot Create new user", err);
       const errorType = CreateUserErrors[err.code];
 
       if (!!errorType) {

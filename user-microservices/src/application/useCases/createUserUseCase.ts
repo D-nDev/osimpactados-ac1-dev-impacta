@@ -13,7 +13,7 @@ export default class CreateUserUseCase implements useCase {
     const userAddresses = this.mapper.fromAddressDtoToEntity(user.addresses);
     const userEntity = new UserEntity({...user, addresses: userAddresses, password: await this.encoder.hash(user.password)});
     const userExists = await this.userRepo.getFullUserDataByEmail(user.email);
-
+    
     if(userExists) {
       if(!userExists.validate_code && !userExists.validate_expire_date) {
         return false;

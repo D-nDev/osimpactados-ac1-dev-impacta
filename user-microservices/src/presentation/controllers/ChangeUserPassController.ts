@@ -6,9 +6,16 @@ import { Request } from 'express';
 import { bcryptEncoder } from '@application/ports/bcrypt';
 import { IValidator } from './contracts/validator';
 import { changePassDto } from '@application/ports/changePassDto';
+import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
 
 export default class ChangeUserPassController implements BaseController {
-  constructor(private readonly emailUseCase: useCase, private readonly numberUseCase: useCase, private readonly validator: IValidator, private readonly encoder: bcryptEncoder) {}
+  constructor(
+    private readonly emailUseCase: useCase,
+    private readonly numberUseCase: useCase,
+    private readonly validator: IValidator,
+    private readonly encoder: bcryptEncoder,
+    private readonly logger: ILoggerAdapter,
+  ) {}
 
   async handle(request: Request): Promise<HttpResponse> {
     try {
@@ -25,22 +32,22 @@ export default class ChangeUserPassController implements BaseController {
         }
         return badRequest(errors);
       }
-      
-      if(mobileNumber) {
+
+      if (mobileNumber) {
         execute = await this.numberUseCase.execute(mobileNumber, token, password, this.encoder);
-      } else if(email) {
+      } else if (email) {
         execute = await this.emailUseCase.execute(email, token, password, this.encoder);
-      } else if(email && mobileNumber) {
+      } else if (email && mobileNumber) {
         execute = await this.emailUseCase.execute(email, token, password, this.encoder);
       }
 
-      if(execute) {
+      if (execute) {
         return ok(true);
       } else {
-        return badRequest("Expired or invalid recover code/email");
+        return badRequest('Expired or invalid recover code/email');
       }
-
     } catch (err: any) {
+      this.logger.error('Cannot Update User password', err);
       return serverError(err.message || 'Unexpected error');
     }
   }

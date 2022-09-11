@@ -1,10 +1,10 @@
 import { bcryptEncoder } from '../ports/bcrypt';
-import { IJwtAdapter } from '../ports/IJwtAdapter';
+import { ITokenAdapter } from '../ports/ITokenAdapter';
 import { useCase } from '../ports/useCase';
 import { IUserRepository } from '../ports/userRepository';
 
 export default class LoginUserUseCase implements useCase {
-  constructor(private readonly userRepo: IUserRepository, private readonly encoder: bcryptEncoder, private readonly jwtToken: IJwtAdapter) {}
+  constructor(private readonly userRepo: IUserRepository, private readonly encoder: bcryptEncoder, private readonly jwtToken: ITokenAdapter) {}
 
   async execute(email: string, password: string): Promise<string | null> {
     const userExists = await this.userRepo.getFullUserDataByEmail(email);

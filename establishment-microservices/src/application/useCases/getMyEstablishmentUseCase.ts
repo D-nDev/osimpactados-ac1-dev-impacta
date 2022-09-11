@@ -1,9 +1,9 @@
 import { useCase } from '../ports/useCase';
 import { IEstablishmentRepository, myEstablishmentData } from '../ports/establishmentRepository';
-import { IJwtAdapter } from '../ports/IJwtAdapter';
+import { ITokenAdapter } from '../ports/ITokenAdapter';
 
 export default class GetMyEstablishmentUseCase implements useCase {
-  constructor(private readonly establishmentRepo: IEstablishmentRepository, private readonly jwtadapter: IJwtAdapter) {}
+  constructor(private readonly establishmentRepo: IEstablishmentRepository, private readonly jwtadapter: ITokenAdapter) {}
 
   async execute(token: string): Promise<myEstablishmentData | null> {
 

@@ -1,9 +1,9 @@
 import { useCase } from '../ports/useCase';
 import { IEstablishmentRepository } from '../ports/establishmentRepository';
-import { ITwilioAdapter } from '../ports/ITwilioAdapter';
+import { ISMSAdapter } from '../ports/ISMSAdapter';
 
 export default class SendRecoverSMSUseCase implements useCase {
-  constructor(private readonly smsprovider: ITwilioAdapter, private readonly establishmentRepo: IEstablishmentRepository) {}
+  constructor(private readonly smsprovider: ISMSAdapter, private readonly establishmentRepo: IEstablishmentRepository) {}
 
   async execute(to: string): Promise<boolean> {
     try {

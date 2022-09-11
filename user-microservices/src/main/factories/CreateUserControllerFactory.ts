@@ -7,6 +7,7 @@ import ValidatorAdapter from "../adapters/classValidator-adapter";
 import { createUserRepository } from "./CreateUserRepositoryFactory";
 import SendValidationEmailUseCase from "@usecases/sendValidationEmailUseCase";
 import EmailAdapter from "@infra/adapters/email-adapter";
+import PinoAdapter from "@app/infra/adapters/pino-adapter";
 
 export const createUserControllerFactory = (): BaseController => {
   const userRepository = createUserRepository();
@@ -16,8 +17,9 @@ export const createUserControllerFactory = (): BaseController => {
   const useCase = new CreateUserUseCase(userRepository, encoder, mapper);
   const emailUseCase = new SendValidationEmailUseCase(mailadapter, userRepository);
   const validator = new ValidatorAdapter();
+  const logger = new PinoAdapter();
 
-  const controller = new CreateUserController(useCase, validator, emailUseCase);
+  const controller = new CreateUserController(useCase, validator, emailUseCase, logger);
 
   return controller;
 }

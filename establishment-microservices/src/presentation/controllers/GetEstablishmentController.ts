@@ -1,7 +1,7 @@
 import { useCase } from '@application/ports/useCase';
 import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
-import { ok, serverError } from './helpers/httpHelper';
+import { badRequest, ok, serverError } from './helpers/httpHelper';
 import { Request } from 'express';
 
 export default class GetEstablishmentController implements BaseController {
@@ -10,6 +10,10 @@ export default class GetEstablishmentController implements BaseController {
   async handle(request: Request): Promise<HttpResponse> {
     try {
       const { id } = request.params;
+
+      if(!id) {
+        return badRequest("Please provide an id");
+      }
       
       const execute = await this.useCase.execute(id);
 

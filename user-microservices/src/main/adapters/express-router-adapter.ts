@@ -1,6 +1,14 @@
+import { HttpResponse } from '@presentation/controllers/contracts/httpResponse';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-
 import { Request, Response } from 'express';
+
+const timeout = (): Promise<any> => {
+  return new Promise((_, reject) => {
+    setTimeout(() => {
+      reject();
+    }, 10000);
+  });
+};
 
 export const adaptRoute = (controller: BaseController) => {
   return async (req: Request, res: Response) => {
@@ -11,14 +19,18 @@ export const adaptRoute = (controller: BaseController) => {
       headers: { ...(req.headers || {}) },
       cookies: { ...(req.cookies || {}) },
     };
-    const httpResponse = await controller.handle(request);
-    if (httpResponse.statusCode >= 200 && httpResponse.statusCode <= 299) {
-      res.status(httpResponse.statusCode).json(httpResponse.body);
-    } else {
-      res.status(httpResponse.statusCode).json({
-        statusCode: httpResponse.statusCode || 500,
-        error: httpResponse.body || 'Unknown error',
-      });
+    try {
+      const result = await Promise.race<HttpResponse | HttpResponse>([timeout(), controller.handle(request)]);
+      if (result.statusCode >= 200 && result.statusCode <= 299) {
+        res.status(result.statusCode).json(result.body);
+      } else {
+        res.status(result.statusCode).json({
+          statusCode: result.statusCode || 500,
+          error: result.body || 'Unknown error',
+        });
+      }
+    } catch (e: any) {
+      res.status(503).json({ error: 'Service Unavailable - Timeout' });
     }
   };
 };

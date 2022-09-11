@@ -1,3 +1,3 @@
-export interface ITwilioAdapter {
+export interface ISMSAdapter {
   sendRecoverSMS(to: string, token: string): Promise<boolean>
 }
