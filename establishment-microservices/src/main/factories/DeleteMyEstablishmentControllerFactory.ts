@@ -1,6 +1,6 @@
-import DeleteMyEstablishmentUseCase from "@app/src/application/useCases/deleteMyEstablishmentUseCase";
-import jwtAdapter from "@app/src/infra/adapters/jwt-adapter";
-import DeleteMyEstablishmentController from "@app/src/presentation/controllers/DeleteMyEstablishmentController";
+import DeleteMyEstablishmentUseCase from "@usecases/deleteMyEstablishmentUseCase";
+import jwtAdapter from "@infra/adapters/jwt-adapter";
+import DeleteMyEstablishmentController from "@presentation/controllers/DeleteMyEstablishmentController";
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createEstablishmentRepository } from "./CreateEstablishmentRepositoryFactory";
 

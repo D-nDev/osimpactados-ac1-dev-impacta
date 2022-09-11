@@ -3,7 +3,7 @@ import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, serverError } from './helpers/httpHelper';
 import { Request } from 'express';
-import { bcryptEncoder } from '@app/src/application/ports/bcrypt';
+import { bcryptEncoder } from '@application/ports/bcrypt';
 
 export default class ChangeEstablishmentPassController implements BaseController {
   constructor(private readonly emailUseCase: useCase, private readonly numberUseCase: useCase, private readonly encoder: bcryptEncoder) {}

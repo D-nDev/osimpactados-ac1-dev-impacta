@@ -1,4 +1,4 @@
-import UserEntity from '@app/src/domain/entities/User';
+import UserEntity from '@domain/entities/User';
 import { Address, RecoverCodes } from '@prisma/client';
 import { AddressesDto, userDto } from './userDto';
 

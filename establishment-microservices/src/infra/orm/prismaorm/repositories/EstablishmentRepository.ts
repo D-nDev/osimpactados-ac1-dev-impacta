@@ -1,8 +1,8 @@
 import { Prisma, PrismaClient, Products, RecoverCodes } from '@prisma/client';
-import { IEstablishmentRepository } from '@app/src/application/ports/establishmentRepository';
-import EstablishmentEntity from '@app/src/domain/entities/Establishment';
-import SubsidiaryEntity from '@app/src/domain/entities/Subsidiary';
-import { establishmentDto } from '@app/src/application/ports/establishmentDto';
+import { IEstablishmentRepository } from '@application/ports/establishmentRepository';
+import EstablishmentEntity from '@domain/entities/Establishment';
+import SubsidiaryEntity from '@domain/entities/Subsidiary';
+import { establishmentDto } from '@application/ports/establishmentDto';
 
 export default class EstablishmentRepository implements IEstablishmentRepository {
   constructor(private readonly prisma: PrismaClient) {}

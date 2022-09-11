@@ -3,9 +3,9 @@ import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, serverError } from './helpers/httpHelper';
 import { Request } from 'express';
-import { bcryptEncoder } from '@app/src/application/ports/bcrypt';
+import { bcryptEncoder } from '@application/ports/bcrypt';
 import { IValidator } from './contracts/validator';
-import { changePassDto } from '@app/src/application/ports/changePassDto';
+import { changePassDto } from '@application/ports/changePassDto';
 
 export default class ChangeUserPassController implements BaseController {
   constructor(private readonly emailUseCase: useCase, private readonly numberUseCase: useCase, private readonly validator: IValidator, private readonly encoder: bcryptEncoder) {}

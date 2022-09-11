@@ -1,6 +1,6 @@
-import GetMyEstablishmentUseCase from "@app/src/application/useCases/getMyEstablishmentUseCase";
-import jwtAdapter from "@app/src/infra/adapters/jwt-adapter";
-import GetMyEstablishmentController from "@app/src/presentation/controllers/GetMyEstablishmentController";
+import GetMyEstablishmentUseCase from "@usecases/getMyEstablishmentUseCase";
+import jwtAdapter from "@infra/adapters/jwt-adapter";
+import GetMyEstablishmentController from "@presentation/controllers/GetMyEstablishmentController";
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createEstablishmentRepository } from "./CreateEstablishmentRepositoryFactory";
 

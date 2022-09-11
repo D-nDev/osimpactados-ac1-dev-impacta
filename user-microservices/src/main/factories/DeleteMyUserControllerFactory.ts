@@ -1,6 +1,6 @@
-import DeleteMyUserUseCase from "@app/src/application/useCases/deleteMyUserUseCase";
-import jwtAdapter from "@app/src/infra/adapters/jwt-adapter";
-import DeleteMyUserController from "@app/src/presentation/controllers/DeleteMyUserController";
+import DeleteMyUserUseCase from "@usecases/deleteMyUserUseCase";
+import jwtAdapter from "@infra/adapters/jwt-adapter";
+import DeleteMyUserController from "@presentation/controllers/DeleteMyUserController";
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createUserRepository } from "./CreateUserRepositoryFactory";
 

@@ -1,7 +1,7 @@
 import { useCase } from '../ports/useCase';
 import { IEstablishmentRepository } from '../ports/establishmentRepository';
 import * as crypto from 'crypto';
-import EmailAdapter from '@app/src/infra/adapters/email-adapter';
+import EmailAdapter from '@infra/adapters/email-adapter';
 
 export default class SendRecoverEmailUseCase implements useCase {
   constructor(private readonly emailprovider: EmailAdapter, private readonly establishmentRepo: IEstablishmentRepository) {}

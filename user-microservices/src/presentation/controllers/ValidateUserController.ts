@@ -4,7 +4,7 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, serverError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { IValidator } from './contracts/validator';
-import { validateUserDto } from '@app/src/application/ports/validateUserDto';
+import { validateUserDto } from '@application/ports/validateUserDto';
 
 export default class ValidateUserController implements BaseController {
   constructor(private readonly useCase: useCase, private readonly validator: IValidator) {}

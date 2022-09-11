@@ -1,13 +1,13 @@
-import EstablishmentEntity from '@app/src/domain/entities/Establishment';
+import EstablishmentEntity from '@domain/entities/Establishment';
 import { bcryptEncoder } from '../ports/bcrypt';
-import { IMapper } from '../ports/IMapper';
+import { IMapperAdapter } from '../ports/IMapperAdapter';
 import { useCase } from '../ports/useCase';
 import { establishmentDto } from '../ports/establishmentDto';
 import { IEstablishmentRepository } from '../ports/establishmentRepository';
 import * as crypto from 'crypto';
 
 export default class CreateEstablishmentUseCase implements useCase {
-  constructor(private readonly establishmentRepo: IEstablishmentRepository, private readonly encoder: bcryptEncoder, private readonly mapper: IMapper) {}
+  constructor(private readonly establishmentRepo: IEstablishmentRepository, private readonly encoder: bcryptEncoder, private readonly mapper: IMapperAdapter) {}
 
   async execute(establishment: establishmentDto): Promise<boolean | { id: string; email: string; }> {
     const establishmentAddresses = this.mapper.fromSubsidiaryDtoToEntity(establishment.subsidiaries);

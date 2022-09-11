@@ -1,7 +1,7 @@
 import ValidateEstablishmentController from "@presentation/controllers/ValidateEstablishmentController";
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createEstablishmentRepository } from "./CreateEstablishmentRepositoryFactory";
-import ValidateEstablishmentUseCase from "@app/src/application/useCases/validateEstablishmentUseCase";
+import ValidateEstablishmentUseCase from "@usecases/validateEstablishmentUseCase";
 
 export const validateEstablishmentControllerFactory = (): BaseController => {
   const establishmentRepository = createEstablishmentRepository();

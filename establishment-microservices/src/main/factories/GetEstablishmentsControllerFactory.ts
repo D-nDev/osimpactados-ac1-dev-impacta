@@ -1,5 +1,5 @@
-import GetEstablishmentsUseCase from "@app/src/application/useCases/getEstablishmentsUseCase";
-import GetEstablishmentsController from "@app/src/presentation/controllers/GetEstablishmentsController";
+import GetEstablishmentsUseCase from "@usecases/getEstablishmentsUseCase";
+import GetEstablishmentsController from "@presentation/controllers/GetEstablishmentsController";
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createEstablishmentRepository } from "./CreateEstablishmentRepositoryFactory";
 

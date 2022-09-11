@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "ES6",
+    "target": "ES2019",
     "module": "CommonJS",
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "moduleResolution": "node",
     "allowJs": true,
     "checkJs": true,
@@ -23,22 +23,19 @@
     "skipLibCheck": true,
     "paths": {
       "@app/*": ["*"],
-      "@infra/*": ["./src/infra/*"],
-      "@domain/*": ["./src/domain/*"],
-      "@logs/*": ["./logs/*"],
-      "@application/*": ["./src/application/*"],
-      "@validations/*": ["./validations/*"],
-      "@utils/*": ["./utils/*"],
-      "@shared/*": ["./shared/*"],
-      "@main/*": ["./src/main/*"],
-      "@presentation/*": ["./src/presentation/*"]
+      "@infra/*": ["infra/*"],
+      "@domain/*": ["domain/*"],
+      "@logs/*": ["logs/*"],
+      "@application/*": ["application/*"],
+      "@validations/*": ["validations/*"],
+      "@utils/*": ["utils/*"],
+      "@shared/*": ["shared/*"],
+      "@main/*": ["main/*"],
+      "@presentation/*": ["presentation/*"],
+      "@decorators/*": ["main/decorators/*"],
+      "@usecases/*": ["application/useCases/*"]
     },
-    "plugins": [
-      {
-        "transform": "typescript-transform-paths"
-      }
-    ]
   },
   "include": ["./src", "./test", "."],
-  "exclude": ["./node_modules"]
+  "exclude": ["./node_modules", "./dist"],
 }

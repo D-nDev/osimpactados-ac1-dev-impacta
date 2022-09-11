@@ -1,6 +1,6 @@
-import GetMyUserUseCase from "@app/src/application/useCases/getMyUserUseCase";
-import jwtAdapter from "@app/src/infra/adapters/jwt-adapter";
-import GetMyUserController from "@app/src/presentation/controllers/GetMyUserController";
+import GetMyUserUseCase from "@usecases/getMyUserUseCase";
+import jwtAdapter from "@infra/adapters/jwt-adapter";
+import GetMyUserController from "@presentation/controllers/GetMyUserController";
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createUserRepository } from "./CreateUserRepositoryFactory";
 

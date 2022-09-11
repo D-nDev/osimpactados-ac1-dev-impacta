@@ -1,9 +1,9 @@
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createEstablishmentRepository } from "./CreateEstablishmentRepositoryFactory";
-import ChangeEstablishmentPassByEmailUseCase from "@app/src/application/useCases/changeEstablishmentPassByEmailUseCase";
-import ChangeEstablishmentPassController from "@app/src/presentation/controllers/ChangeEstablishmentPassController";
-import ChangeEstablishmentPassByMobileNumberUseCase from "@app/src/application/useCases/changeEstablishmentPassByMobileNumberUseCase";
-import BcryptAdapter from "@app/src/infra/adapters/bcrypt-adapter";
+import ChangeEstablishmentPassByEmailUseCase from "@usecases/changeEstablishmentPassByEmailUseCase";
+import ChangeEstablishmentPassController from "@presentation/controllers/ChangeEstablishmentPassController";
+import ChangeEstablishmentPassByMobileNumberUseCase from "@usecases/changeEstablishmentPassByMobileNumberUseCase";
+import BcryptAdapter from "@infra/adapters/bcrypt-adapter";
 
 export const changeEstablishmentPassControllerFactory = (): BaseController => {
   const establishmentRepository = createEstablishmentRepository();

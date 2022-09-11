@@ -1,10 +1,10 @@
 import { bcryptEncoder } from '../ports/bcrypt';
-import { jwtToken } from '../ports/jwt';
+import { IJwtAdapter } from '../ports/IJwtAdapter';
 import { useCase } from '../ports/useCase';
 import { IEstablishmentRepository } from '../ports/establishmentRepository';
 
 export default class LoginEstablishmentUseCase implements useCase {
-  constructor(private readonly establishmentRepo: IEstablishmentRepository, private readonly encoder: bcryptEncoder, private readonly jwtToken: jwtToken) {}
+  constructor(private readonly establishmentRepo: IEstablishmentRepository, private readonly encoder: bcryptEncoder, private readonly jwtToken: IJwtAdapter) {}
 
   async execute(email: string, password: string): Promise<string | null> {
     const establishmentExists = await this.establishmentRepo.getFullEstablishmentDataByEmail(email);

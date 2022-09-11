@@ -1,6 +1,6 @@
-import GetUsersUseCase from "@app/src/application/useCases/getUsersUseCase";
-import { Mapper } from "@app/src/infra/mappers/userMapper";
-import GetUsersController from "@app/src/presentation/controllers/GetUsersController";
+import GetUsersUseCase from "@application/useCases/getUsersUseCase";
+import { Mapper } from "@infra/mappers/userMapper";
+import GetUsersController from "@presentation/controllers/GetUsersController";
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createUserRepository } from "./CreateUserRepositoryFactory";
 

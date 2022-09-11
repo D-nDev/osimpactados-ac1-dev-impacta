@@ -1,9 +1,9 @@
-import jwtAdapter from '@app/src/infra/adapters/jwt-adapter';
 import { useCase } from '../ports/useCase';
 import { IEstablishmentRepository } from '../ports/establishmentRepository';
+import { IJwtAdapter } from '../ports/IJwtAdapter';
 
 export default class DeleteMyEstablishmentUseCase implements useCase {
-  constructor(private readonly establishmentRepo: IEstablishmentRepository, private readonly jwtadapter: jwtAdapter) {}
+  constructor(private readonly establishmentRepo: IEstablishmentRepository, private readonly jwtadapter: IJwtAdapter) {}
 
   async execute(token: string): Promise<boolean | null> {
 

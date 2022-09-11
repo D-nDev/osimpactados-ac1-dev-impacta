@@ -1,7 +1,7 @@
 import { Address, PrismaClient, RecoverCodes } from '@prisma/client';
-import { IUserRepository } from '@app/src/application/ports/userRepository';
-import UserEntity from '@app/src/domain/entities/User';
-import AddressEntity from '@app/src/domain/entities/Address';
+import { IUserRepository } from '@application/ports/userRepository';
+import UserEntity from '@domain/entities/User';
+import AddressEntity from '@domain/entities/Address';
 
 export default class UserRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaClient) {}

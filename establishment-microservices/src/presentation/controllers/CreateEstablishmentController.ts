@@ -1,4 +1,4 @@
-import { establishmentDto } from '@app/src/application/ports/establishmentDto';
+import { establishmentDto } from '@application/ports/establishmentDto';
 import { useCase } from '@application/ports/useCase';
 import { CreateEstablishmentErrors } from '../errors/CreateEstablishmentErrorsEnum';
 import { BaseController } from './contracts/BaseController';

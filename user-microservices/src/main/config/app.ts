@@ -2,6 +2,9 @@ import express from "express";
 import * as dotenv from 'dotenv';
 import cors from "cors";
 dotenv.config()
+if(process.env.NODE_ENV == "production") {
+  require('module-alias/register')
+}
 import cookieParser from 'cookie-parser';
 import PublicUserRoutes from "../routes/public/PublicUserRoutes";
 import PrivateUserRoutes from "../routes/private/PrivateUserRoutes";

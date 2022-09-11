@@ -1,7 +1,7 @@
-import { jwtToken } from '@application/ports/jwt';
+import { IJwtAdapter } from '@app/application/ports/IJwtAdapter';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
 
-export default class jwtAdapter implements jwtToken {
+export default class jwtAdapter implements IJwtAdapter {
   public verify(token: string): boolean {
     try {
       verify(token, process.env.SECRET as string);

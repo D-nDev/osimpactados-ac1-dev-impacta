@@ -1,4 +1,4 @@
-import { userDto } from '@app/src/application/ports/userDto';
+import { userDto } from '@application/ports/userDto';
 import { useCase } from '@application/ports/useCase';
 import { CreateUserErrors } from '../errors/CreateUserErrorsEnum';
 import { BaseController } from './contracts/BaseController';

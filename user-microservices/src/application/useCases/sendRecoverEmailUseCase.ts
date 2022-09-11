@@ -1,10 +1,10 @@
 import { useCase } from '../ports/useCase';
 import { IUserRepository } from '../ports/userRepository';
 import * as crypto from 'crypto';
-import EmailAdapter from '@app/src/infra/adapters/email-adapter';
+import { IMailAdapter } from '../ports/IMailAdapter';
 
 export default class SendRecoverEmailUseCase implements useCase {
-  constructor(private readonly emailprovider: EmailAdapter, private readonly userRepo: IUserRepository) {}
+  constructor(private readonly emailprovider: IMailAdapter, private readonly userRepo: IUserRepository) {}
 
   async execute(to: string): Promise<boolean> {
     try {

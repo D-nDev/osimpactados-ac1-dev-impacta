@@ -1,4 +1,4 @@
-import EstablishmentEntity from '@app/src/domain/entities/Establishment';
+import EstablishmentEntity from '@domain/entities/Establishment';
 import { Subsidiary, RecoverCodes, Products, Prisma } from '@prisma/client';
 import { establishmentDto } from './establishmentDto';
 

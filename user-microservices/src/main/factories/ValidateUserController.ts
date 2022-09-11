@@ -1,7 +1,7 @@
 import ValidateUserController from "@presentation/controllers/ValidateUserController";
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createUserRepository } from "./CreateUserRepositoryFactory";
-import ValidateUserUseCase from "@app/src/application/useCases/validateUserUseCase";
+import ValidateUserUseCase from "@application/useCases/validateUserUseCase";
 import ValidatorAdapter from "../adapters/classValidator-adapter";
 
 export const validateUserControllerFactory = (): BaseController => {

@@ -1,5 +1,5 @@
-import DeleteEstablishmentUseCase from "@app/src/application/useCases/deleteEstablishmentUseCase";
-import DeleteEstablishmentController from "@app/src/presentation/controllers/DeleteEstablishmentController";
+import DeleteEstablishmentUseCase from "@usecases/deleteEstablishmentUseCase";
+import DeleteEstablishmentController from "@presentation/controllers/DeleteEstablishmentController";
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createEstablishmentRepository } from "./CreateEstablishmentRepositoryFactory";
 

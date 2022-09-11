@@ -1,9 +1,9 @@
-import jwtAdapter from '@app/src/infra/adapters/jwt-adapter';
+import { IJwtAdapter } from '../ports/IJwtAdapter';
 import { useCase } from '../ports/useCase';
 import { IUserRepository } from '../ports/userRepository';
 
 export default class DeleteMyUserUseCase implements useCase {
-  constructor(private readonly userRepo: IUserRepository, private readonly jwtadapter: jwtAdapter) {}
+  constructor(private readonly userRepo: IUserRepository, private readonly jwtadapter: IJwtAdapter) {}
 
   async execute(token: string): Promise<boolean | null> {
 

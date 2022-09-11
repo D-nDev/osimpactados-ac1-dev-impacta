@@ -1,8 +1,8 @@
-import AddressEntity from "@app/src/domain/entities/Subsidiary";
-import EstablishmentEntity from "@app/src/domain/entities/Establishment";
+import AddressEntity from "@domain/entities/Subsidiary";
+import EstablishmentEntity from "@domain/entities/Establishment";
 import { SubsidiaryDto, establishmentDto } from "./establishmentDto";
 
-export interface IMapper {
+export interface IMapperAdapter {
   fromEstablishmentDtoToEntity(establishmentDto: establishmentDto): EstablishmentEntity
   fromSubsidiaryDtoToEntity(addresses: SubsidiaryDto[]): AddressEntity[]
 }

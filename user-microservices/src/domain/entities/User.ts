@@ -1,4 +1,4 @@
-import { IsCpf } from '@main/decorators/isCpf';
+import { IsCpf } from '@decorators/isCpf';
 import { IsEmail, IsMobilePhone, IsNotEmpty, IsString, Max, Min } from 'class-validator';
 import AddressEntity from './Address';
 

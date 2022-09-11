@@ -1,5 +1,5 @@
-import GetUserUseCase from "@app/src/application/useCases/getUserUseCase";
-import GetUserController from "@app/src/presentation/controllers/GetUserController";
+import GetUserUseCase from "@usecases/getUserUseCase";
+import GetUserController from "@presentation/controllers/GetUserController";
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createUserRepository } from "./CreateUserRepositoryFactory";
 

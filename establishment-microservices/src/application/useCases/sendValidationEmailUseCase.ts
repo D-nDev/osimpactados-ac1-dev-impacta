@@ -1,10 +1,10 @@
-import { MailAdapter } from '../ports/nodemailer';
+import { IMailAdapter } from '../ports/IMailAdapter';
 import { useCase } from '../ports/useCase';
 import * as crypto from 'crypto';
 import { IEstablishmentRepository } from '../ports/establishmentRepository';
 
 export default class SendValidationEmailUseCase implements useCase {
-  constructor(private readonly mailerprovider: MailAdapter, private readonly establishmentRepo: IEstablishmentRepository) {}
+  constructor(private readonly mailerprovider: IMailAdapter, private readonly establishmentRepo: IEstablishmentRepository) {}
 
   async execute(to: string): Promise<boolean> {
     try {

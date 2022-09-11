@@ -1,4 +1,4 @@
-import { bcryptEncoder } from "@app/src/application/ports/bcrypt";
+import { bcryptEncoder } from "@application/ports/bcrypt";
 import * as bcrypt from "bcrypt";
 
 export default class BcryptAdapter implements bcryptEncoder {

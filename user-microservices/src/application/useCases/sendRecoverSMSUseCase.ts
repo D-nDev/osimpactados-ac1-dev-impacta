@@ -1,6 +1,6 @@
 import { useCase } from '../ports/useCase';
 import { IUserRepository } from '../ports/userRepository';
-import { ITwilioAdapter } from '../ports/twilio';
+import { ITwilioAdapter } from '../ports/ITwilioAdapter';
 
 export default class SendRecoverSMSUseCase implements useCase {
   constructor(private readonly smsprovider: ITwilioAdapter, private readonly userRepo: IUserRepository) {}

@@ -1,8 +1,8 @@
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createEstablishmentRepository } from "./CreateEstablishmentRepositoryFactory";
-import SendRecoverSMSUseCase from "@app/src/application/useCases/sendRecoverSMSUseCase";
-import SendSMSRecoverCodeController from "@app/src/presentation/controllers/SendSMSRecoverCodeController";
-import TwilioAdapter from "@app/src/infra/adapters/twilio-adapter";
+import SendRecoverSMSUseCase from "@usecases/sendRecoverSMSUseCase";
+import SendSMSRecoverCodeController from "@presentation/controllers/SendSMSRecoverCodeController";
+import TwilioAdapter from "@infra/adapters/twilio-adapter";
 
 export const sendSMSRecoverCodeControllerFactory = (): BaseController => {
   const establishmentRepository = createEstablishmentRepository();

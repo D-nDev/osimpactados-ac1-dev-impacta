@@ -1,9 +1,9 @@
 import { BaseController } from "@presentation/controllers/contracts/BaseController";
 import { createUserRepository } from "./CreateUserRepositoryFactory";
-import ChangeUserPassByEmailUseCase from "@app/src/application/useCases/changeUserPassByEmailUseCase";
-import ChangeUserPassController from "@app/src/presentation/controllers/ChangeUserPassController";
-import ChangeUserPassByMobileNumberUseCase from "@app/src/application/useCases/changeUserPassByMobileNumberUseCase";
-import BcryptAdapter from "@app/src/infra/adapters/bcrypt-adapter";
+import ChangeUserPassByEmailUseCase from "@usecases/changeUserPassByEmailUseCase";
+import ChangeUserPassController from "@presentation/controllers/ChangeUserPassController";
+import ChangeUserPassByMobileNumberUseCase from "@usecases/changeUserPassByMobileNumberUseCase";
+import BcryptAdapter from "@infra/adapters/bcrypt-adapter";
 import ValidatorAdapter from "../adapters/classValidator-adapter";
 
 export const changeUserPassControllerFactory = (): BaseController => {

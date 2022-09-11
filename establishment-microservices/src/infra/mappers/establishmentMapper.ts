@@ -1,10 +1,9 @@
-import { IMapper } from '@app/src/application/ports/IMapper';
-import SubsidiaryEntity from '@app/src/domain/entities/Subsidiary';
-import EstablishmentEntity from '@app/src/domain/entities/Establishment';
-import { SubsidiaryDto, establishmentDto, productDto } from '@app/src/application/ports/establishmentDto';
-import ProductEntity from '@app/src/domain/entities/Product';
+import { IMapperAdapter } from '@app/application/ports/IMapperAdapter';
+import SubsidiaryEntity from '@domain/entities/Subsidiary';
+import EstablishmentEntity from '@domain/entities/Establishment';
+import { SubsidiaryDto, establishmentDto, productDto } from '@application/ports/establishmentDto';
 
-export class Mapper implements IMapper {
+export class Mapper implements IMapperAdapter {
   constructor() {}
 
   public fromEstablishmentDtoToEntity(establishmentDto: establishmentDto) {

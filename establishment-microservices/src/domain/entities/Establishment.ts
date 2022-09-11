@@ -1,4 +1,4 @@
-import { IsCnpj } from '@app/src/main/decorators/isCnpj';
+import { IsCnpj } from '@decorators/isCnpj';
 import { IsEmail, IsMobilePhone, IsNotEmpty, IsString, Max, Min } from 'class-validator';
 import SubsidiaryEntity from './Subsidiary';
 

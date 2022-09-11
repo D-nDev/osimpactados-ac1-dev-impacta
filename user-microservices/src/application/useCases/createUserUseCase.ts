@@ -1,13 +1,13 @@
-import UserEntity from '@app/src/domain/entities/User';
+import UserEntity from '@domain/entities/User';
 import { bcryptEncoder } from '../ports/bcrypt';
-import { IMapper } from '../ports/IMapper';
+import { IMapperAdapter } from '../ports/IMapperAdapter';
 import { useCase } from '../ports/useCase';
 import { userDto } from '../ports/userDto';
 import { IUserRepository } from '../ports/userRepository';
 import * as crypto from 'crypto';
 
 export default class CreateUserUseCase implements useCase {
-  constructor(private readonly userRepo: IUserRepository, private readonly encoder: bcryptEncoder, private readonly mapper: IMapper) {}
+  constructor(private readonly userRepo: IUserRepository, private readonly encoder: bcryptEncoder, private readonly mapper: IMapperAdapter) {}
 
   async execute(user: userDto): Promise<boolean | { id: string; email: string; }> {
     const userAddresses = this.mapper.fromAddressDtoToEntity(user.addresses);
