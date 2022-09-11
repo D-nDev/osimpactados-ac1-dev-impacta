@@ -11,8 +11,8 @@ export default class LoginEstablishmentController implements BaseController {
     try {
       const [, hash]: any = request.headers.authorization?.split(' ');
 
-      if(!hash) {
-        return badRequest("Please provide a login basic auth token");
+      if (!hash) {
+        return badRequest('Please provide a login basic auth token');
       }
 
       const [email, password] = Buffer.from(hash, 'base64').toString().split(':');

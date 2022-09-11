@@ -1,4 +1,5 @@
-import { Address, PrismaClient, RecoverCodes } from '@prisma/client';
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import { PrismaClient, RecoverCodes } from '@prisma/client';
 import { IUserRepository } from '@application/ports/userRepository';
 import UserEntity from '@domain/entities/User';
 import AddressEntity from '@domain/entities/Address';
@@ -6,7 +7,7 @@ import AddressEntity from '@domain/entities/Address';
 export default class UserRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  public async getUserByEmail(email: string): Promise<{ email: string; name: string; type: string } | null> {
+  public async getUserByEmail(email: string) {
     const user = await this.prisma.user.findUnique({
       where: {
         email,
@@ -78,6 +79,7 @@ export default class UserRepository implements IUserRepository {
       await this.prisma.address.createMany({
         data: [
           ...user.getAddresses().map((address) => {
+            // eslint-disable-next-line @typescript-eslint/dot-notation
             address['userId'] = overrideUser.id;
             return address;
           }),
@@ -215,7 +217,7 @@ export default class UserRepository implements IUserRepository {
 
   public async updateUserByNumber(number: string, args: any) {
     const userId = await this.getUserIdByMobileNumber(number);
-    if(userId?.id) {
+    if (userId?.id) {
       await this.prisma.user.update({
         where: {
           id: userId.id,
@@ -307,7 +309,7 @@ export default class UserRepository implements IUserRepository {
   }
 
   public async getUserIdByEmail(email: string) {
-    return this.prisma.user.findUnique({
+    return await this.prisma.user.findUnique({
       where: {
         email,
       },
@@ -338,7 +340,7 @@ export default class UserRepository implements IUserRepository {
         },
         where: {
           userId: id,
-        }
+        },
       });
       return true;
     } catch (err: any) {
@@ -366,8 +368,8 @@ export default class UserRepository implements IUserRepository {
       await this.prisma.recoverCodes.deleteMany({
         where: {
           userId: id,
-          token: token,
-        }
+          token,
+        },
       });
       return true;
     } catch (err: any) {

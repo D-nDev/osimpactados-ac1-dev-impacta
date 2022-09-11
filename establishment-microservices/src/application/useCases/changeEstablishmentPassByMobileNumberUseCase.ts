@@ -13,13 +13,13 @@ export default class ChangeEstablishmentPassByMobileNumberUseCase implements use
       const tokenexists = await this.establishmentRepo.getEstablishmentRecoverTokenByNumber(mobileNumber);
 
       if (tokenexists) {
-        if (tokenexists?.token != token || currentUTCDate > tokenexists.expires_at!) {
+        if (tokenexists?.token !== token || currentUTCDate > tokenexists.expires_at) {
           return false;
         }
         const establishmentId = await this.establishmentRepo.getEstablishmentIdByMobileNumber(mobileNumber);
         if (establishmentId?.id) {
           await this.establishmentRepo.updateEstablishmentByNumber(mobileNumber, { password: await encoder.hash(password) });
-          await this.establishmentRepo.deleteRecoverCodeById(establishmentId!.id, tokenexists.token);
+          await this.establishmentRepo.deleteRecoverCodeById(establishmentId.id, tokenexists.token);
           return true;
         }
         return false;

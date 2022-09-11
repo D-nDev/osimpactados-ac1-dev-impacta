@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import { useCase } from '../ports/useCase';
 import { IEstablishmentRepository } from '../ports/establishmentRepository';
 import { ISMSAdapter } from '../ports/ISMSAdapter';
@@ -15,10 +16,10 @@ export default class SendRecoverSMSUseCase implements useCase {
       if (establishmentId) {
         const tokenAlreadyExists = await this.establishmentRepo.getEstablishmentRecoverTokenByNumber(to);
         if (tokenAlreadyExists) {
-          await this.establishmentRepo.updateRecoverCodeById(establishmentId!.id, token, expireDate);
+          await this.establishmentRepo.updateRecoverCodeById(establishmentId.id, token, expireDate);
           await this.smsprovider.sendRecoverSMS(to, token);
         } else {
-          await this.establishmentRepo.createRecoverCodeById(establishmentId!.id, token, expireDate);
+          await this.establishmentRepo.createRecoverCodeById(establishmentId.id, token, expireDate);
           await this.smsprovider.sendRecoverSMS(to, token);
         }
 

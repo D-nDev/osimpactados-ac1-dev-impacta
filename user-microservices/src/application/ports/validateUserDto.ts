@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
-export class validateUserDto {
+export class ValidateUserDto {
   constructor(email: string, token: string) {
     this.email = email;
     this.token = token;

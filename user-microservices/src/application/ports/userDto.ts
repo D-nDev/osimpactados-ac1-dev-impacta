@@ -1,6 +1,6 @@
 import { IsEmail, IsMobilePhone, IsNotEmpty } from 'class-validator';
 
-export type AddressesDto = {
+export interface AddressesDto {
   address: string;
   addressNumber: number;
   addressComplement?: string | null;
@@ -8,9 +8,9 @@ export type AddressesDto = {
   city: string;
   state: string;
   cep: string;
-};
+}
 
-export class userDto {
+export class UserDto {
   constructor(email: string, name: string, mobileNumber: string, addresses: AddressesDto[], password: string, cpf: string) {
     this.email = email;
     this.name = name;

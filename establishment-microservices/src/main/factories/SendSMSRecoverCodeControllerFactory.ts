@@ -1,8 +1,8 @@
-import { BaseController } from "@presentation/controllers/contracts/BaseController";
-import { createEstablishmentRepository } from "./CreateEstablishmentRepositoryFactory";
-import SendRecoverSMSUseCase from "@usecases/sendRecoverSMSUseCase";
-import SendSMSRecoverCodeController from "@presentation/controllers/SendSMSRecoverCodeController";
-import TwilioAdapter from "@infra/adapters/twilio-adapter";
+import { BaseController } from '@presentation/controllers/contracts/BaseController';
+import { createEstablishmentRepository } from './CreateEstablishmentRepositoryFactory';
+import SendRecoverSMSUseCase from '@usecases/sendRecoverSMSUseCase';
+import SendSMSRecoverCodeController from '@presentation/controllers/SendSMSRecoverCodeController';
+import TwilioAdapter from '@infra/adapters/twilio-adapter';
 
 export const sendSMSRecoverCodeControllerFactory = (): BaseController => {
   const establishmentRepository = createEstablishmentRepository();
@@ -12,4 +12,4 @@ export const sendSMSRecoverCodeControllerFactory = (): BaseController => {
   const controller = new SendSMSRecoverCodeController(useCase);
 
   return controller;
-}
+};

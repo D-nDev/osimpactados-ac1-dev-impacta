@@ -4,7 +4,7 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, serverError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { IValidator } from './contracts/validator';
-import { validateUserDto } from '@application/ports/validateUserDto';
+import { ValidateUserDto } from '@application/ports/validateUserDto';
 
 export default class ValidateUserController implements BaseController {
   constructor(private readonly useCase: useCase, private readonly validator: IValidator) {}
@@ -13,7 +13,7 @@ export default class ValidateUserController implements BaseController {
     try {
       const { email, token } = request.body;
 
-      const validate = new validateUserDto(email, token);
+      const validate = new ValidateUserDto(email, token);
       const validateResult = await this.validator.validate(validate);
       if (validateResult.length > 0) {
         const errors: any = [];
@@ -23,15 +23,14 @@ export default class ValidateUserController implements BaseController {
         }
         return badRequest(errors);
       }
-      
+
       const result = await this.useCase.execute(email, token);
 
-      if(result) {
+      if (result) {
         return ok(true);
       } else {
-        return badRequest("Expired or invalid validate code");
+        return badRequest('Expired or invalid validate code');
       }
-
     } catch (err: any) {
       return serverError(err.message || 'Unexpected error');
     }

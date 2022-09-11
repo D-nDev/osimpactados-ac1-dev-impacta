@@ -1,17 +1,7 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export default class ProductEntity {
-  constructor({
-    name,
-    stock = 0,
-    value = 0,
-    photo = ""
-  }: {
-    name: string,
-    stock: number,
-    value: number,
-    photo: string,
-  }) {
+  constructor({ name, stock = 0, value = 0, photo = '' }: { name: string; stock: number; value: number; photo: string }) {
     this.name = name;
     this.stock = stock;
     this.value = value;

@@ -12,15 +12,15 @@ export default class SendEmailRecoverCodeController implements BaseController {
     try {
       const { email } = request.body;
 
-      if(email) {
+      if (email) {
         await this.useCase.execute(email);
         return created(true);
       }
-      return badRequest("Please provide an email");
-
+      return badRequest('Please provide an email');
     } catch (err: any) {
       const errorType = TokenUserRecoverErrorsEnum[err.code];
 
+      // eslint-disable-next-line no-extra-boolean-cast
       if (!!errorType) {
         return badRequest(TokenUserRecoverErrorsEnum[err.code]);
       } else if (!errorType && err.message) {

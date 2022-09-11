@@ -2,7 +2,7 @@ import { ITokenAdapter } from '@app/application/ports/ITokenAdapter';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
 
 export default class jwtAdapter implements ITokenAdapter {
-  public verify(token: string): boolean {
+  public verify(token: string) {
     try {
       verify(token, process.env.SECRET as string);
       return true;
@@ -11,7 +11,7 @@ export default class jwtAdapter implements ITokenAdapter {
     }
   }
 
-  public sign(user: { email: string, name: string, type: string }): any {
+  public sign(user: { email: string; name: string; type: string }) {
     try {
       const token = sign(
         {
@@ -26,9 +26,9 @@ export default class jwtAdapter implements ITokenAdapter {
     }
   }
 
-  public decode(token: any): JwtPayload & { email: string, name: string, type: string } {
+  public decode(token: any) {
     try {
-      const decodedtoken = verify(token, process.env.SECRET as string) as JwtPayload & { email: string, name: string, type: string };
+      const decodedtoken = verify(token, process.env.SECRET as string) as JwtPayload & { email: string; name: string; type: string };
       return decodedtoken;
     } catch (err: any) {
       throw new Error(err.message || 'Cannot decode token');

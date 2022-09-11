@@ -4,18 +4,23 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, serverError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { bcryptEncoder } from '@application/ports/bcrypt';
-import { changePassDto } from '@app/application/ports/changePassDto';
+import { ChangePassDto } from '@app/application/ports/changePassDto';
 import { IValidator } from './contracts/validator';
 
 export default class ChangeEstablishmentPassController implements BaseController {
-  constructor(private readonly emailUseCase: useCase, private readonly numberUseCase: useCase, private readonly validator: IValidator, private readonly encoder: bcryptEncoder) {}
+  constructor(
+    private readonly emailUseCase: useCase,
+    private readonly numberUseCase: useCase,
+    private readonly validator: IValidator,
+    private readonly encoder: bcryptEncoder,
+  ) {}
 
   async handle(request: Request): Promise<HttpResponse> {
     try {
       const { mobileNumber, email, token, password } = request.body;
       let execute: any;
 
-      const validate = new changePassDto(mobileNumber, email, token, password);
+      const validate = new ChangePassDto(mobileNumber, email, token, password);
       const result = await this.validator.validate(validate);
       if (result.length > 0) {
         const errors: any = [];
@@ -25,21 +30,20 @@ export default class ChangeEstablishmentPassController implements BaseController
         }
         return badRequest(errors);
       }
-      
-      if(mobileNumber) {
+
+      if (mobileNumber) {
         execute = await this.numberUseCase.execute(mobileNumber, token, password, this.encoder);
-      } else if(email) {
+      } else if (email) {
         execute = await this.emailUseCase.execute(email, token, password, this.encoder);
-      } else if(email && mobileNumber) {
+      } else if (email && mobileNumber) {
         execute = await this.emailUseCase.execute(email, token, password, this.encoder);
       }
 
-      if(execute) {
+      if (execute) {
         return ok(true);
       } else {
-        return badRequest("Expired or invalid recover code/email");
+        return badRequest('Expired or invalid recover code/email');
       }
-
     } catch (err: any) {
       return serverError(err.message || 'Unexpected error');
     }

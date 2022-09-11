@@ -1,10 +1,10 @@
-import { Router } from "express";
-import { adaptRoute } from "../../adapters/express-router-adapter";
-import { deleteMyUserControllerFactory } from "../../factories/DeleteMyUserControllerFactory";
-import { getMyUserControllerFactory } from "../../factories/GetMyUserControllerFactory";
+import { Router } from 'express';
+import { adaptRoute } from '../../adapters/express-router-adapter';
+import { deleteMyUserControllerFactory } from '../../factories/DeleteMyUserControllerFactory';
+import { getMyUserControllerFactory } from '../../factories/GetMyUserControllerFactory';
 
 export default class PrivateUserRoutes {
-  router: Router
+  router: Router;
 
   constructor() {
     this.router = Router();
@@ -16,4 +16,3 @@ export default class PrivateUserRoutes {
     this.router.delete('/myuser', adaptRoute(deleteMyUserControllerFactory()));
   }
 }
-

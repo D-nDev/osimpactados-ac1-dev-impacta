@@ -1,14 +1,14 @@
-import { Router } from "express";
-import { adaptRoute } from "../../adapters/express-router-adapter";
-import { changeUserPassControllerFactory } from "../../factories/ChangeUserPassControllerFactory";
-import { createUserControllerFactory } from "../../factories/CreateUserControllerFactory";
-import { loginUserControllerFactory } from "../../factories/LoginUserControllerFactory";
-import { sendEmailRecoverCodeControllerFactory } from "../../factories/SendEmailRecoverCodeControllerFactory";
-import { sendSMSRecoverCodeControllerFactory } from "../../factories/SendSMSRecoverCodeControllerFactory";
-import { validateUserControllerFactory } from "../../factories/ValidateUserController";
+import { Router } from 'express';
+import { adaptRoute } from '../../adapters/express-router-adapter';
+import { changeUserPassControllerFactory } from '../../factories/ChangeUserPassControllerFactory';
+import { createUserControllerFactory } from '../../factories/CreateUserControllerFactory';
+import { loginUserControllerFactory } from '../../factories/LoginUserControllerFactory';
+import { sendEmailRecoverCodeControllerFactory } from '../../factories/SendEmailRecoverCodeControllerFactory';
+import { sendSMSRecoverCodeControllerFactory } from '../../factories/SendSMSRecoverCodeControllerFactory';
+import { validateUserControllerFactory } from '../../factories/ValidateUserController';
 
 export default class PublicUserRoutes {
-  router: Router
+  router: Router;
 
   constructor() {
     this.router = Router();
@@ -24,4 +24,3 @@ export default class PublicUserRoutes {
     this.router.post('/changepass', adaptRoute(changeUserPassControllerFactory()));
   }
 }
-

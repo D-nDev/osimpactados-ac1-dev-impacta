@@ -11,8 +11,8 @@ export default class ValidateUserUseCase implements useCase {
 
       const tokenexists = await this.userRepo.getUserValidateToken(email);
 
-      if (tokenexists) {
-        if (tokenexists?.token != token || currentUTCDate > tokenexists.expireDate!) {
+      if (tokenexists != null) {
+        if (tokenexists?.token !== token || currentUTCDate > tokenexists.expireDate!) {
           return false;
         }
         await this.userRepo.updateValidationCode(email, null, null);

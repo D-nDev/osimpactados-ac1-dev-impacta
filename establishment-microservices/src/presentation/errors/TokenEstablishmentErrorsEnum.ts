@@ -1,3 +1,3 @@
 export enum TokenEstablishmentErrorsEnum {
-  "invalid token" = "Unauthorized"
+  'invalid token' = 'Unauthorized',
 }

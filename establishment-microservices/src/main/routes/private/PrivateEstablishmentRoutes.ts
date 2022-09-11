@@ -1,11 +1,11 @@
-import { Router } from "express";
-import { adaptRoute } from "../../adapters/express-router-adapter";
-import { createProductControllerFactory } from "../../factories/CreateProductControllerFactory";
-import { deleteMyEstablishmentControllerFactory } from "../../factories/DeleteMyEstablishmentControllerFactory";
-import { getMyEstablishmentControllerFactory } from "../../factories/GetMyEstablishmentControllerFactory";
+import { Router } from 'express';
+import { adaptRoute } from '../../adapters/express-router-adapter';
+import { createProductControllerFactory } from '../../factories/CreateProductControllerFactory';
+import { deleteMyEstablishmentControllerFactory } from '../../factories/DeleteMyEstablishmentControllerFactory';
+import { getMyEstablishmentControllerFactory } from '../../factories/GetMyEstablishmentControllerFactory';
 
 export default class PrivateEstablishmentRoutes {
-  router: Router
+  router: Router;
 
   constructor() {
     this.router = Router();
@@ -18,4 +18,3 @@ export default class PrivateEstablishmentRoutes {
     this.router.post('/product', adaptRoute(createProductControllerFactory()));
   }
 }
-

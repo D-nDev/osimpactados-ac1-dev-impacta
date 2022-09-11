@@ -1,7 +1,7 @@
-import GetEstablishmentsUseCase from "@usecases/getEstablishmentsUseCase";
-import GetEstablishmentsController from "@presentation/controllers/GetEstablishmentsController";
-import { BaseController } from "@presentation/controllers/contracts/BaseController";
-import { createEstablishmentRepository } from "./CreateEstablishmentRepositoryFactory";
+import GetEstablishmentsUseCase from '@usecases/getEstablishmentsUseCase';
+import GetEstablishmentsController from '@presentation/controllers/GetEstablishmentsController';
+import { BaseController } from '@presentation/controllers/contracts/BaseController';
+import { createEstablishmentRepository } from './CreateEstablishmentRepositoryFactory';
 
 export const getEstablishmentsControllerFactory = (): BaseController => {
   const establishmentRepository = createEstablishmentRepository();
@@ -10,4 +10,4 @@ export const getEstablishmentsControllerFactory = (): BaseController => {
   const controller = new GetEstablishmentsController(useCase);
 
   return controller;
-}
+};

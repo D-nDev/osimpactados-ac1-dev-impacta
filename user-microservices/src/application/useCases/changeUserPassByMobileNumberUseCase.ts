@@ -13,13 +13,13 @@ export default class ChangeUserPassByMobileNumberUseCase implements useCase {
       const tokenexists = await this.userRepo.getUserRecoverTokenByNumber(mobileNumber);
 
       if (tokenexists) {
-        if (tokenexists?.token != token || currentUTCDate > tokenexists.expires_at!) {
+        if (tokenexists?.token !== token || currentUTCDate > tokenexists.expires_at) {
           return false;
         }
         const userId = await this.userRepo.getUserIdByMobileNumber(mobileNumber);
         if (userId?.id) {
           await this.userRepo.updateUserByNumber(mobileNumber, { password: await encoder.hash(password) });
-          await this.userRepo.deleteRecoverCodeById(userId!.id, tokenexists.token);
+          await this.userRepo.deleteRecoverCodeById(userId.id, tokenexists.token);
           return true;
         }
         return false;

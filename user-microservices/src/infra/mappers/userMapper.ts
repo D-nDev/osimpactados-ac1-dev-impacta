@@ -1,12 +1,10 @@
 import { IMapperAdapter } from '@app/application/ports/IMapperAdapter';
 import AddressEntity from '@domain/entities/Address';
 import UserEntity from '@domain/entities/User';
-import { AddressesDto, userDto } from '@application/ports/userDto';
+import { AddressesDto, UserDto } from '@application/ports/userDto';
 
 export class Mapper implements IMapperAdapter {
-  constructor() {}
-
-  public fromUserDtoToEntity(userDto: userDto) {
+  public fromUserDtoToEntity(userDto: UserDto): UserEntity {
     const user = {
       email: userDto.email,
       name: userDto.name,
@@ -15,15 +13,15 @@ export class Mapper implements IMapperAdapter {
       password: userDto.password,
       cpf: userDto.cpf,
     };
-    return new UserEntity({...user})
+    return new UserEntity({ ...user });
   }
 
-  public fromAddressDtoToEntity(addresses: AddressesDto[]) {
-    if(!addresses) {
-      return []
+  public fromAddressDtoToEntity(addresses: AddressesDto[]): AddressEntity[] {
+    if (!addresses) {
+      return [];
     }
-    const userAddresses: AddressEntity[] = []
-    addresses.forEach(eachAddress => {
+    const userAddresses: AddressEntity[] = [];
+    addresses.forEach((eachAddress) => {
       const address = {
         address: eachAddress.address,
         addressNumber: eachAddress.addressNumber,
@@ -33,8 +31,8 @@ export class Mapper implements IMapperAdapter {
         state: eachAddress.state,
         cep: eachAddress.cep,
       };
-      userAddresses.push(new AddressEntity(address))
-    })
+      userAddresses.push(new AddressEntity(address));
+    });
     return userAddresses;
   }
 }

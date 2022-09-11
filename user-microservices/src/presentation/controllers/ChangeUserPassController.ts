@@ -5,7 +5,7 @@ import { badRequest, ok, serverError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { bcryptEncoder } from '@application/ports/bcrypt';
 import { IValidator } from './contracts/validator';
-import { changePassDto } from '@application/ports/changePassDto';
+import { ChangePassDto } from '@application/ports/changePassDto';
 import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
 
 export default class ChangeUserPassController implements BaseController {
@@ -22,7 +22,7 @@ export default class ChangeUserPassController implements BaseController {
       const { mobileNumber, email, token, password } = request.body;
       let execute: any;
 
-      const validate = new changePassDto(mobileNumber, email, token, password);
+      const validate = new ChangePassDto(mobileNumber, email, token, password);
       const result = await this.validator.validate(validate);
       if (result.length > 0) {
         const errors: any = [];

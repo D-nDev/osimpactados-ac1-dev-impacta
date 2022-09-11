@@ -1,11 +1,11 @@
-import { BaseController } from "@presentation/controllers/contracts/BaseController";
-import { createUserRepository } from "./CreateUserRepositoryFactory";
-import ChangeUserPassByEmailUseCase from "@usecases/changeUserPassByEmailUseCase";
-import ChangeUserPassController from "@presentation/controllers/ChangeUserPassController";
-import ChangeUserPassByMobileNumberUseCase from "@usecases/changeUserPassByMobileNumberUseCase";
-import BcryptAdapter from "@infra/adapters/bcrypt-adapter";
-import ValidatorAdapter from "../adapters/classValidator-adapter";
-import PinoAdapter from "@app/infra/adapters/pino-adapter";
+import { BaseController } from '@presentation/controllers/contracts/BaseController';
+import { createUserRepository } from './CreateUserRepositoryFactory';
+import ChangeUserPassByEmailUseCase from '@usecases/changeUserPassByEmailUseCase';
+import ChangeUserPassController from '@presentation/controllers/ChangeUserPassController';
+import ChangeUserPassByMobileNumberUseCase from '@usecases/changeUserPassByMobileNumberUseCase';
+import BcryptAdapter from '@infra/adapters/bcrypt-adapter';
+import ValidatorAdapter from '../adapters/classValidator-adapter';
+import PinoAdapter from '@app/infra/adapters/pino-adapter';
 
 export const changeUserPassControllerFactory = (): BaseController => {
   const userRepository = createUserRepository();
@@ -18,4 +18,4 @@ export const changeUserPassControllerFactory = (): BaseController => {
   const controller = new ChangeUserPassController(emailUseCase, numberUseCase, validator, bcryptHash, logger);
 
   return controller;
-}
+};

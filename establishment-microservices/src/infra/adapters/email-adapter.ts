@@ -27,5 +27,4 @@ export default class EmailAdapter implements EmailAdapter {
       html: `<b>${token}</b>`,
     });
   }
-
 }

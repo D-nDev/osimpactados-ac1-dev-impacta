@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-throw-literal */
 import { useCase } from '../ports/useCase';
 import { IEstablishmentRepository } from '../ports/establishmentRepository';
 import * as crypto from 'crypto';
@@ -16,10 +17,10 @@ export default class SendRecoverEmailUseCase implements useCase {
       if (establishmentId) {
         const tokenAlreadyExists = await this.establishmentRepo.getEstablishmentRecoverTokenByEmail(to);
         if (tokenAlreadyExists) {
-          await this.establishmentRepo.updateRecoverCodeById(establishmentId!.id, token, expireDate);
+          await this.establishmentRepo.updateRecoverCodeById(establishmentId.id, token, expireDate);
           await this.emailprovider.sendRecoverEmail(to, token);
         } else {
-          await this.establishmentRepo.createRecoverCodeById(establishmentId!.id, token, expireDate);
+          await this.establishmentRepo.createRecoverCodeById(establishmentId.id, token, expireDate);
           await this.emailprovider.sendRecoverEmail(to, token);
         }
 

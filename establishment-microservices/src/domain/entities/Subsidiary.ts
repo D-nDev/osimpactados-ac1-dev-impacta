@@ -1,5 +1,5 @@
-import { IsInt, IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator";
-import ProductEntity from "./Product";
+import { IsInt, IsNotEmpty, IsObject, IsOptional, IsString } from 'class-validator';
+import ProductEntity from './Product';
 
 export default class SubsidiaryEntity {
   constructor({
@@ -13,15 +13,15 @@ export default class SubsidiaryEntity {
     state,
     cep,
   }: {
-    name: string,
-    address: string,
-    addressNumber: number
-    addressComplement: string | null,
-    addressDistrict: string,
-    products: any,
-    city: string,
-    state: string,
-    cep: string,
+    name: string;
+    address: string;
+    addressNumber: number;
+    addressComplement: string | null;
+    addressDistrict: string;
+    products: any;
+    city: string;
+    state: string;
+    cep: string;
   }) {
     this.name = name;
     this.address = address;

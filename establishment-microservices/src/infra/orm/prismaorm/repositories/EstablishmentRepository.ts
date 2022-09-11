@@ -1,13 +1,13 @@
-import { Prisma, PrismaClient, Products, RecoverCodes } from '@prisma/client';
+import { PrismaClient, Products, RecoverCodes } from '@prisma/client';
 import { IEstablishmentRepository } from '@application/ports/establishmentRepository';
 import EstablishmentEntity from '@domain/entities/Establishment';
 import SubsidiaryEntity from '@domain/entities/Subsidiary';
-import { establishmentDto } from '@application/ports/establishmentDto';
+import { EstablishmentDto } from '@application/ports/establishmentDto';
 
 export default class EstablishmentRepository implements IEstablishmentRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  public async getEstablishmentByEmail(email: string): Promise<{ email: string; name: string; type: string } | null> {
+  public async getEstablishmentByEmail(email: string) {
     const establishment = await this.prisma.establishment.findUnique({
       where: {
         email,
@@ -79,6 +79,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
       await this.prisma.subsidiary.createMany({
         data: [
           ...establishment.getSubsidiaries().map((subsidiary) => {
+            // eslint-disable-next-line @typescript-eslint/dot-notation
             subsidiary['establishmentId'] = overrideEstablishment.id;
             return subsidiary;
           }),
@@ -156,7 +157,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
   }
 
   public async getFullEstablishmentData(id: string) {
-    return await this.prisma.establishment.findUnique({
+    return (await this.prisma.establishment.findUnique({
       where: {
         id,
       },
@@ -180,11 +181,11 @@ export default class EstablishmentRepository implements IEstablishmentRepository
         password: true,
         cnpj: true,
       },
-    }) as establishmentDto;
+    })) as unknown as EstablishmentDto;
   }
 
   public async getFullEstablishmentDataByEmail(email: string) {
-    return await this.prisma.establishment.findUnique({
+    return (await this.prisma.establishment.findUnique({
       where: {
         email,
       },
@@ -210,7 +211,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
         },
         cnpj: true,
       },
-    }) as establishmentDto & { validate_code: string | null; validate_expire_date: Date | null; };
+    })) as unknown as EstablishmentDto & { validate_code: string | null; validate_expire_date: Date | null };
   }
 
   public async deleteEstablishment(id: string) {
@@ -251,7 +252,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
   public async updateEstablishmentByEmail(email: string, args: Record<string, any>) {
     try {
       const establishmentId = await this.getEstablishmentIdByEmail(email);
-      const updateEstablishment = await this.prisma.establishment.update({
+      const updateEstablishment = (await this.prisma.establishment.update({
         where: {
           id: establishmentId?.id,
         },
@@ -278,7 +279,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
           },
           cnpj: true,
         },
-      }) as establishmentDto;
+      })) as unknown as EstablishmentDto;
       return updateEstablishment;
     } catch (err: any) {
       return null;
@@ -328,7 +329,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
   }
 
   public async getEstablishmentIdByEmail(email: string) {
-    return this.prisma.establishment.findUnique({
+    return await this.prisma.establishment.findUnique({
       where: {
         email,
       },
@@ -387,7 +388,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
       await this.prisma.recoverCodes.deleteMany({
         where: {
           establishmentId: id,
-          token: token,
+          token,
         },
       });
       return true;
@@ -430,7 +431,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
         },
         data: {
           products: {
-            push: product
+            push: product,
           },
         },
         select: {

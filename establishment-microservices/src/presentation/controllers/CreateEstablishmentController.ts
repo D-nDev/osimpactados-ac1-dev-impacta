@@ -1,4 +1,4 @@
-import { establishmentDto } from '@application/ports/establishmentDto';
+import { EstablishmentDto } from '@application/ports/establishmentDto';
 import { useCase } from '@application/ports/useCase';
 import { CreateEstablishmentErrors } from '../errors/CreateEstablishmentErrorsEnum';
 import { BaseController } from './contracts/BaseController';
@@ -14,7 +14,7 @@ export default class CreateEstablishmentController implements BaseController {
     try {
       const { email, name, mobileNumber, subsidiaries, password, cnpj } = request.body;
 
-      const establishment = new establishmentDto(email, name, mobileNumber, subsidiaries, password, cnpj);
+      const establishment = new EstablishmentDto(email, name, mobileNumber, subsidiaries, password, cnpj);
       const result = await this.validator.validate(establishment);
       if (result.length > 0) {
         const errors: any = [];
@@ -26,7 +26,7 @@ export default class CreateEstablishmentController implements BaseController {
       }
 
       const execute = await this.useCase.execute(establishment);
-      if (!!execute) {
+      if (execute) {
         const validateEmail = await this.validateUseCase.execute(execute.email);
         if (validateEmail) {
           return created(execute);
@@ -34,13 +34,13 @@ export default class CreateEstablishmentController implements BaseController {
           return serverError('Cannot send validation account code');
         }
       } else {
-        return badRequest("Account already exists");
+        return badRequest('Account already exists');
       }
     } catch (err: any) {
       console.log(err);
       const errorType = CreateEstablishmentErrors[err.code];
 
-      if (!!errorType) {
+      if (errorType) {
         return badRequest(CreateEstablishmentErrors[err.code]);
       } else if (!errorType && err.message) {
         return serverError(err.message);

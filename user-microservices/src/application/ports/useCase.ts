@@ -1,3 +1,3 @@
 export interface useCase {
-  execute(...args: any): Promise<any>
+  execute: (...args: any) => Promise<any>;
 }

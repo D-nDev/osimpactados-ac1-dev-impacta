@@ -2,11 +2,13 @@ import { HttpResponse } from '@presentation/controllers/contracts/httpResponse';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
 import { Request, Response } from 'express';
 
-const timeout = (): Promise<any> => {
-  return new Promise((_, reject) => {
+const timeout = async (): Promise<any> => {
+  // eslint-disable-next-line promise/param-names
+  return await new Promise((_, reject) => {
     setTimeout(() => {
+      // eslint-disable-next-line prefer-promise-reject-errors
       reject();
-    }, 10000);
+    }, (process.env.TIMEOUT as unknown as number) ?? 120000);
   });
 };
 

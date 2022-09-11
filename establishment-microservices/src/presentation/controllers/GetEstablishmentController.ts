@@ -11,10 +11,10 @@ export default class GetEstablishmentController implements BaseController {
     try {
       const { id } = request.params;
 
-      if(!id) {
-        return badRequest("Please provide an id");
+      if (!id) {
+        return badRequest('Please provide an id');
       }
-      
+
       const execute = await this.useCase.execute(id);
 
       return ok(execute);

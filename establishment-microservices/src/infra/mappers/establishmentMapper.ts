@@ -1,12 +1,10 @@
 import { IMapperAdapter } from '@app/application/ports/IMapperAdapter';
 import SubsidiaryEntity from '@domain/entities/Subsidiary';
 import EstablishmentEntity from '@domain/entities/Establishment';
-import { SubsidiaryDto, establishmentDto, productDto } from '@application/ports/establishmentDto';
+import { SubsidiaryDto, EstablishmentDto } from '@application/ports/establishmentDto';
 
 export class Mapper implements IMapperAdapter {
-  constructor() {}
-
-  public fromEstablishmentDtoToEntity(establishmentDto: establishmentDto) {
+  public fromEstablishmentDtoToEntity(establishmentDto: EstablishmentDto) {
     const establishment = {
       email: establishmentDto.email,
       name: establishmentDto.name,
@@ -15,25 +13,25 @@ export class Mapper implements IMapperAdapter {
       password: establishmentDto.password,
       cnpj: establishmentDto.cnpj,
     };
-    return new EstablishmentEntity({...establishment})
+    return new EstablishmentEntity({ ...establishment });
   }
 
   public fromSubsidiaryDtoToEntity(subsidiary: SubsidiaryDto[]) {
     const establishmentSubsidiaries: SubsidiaryEntity[] = [];
-    subsidiary.forEach(eachSubsidiary => {
+    subsidiary.forEach((eachSubsidiary) => {
       const subsidiary = {
         name: eachSubsidiary.name,
         address: eachSubsidiary.address,
         addressNumber: eachSubsidiary.addressNumber,
         addressComplement: eachSubsidiary.addressComplement,
         addressDistrict: eachSubsidiary.addressDistrict,
-        products: eachSubsidiary.products as productDto[],
+        products: eachSubsidiary.products,
         city: eachSubsidiary.city,
         state: eachSubsidiary.state,
         cep: eachSubsidiary.cep,
       };
-      establishmentSubsidiaries.push(new SubsidiaryEntity(subsidiary))
-    })
+      establishmentSubsidiaries.push(new SubsidiaryEntity(subsidiary));
+    });
     return establishmentSubsidiaries;
   }
 }

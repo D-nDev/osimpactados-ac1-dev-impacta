@@ -13,13 +13,13 @@ export default class ChangeEstablishmentPassByEmailUseCase implements useCase {
       const tokenexists = await this.establishmentRepo.getEstablishmentRecoverTokenByEmail(email);
 
       if (tokenexists) {
-        if (tokenexists?.token != token || currentUTCDate > tokenexists.expires_at!) {
+        if (tokenexists?.token !== token || currentUTCDate > tokenexists.expires_at) {
           return false;
         }
         const establishmentId = await this.establishmentRepo.getEstablishmentIdByEmail(email);
         if (establishmentId?.id) {
           await this.establishmentRepo.updateEstablishmentByEmail(email, { password: await encoder.hash(password) });
-          await this.establishmentRepo.deleteRecoverCodeById(establishmentId!.id, tokenexists.token);
+          await this.establishmentRepo.deleteRecoverCodeById(establishmentId.id, tokenexists.token);
           return true;
         }
         return false;

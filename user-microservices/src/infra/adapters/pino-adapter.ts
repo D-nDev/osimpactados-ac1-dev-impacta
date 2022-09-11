@@ -2,7 +2,7 @@ import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
 import pino, { P } from 'pino';
 
 export default class PinoAdapter implements ILoggerAdapter {
-  private logger: P.BaseLogger;
+  private readonly logger: P.BaseLogger;
 
   constructor() {
     this.logger = pino({

@@ -12,14 +12,13 @@ export default class GetMyUserController implements BaseController {
     try {
       const { token } = request.cookies;
 
-      if(token) {
+      if (token) {
         const execute = await this.useCase.execute(token);
-  
+
         return ok(execute);
       }
 
-      return badRequest("Unauthorized");
-      
+      return badRequest('Unauthorized');
     } catch (err: any) {
       const errorType = TokenUserErrorsEnum[err.message];
 

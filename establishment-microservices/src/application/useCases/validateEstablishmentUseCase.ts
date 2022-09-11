@@ -12,7 +12,7 @@ export default class ValidateEstablishmentUseCase implements useCase {
       const tokenexists = await this.establishmentRepo.getEstablishmentValidateToken(email);
 
       if (tokenexists) {
-        if (tokenexists?.token != token || currentUTCDate > tokenexists.expireDate!) {
+        if (tokenexists?.token !== token || currentUTCDate > tokenexists.expireDate!) {
           return false;
         }
         await this.establishmentRepo.updateValidationCode(email, null, null);

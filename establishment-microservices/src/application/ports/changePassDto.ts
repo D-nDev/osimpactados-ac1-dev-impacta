@@ -1,6 +1,6 @@
 import { IsEmail, IsMobilePhone, IsNotEmpty } from 'class-validator';
 
-export class changePassDto {
+export class ChangePassDto {
   constructor(mobileNumber: string, email: string, token: string, password: string) {
     this.mobileNumber = mobileNumber;
     this.email = email;

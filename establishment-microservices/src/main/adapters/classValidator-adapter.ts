@@ -1,8 +1,8 @@
-import { validate } from "class-validator";
+import { validate, ValidationError } from 'class-validator';
 
 export default class ValidatorAdapter {
-  public async validate(dto: any) {
-    return validate(dto).then(errors => {
+  public async validate(dto: any): Promise<ValidationError[]> {
+    return await validate(dto).then((errors) => {
       return errors;
     });
   }

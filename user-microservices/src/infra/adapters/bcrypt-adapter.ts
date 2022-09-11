@@ -1,5 +1,5 @@
-import { bcryptEncoder } from "@application/ports/bcrypt";
-import * as bcrypt from "bcrypt";
+import { bcryptEncoder } from '@application/ports/bcrypt';
+import * as bcrypt from 'bcrypt';
 
 export default class BcryptAdapter implements bcryptEncoder {
   public async hash(password: string) {
@@ -7,7 +7,7 @@ export default class BcryptAdapter implements bcryptEncoder {
       const result = await bcrypt.hash(password, 10);
       return result;
     } catch (err: any) {
-      throw new Error(err.message || "Fail hashing password")
+      throw new Error(err.message || 'Fail hashing password');
     }
   }
 
@@ -16,7 +16,7 @@ export default class BcryptAdapter implements bcryptEncoder {
       const result = await bcrypt.compare(password, hash);
       return result;
     } catch (err: any) {
-      throw new Error(err.message || "Fail unhashing password")
+      throw new Error(err.message || 'Fail unhashing password');
     }
   }
 }

@@ -6,7 +6,6 @@ export default class DeleteMyEstablishmentUseCase implements useCase {
   constructor(private readonly establishmentRepo: IEstablishmentRepository, private readonly jwtadapter: ITokenAdapter) {}
 
   async execute(token: string): Promise<boolean | null> {
-
     const decodetoken = this.jwtadapter.decode(token);
 
     const result = await this.establishmentRepo.deleteEstablishmentDataByEmail(decodetoken.email);

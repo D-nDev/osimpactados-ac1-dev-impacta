@@ -1,14 +1,14 @@
-import { app } from "./main/config/app";
+import { app } from './main/config/app';
 
-const bootStrap = () => {
+const bootStrap = (): void => {
   try {
-    app.listen(process.env.PORT || 3002, () => {
-      console.log(`Server listening on port ${process.env.PORT || 3002}`)
-    })
+    app.listen(process.env.PORT ?? 3002, () => {
+      console.log(`Server listening on port ${process.env.PORT ?? 3002}`);
+    });
   } catch (err: any) {
-    console.log(err.message || "Cannot start server")
+    console.log(err.message || 'Cannot start server');
   }
-}
+};
 
 bootStrap();
 

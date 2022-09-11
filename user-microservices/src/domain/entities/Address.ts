@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export default class AddressEntity {
   constructor({
@@ -10,13 +10,13 @@ export default class AddressEntity {
     state,
     cep,
   }: {
-    address: string,
-    addressNumber?: number
-    addressComplement?: string | null,
-    addressDistrict: string,
-    city: string,
-    state: string,
-    cep: string,
+    address: string;
+    addressNumber?: number;
+    addressComplement?: string | null;
+    addressDistrict: string;
+    city: string;
+    state: string;
+    cep: string;
   }) {
     this.address = address;
     this.addressNumber = addressNumber;

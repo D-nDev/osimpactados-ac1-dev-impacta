@@ -7,9 +7,8 @@ export default class GetUsersController implements BaseController {
   constructor(private readonly useCase: useCase) {}
 
   async handle(): Promise<HttpResponse> {
-    try {  
+    try {
       const execute = await this.useCase.execute();
-      
 
       return ok(execute);
     } catch (err: any) {
