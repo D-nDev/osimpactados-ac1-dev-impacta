@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v1
       with:
         registry: https://index.docker.io/v1/
-        username: ${{ secrets.AzureAppService_ContainerUsername_a4b405f73f404ff8bca2d330819a5b3e }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_f6d151f49e3a445a97a1b8121a85a100 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_45955f5725c345ccbc907ce11d1ea4f8 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_daa7e53072e74e169cbb3e1b328d32ac }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_a4b405f73f404ff8bca2d330819a5b3e }}/usermicroservices:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_45955f5725c345ccbc907ce11d1ea4f8 }}/usermicroservices:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'usermicroservices'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_2653142c770749a1a065a083d66ee3d3 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_a4b405f73f404ff8bca2d330819a5b3e }}/usermicroservices:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_5440426f40e04e3fbeb672bf74712156 }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_45955f5725c345ccbc907ce11d1ea4f8 }}/usermicroservices:${{ github.sha }}'
