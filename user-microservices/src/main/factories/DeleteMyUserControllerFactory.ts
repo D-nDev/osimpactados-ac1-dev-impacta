@@ -1,15 +1,12 @@
 import DeleteMyUserUseCase from '@usecases/deleteMyUserUseCase';
-import JwtAdapter from '@infra/adapters/jwt-adapter';
 import DeleteMyUserController from '@presentation/controllers/DeleteMyUserController';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-import { createUserRepository } from './CreateUserRepositoryFactory';
+import { jwtAdapterInstance, pinoAdapterInstance, userRepositoryInstance } from '@shared/container';
 
 export const deleteMyUserControllerFactory = (): BaseController => {
-  const jwtadapter = new JwtAdapter();
-  const userRepository = createUserRepository();
-  const useCase = new DeleteMyUserUseCase(userRepository, jwtadapter);
+  const useCase = new DeleteMyUserUseCase(userRepositoryInstance, jwtAdapterInstance);
 
-  const controller = new DeleteMyUserController(useCase);
+  const controller = new DeleteMyUserController(useCase, pinoAdapterInstance);
 
   return controller;
 };

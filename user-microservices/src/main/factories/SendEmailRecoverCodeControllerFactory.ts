@@ -1,15 +1,23 @@
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-import { createUserRepository } from './CreateUserRepositoryFactory';
-import SendRecoverEmailUseCase from '@application/useCases/sendRecoverEmailUseCase';
-import EmailAdapter from '@infra/adapters/email-adapter';
+import SendRecoverEmailUseCase from '@usecases/sendRecoverEmailUseCase';
 import SendEmailRecoverCodeController from '@presentation/controllers/SendEmailRecoverCodeController';
+import {
+  emailAdapterInstance,
+  ioredisAdapterInstance,
+  momentAdapterInstance,
+  pinoAdapterInstance,
+  userRepositoryInstance,
+} from '@shared/container';
 
 export const sendEmailRecoverCodeControllerFactory = (): BaseController => {
-  const userRepository = createUserRepository();
-  const emailadapter = new EmailAdapter();
-  const useCase = new SendRecoverEmailUseCase(emailadapter, userRepository);
+  const useCase = new SendRecoverEmailUseCase(
+    emailAdapterInstance,
+    userRepositoryInstance,
+    momentAdapterInstance,
+    ioredisAdapterInstance,
+  );
 
-  const controller = new SendEmailRecoverCodeController(useCase);
+  const controller = new SendEmailRecoverCodeController(useCase, pinoAdapterInstance);
 
   return controller;
 };

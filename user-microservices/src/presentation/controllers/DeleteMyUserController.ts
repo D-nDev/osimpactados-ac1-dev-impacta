@@ -1,19 +1,20 @@
 import { useCase } from '@application/ports/useCase';
 import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
-import { badRequest, ok, serverError, unauthorized } from './helpers/httpHelper';
+import { badRequest, ok, unauthorized, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
-import { TokenUserErrorsEnum } from '../errors/TokenUserErrorsEnum';
+import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
+import { DeleteMyUserErrorCodes } from '@shared/enums/DeleteMyUserErrorCodes';
 
 export default class DeleteMyUserController implements BaseController {
-  constructor(private readonly useCase: useCase) {}
+  constructor(private readonly useCase: useCase, private readonly logger: ILoggerAdapter) {}
 
   async handle(request: Request): Promise<HttpResponse> {
     try {
       const { token } = request.cookies;
 
       if (token) {
-        const execute = await this.useCase.execute(token);
+        const execute = await this.useCase.execute({ token });
         if (execute) {
           return ok(execute);
         } else {
@@ -23,15 +24,16 @@ export default class DeleteMyUserController implements BaseController {
 
       return badRequest('Unauthorized');
     } catch (err: any) {
-      const errorType = TokenUserErrorsEnum[err.message];
+      this.logger.error('Cannot Delete User', err);
+      const errorType = DeleteMyUserErrorCodes[err.code || err.name || err.message];
 
-      switch (errorType) {
-        case errorType:
-          return unauthorized(TokenUserErrorsEnum[err.message]);
-        case !errorType && err.message:
-          return serverError(err.message);
-        default:
-          return serverError('Unknown server error');
+      if (errorType) {
+        if (errorType === DeleteMyUserErrorCodes.INVALID_JWT) {
+          return unauthorized(errorType);
+        }
+        return badRequest(errorType);
+      } else {
+        return unknownError();
       }
     }
   }

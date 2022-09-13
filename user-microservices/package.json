@@ -5,7 +5,7 @@
   "main": "src/server.ts",
   "scripts": {
     "test": "npx jest",
-    "dev": "ts-node-dev -r tsconfig-paths/register --inspect=0.0.0.0:9229 src/server.ts",
+    "dev": "ts-node-dev --trace-warnings -r tsconfig-paths/register --inspect=0.0.0.0:9229 src/server.ts",
     "build": "npx ttsc",
     "build:docker:dev": "npx prisma migrate dev --name init --schema=./src/infra/orm/prismaorm/entities/user.prisma && npm run dev",
     "run": "node dist/server.js"
@@ -14,7 +14,6 @@
   "license": "MIT",
   "dependencies": {
     "@prisma/client": "^4.3.1",
-    "@types/cookie-parser": "^1.4.3",
     "axios": "^0.27.2",
     "bcrypt": "^5.0.1",
     "class-validator": "^0.13.2",
@@ -29,6 +28,8 @@
     "ioredis": "^5.2.3",
     "jsonwebtoken": "^8.5.1",
     "module-alias": "^2.2.2",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.37",
     "nodemailer": "^6.7.8",
     "pg": "^8.8.0",
     "pino": "^8.5.0",
@@ -37,11 +38,13 @@
     "swagger-jsdoc": "^6.2.5",
     "swagger-ui-express": "^4.5.0",
     "ts-jest": "^26.5.6",
+    "tsyringe": "^4.7.0",
     "twilio": "^3.81.0",
     "typeorm": "^0.3.9"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jest": "^26.0.24",

@@ -1,12 +1,15 @@
+import 'reflect-metadata';
+import { singleton } from 'tsyringe';
 import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
 import pino, { P } from 'pino';
 
+@singleton()
 export default class PinoAdapter implements ILoggerAdapter {
   private readonly logger: P.BaseLogger;
 
   constructor() {
     this.logger = pino({
-      name: 'USER-SERVICE',
+      name: 'ESTABLISHMENT-SERVICE',
       enabled: true,
       transport: {
         target: 'pino-pretty',

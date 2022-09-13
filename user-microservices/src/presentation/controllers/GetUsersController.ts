@@ -1,7 +1,7 @@
 import { useCase } from '@application/ports/useCase';
 import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
-import { ok, serverError } from './helpers/httpHelper';
+import { ok, unknownError } from './helpers/httpHelper';
 
 export default class GetUsersController implements BaseController {
   constructor(private readonly useCase: useCase) {}
@@ -12,7 +12,7 @@ export default class GetUsersController implements BaseController {
 
       return ok(execute);
     } catch (err: any) {
-      return serverError(err.message || 'Unexpected error');
+      return unknownError();
     }
   }
 }

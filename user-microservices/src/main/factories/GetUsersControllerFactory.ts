@@ -1,11 +1,10 @@
-import GetUsersUseCase from '@application/useCases/getUsersUseCase';
+import GetUsersUseCase from '@usecases/getUsersUseCase';
 import GetUsersController from '@presentation/controllers/GetUsersController';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-import { createUserRepository } from './CreateUserRepositoryFactory';
+import { userRepositoryInstance } from '@shared/container';
 
 export const getUsersControllerFactory = (): BaseController => {
-  const userRepository = createUserRepository();
-  const useCase = new GetUsersUseCase(userRepository);
+  const useCase = new GetUsersUseCase(userRepositoryInstance);
 
   const controller = new GetUsersController(useCase);
 

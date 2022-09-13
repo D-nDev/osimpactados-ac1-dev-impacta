@@ -1,13 +1,12 @@
 import DeleteEstablishmentUseCase from '@usecases/deleteEstablishmentUseCase';
 import DeleteEstablishmentController from '@presentation/controllers/DeleteEstablishmentController';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-import { createEstablishmentRepository } from './CreateEstablishmentRepositoryFactory';
+import { establishmentRepositoryInstance, pinoAdapterInstance } from '@app/shared/container';
 
 export const deleteEstablishmentControllerFactory = (): BaseController => {
-  const establishmentRepository = createEstablishmentRepository();
-  const useCase = new DeleteEstablishmentUseCase(establishmentRepository);
+  const useCase = new DeleteEstablishmentUseCase(establishmentRepositoryInstance);
 
-  const controller = new DeleteEstablishmentController(useCase);
+  const controller = new DeleteEstablishmentController(useCase, pinoAdapterInstance);
 
   return controller;
 };

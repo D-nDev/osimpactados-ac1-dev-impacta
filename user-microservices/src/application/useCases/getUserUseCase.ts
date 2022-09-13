@@ -1,11 +1,13 @@
+import { GetUserDto } from '../ports/dtos/getUserDto';
+import { UserWithoutPasswordDto } from '../ports/dtos/userDto';
 import { useCase } from '../ports/useCase';
-import { IUserRepository, userWithoutPassword } from '../ports/userRepository';
+import { IUserRepository } from '../ports/userRepository';
 
 export default class GetUserUseCase implements useCase {
   constructor(private readonly userRepo: IUserRepository) {}
 
-  async execute(id: string): Promise<userWithoutPassword | null> {
-    const result = await this.userRepo.getUser(id);
+  async execute(inputDto: GetUserDto): Promise<UserWithoutPasswordDto | null> {
+    const result = await this.userRepo.getUser(inputDto.id);
     return result;
   }
 }

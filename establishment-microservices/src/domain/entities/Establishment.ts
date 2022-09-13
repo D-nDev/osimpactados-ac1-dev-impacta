@@ -7,21 +7,21 @@ export default class EstablishmentEntity {
     email,
     name,
     mobileNumber,
-    subsidiary,
+    subsidiaries,
     password,
     cnpj,
   }: {
     email: string;
     name: string;
     mobileNumber: string;
-    subsidiary: SubsidiaryEntity[];
+    subsidiaries: SubsidiaryEntity[];
     password: string;
     cnpj: string;
   }) {
     this.email = email;
     this.name = name;
     this.mobileNumber = mobileNumber;
-    this.subsidiary = subsidiary;
+    this.subsidiaries = subsidiaries;
     this.password = password;
     this.cnpj = cnpj;
     Object.freeze(this);
@@ -40,7 +40,7 @@ export default class EstablishmentEntity {
 
   @IsNotEmpty()
   @IsString()
-  private readonly subsidiary: SubsidiaryEntity[];
+  private readonly subsidiaries: SubsidiaryEntity[];
 
   @IsNotEmpty()
   @Min(6)
@@ -65,7 +65,7 @@ export default class EstablishmentEntity {
   }
 
   public getSubsidiaries(): SubsidiaryEntity[] {
-    return this.subsidiary;
+    return this.subsidiaries;
   }
 
   public getPassword(): string {

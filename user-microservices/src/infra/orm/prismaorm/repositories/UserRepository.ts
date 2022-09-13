@@ -1,9 +1,11 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import 'reflect-metadata';
+import { singleton } from 'tsyringe';
 import { PrismaClient, RecoverCodes } from '@prisma/client';
 import { IUserRepository } from '@application/ports/userRepository';
 import UserEntity from '@domain/entities/User';
 import AddressEntity from '@domain/entities/Address';
 
+@singleton()
 export default class UserRepository implements IUserRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -22,7 +24,7 @@ export default class UserRepository implements IUserRepository {
   }
 
   public async getUserDataByEmail(email: string) {
-    const user = await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUniqueOrThrow({
       where: {
         email,
       },
@@ -104,7 +106,7 @@ export default class UserRepository implements IUserRepository {
   }
 
   public async getUser(id: string) {
-    const user = await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUniqueOrThrow({
       where: {
         id,
       },
@@ -125,6 +127,7 @@ export default class UserRepository implements IUserRepository {
       select: {
         email: true,
         name: true,
+        type: true,
         mobileNumber: true,
         addresses: {
           select: {
@@ -152,6 +155,7 @@ export default class UserRepository implements IUserRepository {
         name: true,
         mobileNumber: true,
         password: true,
+        type: true,
         addresses: {
           select: {
             address: true,
@@ -169,6 +173,35 @@ export default class UserRepository implements IUserRepository {
   }
 
   public async getFullUserDataByEmail(email: string) {
+    return await this.prisma.user.findUniqueOrThrow({
+      where: {
+        email,
+      },
+      select: {
+        email: true,
+        name: true,
+        mobileNumber: true,
+        type: true,
+        password: true,
+        validate_code: true,
+        validate_expire_date: true,
+        addresses: {
+          select: {
+            address: true,
+            addressComplement: true,
+            addressDistrict: true,
+            addressNumber: true,
+            cep: true,
+            city: true,
+            state: true,
+          },
+        },
+        cpf: true,
+      },
+    });
+  }
+
+  public async getFullUserDataByEmailNoThrow(email: string) {
     return await this.prisma.user.findUnique({
       where: {
         email,
@@ -177,6 +210,7 @@ export default class UserRepository implements IUserRepository {
         email: true,
         name: true,
         mobileNumber: true,
+        type: true,
         password: true,
         validate_code: true,
         validate_expire_date: true,
@@ -232,38 +266,34 @@ export default class UserRepository implements IUserRepository {
   }
 
   public async updateUserByEmail(email: string, args: Record<string, any>) {
-    try {
-      const userId = await this.getUserIdByEmail(email);
-      const updateUser = await this.prisma.user.update({
-        where: {
-          id: userId?.id,
-        },
-        data: {
-          ...args,
-        },
-        select: {
-          email: true,
-          name: true,
-          mobileNumber: true,
-          password: true,
-          addresses: {
-            select: {
-              address: true,
-              addressComplement: true,
-              addressDistrict: true,
-              addressNumber: true,
-              cep: true,
-              city: true,
-              state: true,
-            },
+    const userId = await this.getUserIdByEmail(email);
+    const updateUser = await this.prisma.user.update({
+      where: {
+        id: userId?.id,
+      },
+      data: {
+        ...args,
+      },
+      select: {
+        email: true,
+        name: true,
+        mobileNumber: true,
+        password: true,
+        addresses: {
+          select: {
+            address: true,
+            addressComplement: true,
+            addressDistrict: true,
+            addressNumber: true,
+            cep: true,
+            city: true,
+            state: true,
           },
-          cpf: true,
         },
-      });
-      return updateUser;
-    } catch (err: any) {
-      return null;
-    }
+        cpf: true,
+      },
+    });
+    return updateUser;
   }
 
   public async updateValidationCode(email: string, code: string | null, expire: Date | null) {
@@ -296,16 +326,12 @@ export default class UserRepository implements IUserRepository {
   }
 
   public async deleteUserDataByEmail(email: string): Promise<boolean> {
-    try {
-      await this.prisma.user.delete({
-        where: {
-          email,
-        },
-      });
-      return true;
-    } catch (err: any) {
-      return false;
-    }
+    await this.prisma.user.delete({
+      where: {
+        email,
+      },
+    });
+    return true;
   }
 
   public async getUserIdByEmail(email: string) {
@@ -331,74 +357,68 @@ export default class UserRepository implements IUserRepository {
   }
 
   public async updateRecoverCodeById(id: string, token: string, expires: Date): Promise<boolean> {
-    try {
-      await this.prisma.recoverCodes.update({
-        data: {
-          expires_at: expires,
-          userId: id,
-          token,
-        },
-        where: {
-          userId: id,
-        },
-      });
-      return true;
-    } catch (err: any) {
-      return false;
-    }
+    await this.prisma.recoverCodes.update({
+      data: {
+        expires_at: expires,
+        userId: id,
+        token,
+      },
+      where: {
+        userId: id,
+      },
+    });
+    return true;
   }
 
   public async createRecoverCodeById(id: string, token: string, expires: Date): Promise<boolean> {
-    try {
-      await this.prisma.recoverCodes.create({
-        data: {
-          expires_at: expires,
-          userId: id,
-          token,
-        },
-      });
-      return true;
-    } catch (err: any) {
-      return false;
-    }
+    await this.prisma.recoverCodes.create({
+      data: {
+        expires_at: expires,
+        userId: id,
+        token,
+      },
+    });
+    return true;
   }
 
   public async deleteRecoverCodeById(id: string, token: string): Promise<boolean> {
-    try {
-      await this.prisma.recoverCodes.deleteMany({
-        where: {
-          userId: id,
-          token,
-        },
-      });
-      return true;
-    } catch (err: any) {
-      return false;
-    }
+    await this.prisma.recoverCodes.deleteMany({
+      where: {
+        userId: id,
+        token,
+      },
+    });
+    return true;
   }
 
   public async getUserRecoverTokenByEmail(email: string): Promise<RecoverCodes | null> {
     const userId = await this.getUserIdByEmail(email);
-    const result = await this.prisma.recoverCodes.findUnique({
-      where: {
-        userId: userId?.id,
-      },
-    });
-    if (result) {
-      return result;
+    if (userId) {
+      const result = await this.prisma.recoverCodes.findFirst({
+        where: {
+          userId: userId.id,
+        },
+      });
+      if (result) {
+        return result;
+      }
+      return null;
     }
     return null;
   }
 
   public async getUserRecoverTokenByNumber(mobileNumber: string): Promise<RecoverCodes | null> {
     const userId = await this.getUserIdByMobileNumber(mobileNumber);
-    const result = await this.prisma.recoverCodes.findUnique({
-      where: {
-        userId: userId?.id,
-      },
-    });
-    if (result) {
-      return result;
+    if (userId) {
+      const result = await this.prisma.recoverCodes.findFirst({
+        where: {
+          userId: userId.id,
+        },
+      });
+      if (result) {
+        return result;
+      }
+      return null;
     }
     return null;
   }

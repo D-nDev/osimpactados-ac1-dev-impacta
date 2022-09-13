@@ -1,50 +1,37 @@
 import EstablishmentEntity from '@domain/entities/Establishment';
-import { Subsidiary, RecoverCodes, Products, Prisma } from '@prisma/client';
-import { establishmentDto } from './establishmentDto';
-
-export interface establishmentWithoutPassword {
-  name: string;
-  email: string;
-  mobileNumber: string;
-  subsidiaries: Array<{
-    name: string;
-    address: string;
-    addressComplement: string | null;
-    addressDistrict: string;
-    products: any;
-    addressNumber: number;
-    cep: string;
-    city: string;
-    state: string;
-  }>;
-  cnpj: string;
-}
-
-export interface myEstablishmentData {
-  name: string;
-  email: string;
-  mobileNumber: string;
-  subsidiaries: Subsidiary[];
-  cnpj: string;
-}
+import { Products } from '@prisma/client';
+import { JsonValue } from './dtos/createProductDto';
+import {
+  EstablishmentDto,
+  EstablishmentWithoutPasswordDto,
+  MyEstablishmentDataDto,
+  RecoverCodes,
+} from './dtos/establishmentDto';
 
 export interface IEstablishmentRepository {
   createEstablishment: (establishment: EstablishmentEntity) => Promise<{ id: string; email: string }>;
-  getEstablishment: (id: string) => Promise<establishmentWithoutPassword | null>;
-  getEstablishments: () => Promise<establishmentWithoutPassword[] | null>;
-  getFullEstablishmentData: (id: string) => Promise<establishmentDto | null>;
+  getEstablishment: (id: string) => Promise<EstablishmentWithoutPasswordDto | null>;
+  getEstablishments: () => Promise<EstablishmentWithoutPasswordDto[] | []>;
+  getFullEstablishmentData: (id: string) => Promise<(EstablishmentDto & { type: string }) | null>;
   getFullEstablishmentDataByEmail: (
     email: string,
-  ) => Promise<(establishmentDto & { validate_code: string | null; validate_expire_date: Date | null }) | null>;
+  ) => Promise<
+    (EstablishmentDto & { validate_code: string | null; validate_expire_date: Date | null; type: string }) | null
+  >;
+  getFullEstablishmentDataByEmailNoThrow: (
+    email: string,
+  ) => Promise<
+    (EstablishmentDto & { validate_code: string | null; validate_expire_date: Date | null; type: string }) | null
+  >;
   deleteEstablishment: (id: string) => Promise<void>;
   getEstablishmentByEmail: (email: string) => Promise<{ email: string; name: string; type: string } | null>;
   updateValidationCode: (email: string, code: string | null, expire: Date | null) => Promise<void>;
   getEstablishmentValidateToken: (email: string) => Promise<{ token: string; expireDate: Date | null } | null>;
   updateEstablishment: (email: string, ...args: any) => Promise<void>;
   updateEstablishmentByNumber: (number: string, ...args: any) => Promise<boolean>;
-  updateEstablishmentByEmail: (email: string, ...args: any) => Promise<establishmentDto | null>;
+  updateEstablishmentByEmail: (email: string, ...args: any) => Promise<EstablishmentDto | null>;
   overrideEstablishment: (establishment: EstablishmentEntity) => Promise<{ id: string; email: string }>;
-  getEstablishmentDataByEmail: (email: string) => Promise<myEstablishmentData | null>;
+  getEstablishmentDataByEmail: (email: string) => Promise<MyEstablishmentDataDto>;
   deleteEstablishmentDataByEmail: (email: string) => Promise<boolean>;
   deleteRecoverCodeById: (id: string, token: string) => Promise<boolean>;
   getEstablishmentIdByEmail: (email: string) => Promise<{
@@ -61,6 +48,6 @@ export interface IEstablishmentRepository {
     product: Products,
     subsidiaryId: string,
   ) => Promise<{
-    products: Prisma.JsonValue[];
+    products: JsonValue[];
   } | null>;
 }

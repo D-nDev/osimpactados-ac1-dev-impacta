@@ -1,9 +1,11 @@
+import 'reflect-metadata';
+import { singleton } from 'tsyringe';
 import { PrismaClient, Products, RecoverCodes } from '@prisma/client';
 import { IEstablishmentRepository } from '@application/ports/establishmentRepository';
 import EstablishmentEntity from '@domain/entities/Establishment';
 import SubsidiaryEntity from '@domain/entities/Subsidiary';
-import { EstablishmentDto } from '@application/ports/establishmentDto';
 
+@singleton()
 export default class EstablishmentRepository implements IEstablishmentRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
@@ -22,7 +24,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
   }
 
   public async getEstablishmentDataByEmail(email: string) {
-    const establishment = await this.prisma.establishment.findUnique({
+    const establishment = await this.prisma.establishment.findUniqueOrThrow({
       where: {
         email,
       },
@@ -104,7 +106,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
   }
 
   public async getEstablishment(id: string) {
-    const establishment = await this.prisma.establishment.findUnique({
+    const establishment = await this.prisma.establishment.findUniqueOrThrow({
       where: {
         id,
       },
@@ -157,7 +159,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
   }
 
   public async getFullEstablishmentData(id: string) {
-    return (await this.prisma.establishment.findUnique({
+    return await this.prisma.establishment.findUnique({
       where: {
         id,
       },
@@ -165,6 +167,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
         email: true,
         name: true,
         mobileNumber: true,
+        type: true,
         subsidiaries: {
           select: {
             name: true,
@@ -181,11 +184,11 @@ export default class EstablishmentRepository implements IEstablishmentRepository
         password: true,
         cnpj: true,
       },
-    })) as unknown as EstablishmentDto;
+    });
   }
 
   public async getFullEstablishmentDataByEmail(email: string) {
-    return (await this.prisma.establishment.findUnique({
+    return await this.prisma.establishment.findUniqueOrThrow({
       where: {
         email,
       },
@@ -196,6 +199,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
         password: true,
         validate_code: true,
         validate_expire_date: true,
+        type: true,
         subsidiaries: {
           select: {
             name: true,
@@ -211,7 +215,38 @@ export default class EstablishmentRepository implements IEstablishmentRepository
         },
         cnpj: true,
       },
-    })) as unknown as EstablishmentDto & { validate_code: string | null; validate_expire_date: Date | null };
+    });
+  }
+
+  public async getFullEstablishmentDataByEmailNoThrow(email: string) {
+    return await this.prisma.establishment.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        email: true,
+        name: true,
+        mobileNumber: true,
+        password: true,
+        validate_code: true,
+        validate_expire_date: true,
+        type: true,
+        subsidiaries: {
+          select: {
+            name: true,
+            address: true,
+            addressComplement: true,
+            addressDistrict: true,
+            products: true,
+            addressNumber: true,
+            cep: true,
+            city: true,
+            state: true,
+          },
+        },
+        cnpj: true,
+      },
+    });
   }
 
   public async deleteEstablishment(id: string) {
@@ -250,40 +285,36 @@ export default class EstablishmentRepository implements IEstablishmentRepository
   }
 
   public async updateEstablishmentByEmail(email: string, args: Record<string, any>) {
-    try {
-      const establishmentId = await this.getEstablishmentIdByEmail(email);
-      const updateEstablishment = (await this.prisma.establishment.update({
-        where: {
-          id: establishmentId?.id,
-        },
-        data: {
-          ...args,
-        },
-        select: {
-          email: true,
-          name: true,
-          mobileNumber: true,
-          password: true,
-          subsidiaries: {
-            select: {
-              name: true,
-              address: true,
-              addressComplement: true,
-              addressDistrict: true,
-              products: true,
-              addressNumber: true,
-              cep: true,
-              city: true,
-              state: true,
-            },
+    const establishmentId = await this.getEstablishmentIdByEmail(email);
+    const updateEstablishment = await this.prisma.establishment.update({
+      where: {
+        id: establishmentId?.id,
+      },
+      data: {
+        ...args,
+      },
+      select: {
+        email: true,
+        name: true,
+        mobileNumber: true,
+        password: true,
+        subsidiaries: {
+          select: {
+            name: true,
+            address: true,
+            addressComplement: true,
+            addressDistrict: true,
+            products: true,
+            addressNumber: true,
+            cep: true,
+            city: true,
+            state: true,
           },
-          cnpj: true,
         },
-      })) as unknown as EstablishmentDto;
-      return updateEstablishment;
-    } catch (err: any) {
-      return null;
-    }
+        cnpj: true,
+      },
+    });
+    return updateEstablishment;
   }
 
   public async updateValidationCode(email: string, code: string | null, expire: Date | null) {
@@ -316,16 +347,12 @@ export default class EstablishmentRepository implements IEstablishmentRepository
   }
 
   public async deleteEstablishmentDataByEmail(email: string): Promise<boolean> {
-    try {
-      await this.prisma.establishment.delete({
-        where: {
-          email,
-        },
-      });
-      return true;
-    } catch (err: any) {
-      return false;
-    }
+    await this.prisma.establishment.delete({
+      where: {
+        email,
+      },
+    });
+    return true;
   }
 
   public async getEstablishmentIdByEmail(email: string) {
@@ -351,74 +378,68 @@ export default class EstablishmentRepository implements IEstablishmentRepository
   }
 
   public async updateRecoverCodeById(id: string, token: string, expires: Date): Promise<boolean> {
-    try {
-      await this.prisma.recoverCodes.update({
-        data: {
-          expires_at: expires,
-          establishmentId: id,
-          token,
-        },
-        where: {
-          establishmentId: id,
-        },
-      });
-      return true;
-    } catch (err: any) {
-      return false;
-    }
+    await this.prisma.recoverCodes.update({
+      data: {
+        expires_at: expires,
+        establishmentId: id,
+        token,
+      },
+      where: {
+        establishmentId: id,
+      },
+    });
+    return true;
   }
 
   public async createRecoverCodeById(id: string, token: string, expires: Date): Promise<boolean> {
-    try {
-      await this.prisma.recoverCodes.create({
-        data: {
-          expires_at: expires,
-          establishmentId: id,
-          token,
-        },
-      });
-      return true;
-    } catch (err: any) {
-      return false;
-    }
+    await this.prisma.recoverCodes.create({
+      data: {
+        expires_at: expires,
+        establishmentId: id,
+        token,
+      },
+    });
+    return true;
   }
 
   public async deleteRecoverCodeById(id: string, token: string): Promise<boolean> {
-    try {
-      await this.prisma.recoverCodes.deleteMany({
-        where: {
-          establishmentId: id,
-          token,
-        },
-      });
-      return true;
-    } catch (err: any) {
-      return false;
-    }
+    await this.prisma.recoverCodes.deleteMany({
+      where: {
+        establishmentId: id,
+        token,
+      },
+    });
+    return true;
   }
 
   public async getEstablishmentRecoverTokenByEmail(email: string): Promise<RecoverCodes | null> {
     const establishmentId = await this.getEstablishmentIdByEmail(email);
-    const result = await this.prisma.recoverCodes.findUnique({
-      where: {
-        establishmentId: establishmentId?.id,
-      },
-    });
-    if (result) {
-      return result;
+    if (establishmentId) {
+      const result = await this.prisma.recoverCodes.findFirst({
+        where: {
+          establishmentId: establishmentId.id,
+        },
+      });
+      if (result) {
+        return result;
+      }
+      return null;
     }
     return null;
   }
 
   public async getEstablishmentRecoverTokenByNumber(mobileNumber: string): Promise<RecoverCodes | null> {
     const establishmentId = await this.getEstablishmentIdByMobileNumber(mobileNumber);
-    const result = await this.prisma.recoverCodes.findUnique({
-      where: {
-        establishmentId: establishmentId?.id,
-      },
-    });
-    if (result) {
-      return result;
+    if (establishmentId) {
+      const result = await this.prisma.recoverCodes.findFirst({
+        where: {
+          establishmentId: establishmentId.id,
+        },
+      });
+      if (result) {
+        return result;
+      }
+      return null;
     }
     return null;
   }

@@ -34,3 +34,8 @@ export const serverError = (error: Error | any): HttpResponse => ({
   statusCode: 500,
   body: error,
 });
+
+export const unknownError = (): HttpResponse => ({
+  statusCode: 500,
+  body: 'Unknown Server Error',
+});

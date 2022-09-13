@@ -1,15 +1,12 @@
 import GetMyUserUseCase from '@usecases/getMyUserUseCase';
-import JwtAdapter from '@infra/adapters/jwt-adapter';
 import GetMyUserController from '@presentation/controllers/GetMyUserController';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-import { createUserRepository } from './CreateUserRepositoryFactory';
+import { jwtAdapterInstance, pinoAdapterInstance, userRepositoryInstance } from '@shared/container';
 
 export const getMyUserControllerFactory = (): BaseController => {
-  const jwtadapter = new JwtAdapter();
-  const userRepository = createUserRepository();
-  const useCase = new GetMyUserUseCase(userRepository, jwtadapter);
+  const useCase = new GetMyUserUseCase(userRepositoryInstance, jwtAdapterInstance);
 
-  const controller = new GetMyUserController(useCase);
+  const controller = new GetMyUserController(useCase, pinoAdapterInstance);
 
   return controller;
 };

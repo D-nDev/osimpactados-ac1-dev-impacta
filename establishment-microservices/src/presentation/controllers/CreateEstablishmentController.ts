@@ -1,14 +1,20 @@
-import { EstablishmentDto } from '@application/ports/establishmentDto';
+import { EstablishmentDto } from '@application/ports/dtos/establishmentDto';
 import { useCase } from '@application/ports/useCase';
-import { CreateEstablishmentErrors } from '../errors/CreateEstablishmentErrorsEnum';
+import { CreateEstablishmentErrorCodes } from '@shared/enums/CreateEstablishmentErrorCodes';
 import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
 import { IValidator } from './contracts/validator';
-import { badRequest, created, serverError } from './helpers/httpHelper';
+import { badRequest, created, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
+import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
 
 export default class CreateEstablishmentController implements BaseController {
-  constructor(private readonly useCase: useCase, private readonly validator: IValidator, private readonly validateUseCase: useCase) {}
+  constructor(
+    private readonly useCase: useCase,
+    private readonly validator: IValidator,
+    private readonly sendemailUseCase: useCase,
+    private readonly logger: ILoggerAdapter,
+  ) {}
 
   async handle(request: Request): Promise<HttpResponse> {
     try {
@@ -18,34 +24,23 @@ export default class CreateEstablishmentController implements BaseController {
       const result = await this.validator.validate(establishment);
       if (result.length > 0) {
         const errors: any = [];
-        for (const key in result) {
-          const values = Object.values(result[key].constraints!);
-          errors.push(values.toString());
+        for (const eacherror in result) {
+          errors.push(result[eacherror].constraints);
         }
         return badRequest(errors);
       }
 
       const execute = await this.useCase.execute(establishment);
-      if (execute) {
-        const validateEmail = await this.validateUseCase.execute(execute.email);
-        if (validateEmail) {
-          return created(execute);
-        } else {
-          return serverError('Cannot send validation account code');
-        }
-      } else {
-        return badRequest('Account already exists');
-      }
+      await this.sendemailUseCase.execute({ to: execute.email, token: execute.token });
+      return created({ email: execute.email });
     } catch (err: any) {
-      console.log(err);
-      const errorType = CreateEstablishmentErrors[err.code];
+      this.logger.error('Cannot Create new establishment', err);
+      const errorType = CreateEstablishmentErrorCodes[err.code || err.name || err.message];
 
       if (errorType) {
-        return badRequest(CreateEstablishmentErrors[err.code]);
-      } else if (!errorType && err.message) {
-        return serverError(err.message);
+        return badRequest(errorType);
       } else {
-        return serverError('Unknown server error');
+        return unknownError();
       }
     }
   }

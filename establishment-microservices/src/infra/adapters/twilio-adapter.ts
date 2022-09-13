@@ -1,5 +1,7 @@
+import 'reflect-metadata';
+import { singleton } from 'tsyringe';
 import twilio from 'twilio';
-
+@singleton()
 export default class TwilioAdapter {
   private readonly client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTHTOKEN);
 

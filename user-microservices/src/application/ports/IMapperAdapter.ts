@@ -1,8 +1,8 @@
 import AddressEntity from '@domain/entities/Address';
 import UserEntity from '@domain/entities/User';
-import { AddressesDto, userDto } from './userDto';
+import { AddressesDto, UserDto } from './dtos/userDto';
 
 export interface IMapperAdapter {
-  fromUserDtoToEntity: (userDto: userDto) => UserEntity;
+  fromUserDtoToEntity: (userDto: UserDto) => UserEntity;
   fromAddressDtoToEntity: (addresses: AddressesDto[]) => AddressEntity[];
 }

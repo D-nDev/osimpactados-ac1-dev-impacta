@@ -1,13 +1,12 @@
 import GetUserUseCase from '@usecases/getUserUseCase';
 import GetUserController from '@presentation/controllers/GetUserController';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-import { createUserRepository } from './CreateUserRepositoryFactory';
+import { pinoAdapterInstance, userRepositoryInstance } from '@shared/container';
 
 export const getUserControllerFactory = (): BaseController => {
-  const userRepository = createUserRepository();
-  const useCase = new GetUserUseCase(userRepository);
+  const useCase = new GetUserUseCase(userRepositoryInstance);
 
-  const controller = new GetUserController(useCase);
+  const controller = new GetUserController(useCase, pinoAdapterInstance);
 
   return controller;
 };

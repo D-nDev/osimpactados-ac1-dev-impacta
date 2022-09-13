@@ -1,11 +1,10 @@
 import GetEstablishmentsUseCase from '@usecases/getEstablishmentsUseCase';
 import GetEstablishmentsController from '@presentation/controllers/GetEstablishmentsController';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-import { createEstablishmentRepository } from './CreateEstablishmentRepositoryFactory';
+import { establishmentRepositoryInstance } from '@app/shared/container';
 
 export const getEstablishmentsControllerFactory = (): BaseController => {
-  const establishmentRepository = createEstablishmentRepository();
-  const useCase = new GetEstablishmentsUseCase(establishmentRepository);
+  const useCase = new GetEstablishmentsUseCase(establishmentRepositoryInstance);
 
   const controller = new GetEstablishmentsController(useCase);
 

@@ -1,24 +1,32 @@
 import { bcryptEncoder } from '../ports/bcrypt';
+import { LoginUserDto } from '../ports/dtos/loginUserDto';
 import { ITokenAdapter } from '../ports/ITokenAdapter';
 import { useCase } from '../ports/useCase';
 import { IUserRepository } from '../ports/userRepository';
+import InvalidPasswordException from './errors/InvalidPassword';
+import UserNotFoundException from './errors/UserNotFound';
 
 export default class LoginUserUseCase implements useCase {
-  constructor(private readonly userRepo: IUserRepository, private readonly encoder: bcryptEncoder, private readonly jwtToken: ITokenAdapter) {}
+  constructor(
+    private readonly userRepo: IUserRepository,
+    private readonly encoder: bcryptEncoder,
+    private readonly jwtToken: ITokenAdapter,
+  ) {}
 
-  async execute(email: string, password: string): Promise<string | null> {
-    const userExists = await this.userRepo.getFullUserDataByEmail(email);
+  async execute(inputDto: LoginUserDto): Promise<{ token: string } | null> {
+    const userExists = await this.userRepo.getFullUserDataByEmail(inputDto.email);
 
-    if (userExists != null && !userExists.validate_code && userExists.validate_expire_date == null) {
-      const checkpw = await this.encoder.compare(password, userExists.password);
-      if (checkpw) {
-        const userData = await this.userRepo.getUserByEmail(userExists.email);
-        if (userData != null) {
-          const token = this.jwtToken.sign(userData);
+    if (userExists) {
+      if (!userExists.validate_code && userExists.validate_expire_date == null) {
+        const checkpw = await this.encoder.compare(inputDto.password, userExists.password);
+        if (checkpw) {
+          const token = this.jwtToken.sign({ email: userExists.email, name: userExists.name, type: userExists.type });
           return token;
         }
+        throw new InvalidPasswordException('INVALID_PASS_OR_EMAIL');
       }
+      throw new InvalidPasswordException('INVALID_PASS_OR_EMAIL');
     }
-    return await Promise.resolve(null);
+    throw new UserNotFoundException('INVALID_PASS_OR_EMAIL');
   }
 }

@@ -1,35 +1,47 @@
-/* eslint-disable @typescript-eslint/no-throw-literal */
 import { useCase } from '../ports/useCase';
 import { IUserRepository } from '../ports/userRepository';
 import * as crypto from 'crypto';
 import { IMailAdapter } from '../ports/IMailAdapter';
+import SendRecoverEmailUserNotFoundException from './errors/SendRecoverEmailUserNotFound';
+import { IDateAdapter } from '../ports/IDateAdapter';
+import { IMemoryCacheAdapter } from '../ports/IMemoryCacheAdapter';
+import { SendRecoverEmailDto } from '../ports/dtos/sendRecoverEmailDto';
 
 export default class SendRecoverEmailUseCase implements useCase {
-  constructor(private readonly emailprovider: IMailAdapter, private readonly userRepo: IUserRepository) {}
+  constructor(
+    private readonly emailprovider: IMailAdapter,
+    private readonly userRepo: IUserRepository,
+    private readonly dateMoment: IDateAdapter,
+    private readonly cache: IMemoryCacheAdapter,
+  ) {}
 
-  async execute(to: string): Promise<boolean> {
-    try {
-      const token = crypto.randomBytes(20).toString('hex');
-      const expireDate = new Date();
-      expireDate.setTime(expireDate.getTime() + 2 * 60 * 60 * 1000);
+  async execute(inputDto: SendRecoverEmailDto): Promise<boolean | number | null> {
+    const token = crypto.randomBytes(20).toString('hex');
+    const expireDate = this.dateMoment.addHoursToUTCDate(new Date().toISOString(), 2);
 
-      const userId = await this.userRepo.getUserIdByEmail(to);
-      if (userId != null) {
-        const tokenAlreadyExists = await this.userRepo.getUserRecoverTokenByEmail(to);
-        if (tokenAlreadyExists) {
-          await this.userRepo.updateRecoverCodeById(userId.id, token, expireDate);
-          await this.emailprovider.sendRecoverEmail(to, token);
-        } else {
-          await this.userRepo.createRecoverCodeById(userId.id, token, expireDate);
-          await this.emailprovider.sendRecoverEmail(to, token);
-        }
-
-        return true;
-      } else {
-        throw { code: 'INVALID_EMAIL' };
+    const userId = await this.userRepo.getUserIdByEmail(inputDto.to);
+    if (userId != null) {
+      const isTimedOut = await this.cache.get(`${inputDto.to}-updaterecoveremail-timeout`);
+      if (isTimedOut) {
+        return await this.cache.getTTL(`${inputDto.to}-updaterecoveremail-timeout`);
       }
-    } catch (err: any) {
-      throw { code: err.code } || false;
+      const tokenAlreadyExists = await this.userRepo.getUserRecoverTokenByEmail(inputDto.to);
+      if (tokenAlreadyExists) {
+        const updateCode = await this.userRepo.updateRecoverCodeById(userId.id, token, expireDate as unknown as Date);
+        const sendEmail = await this.emailprovider.sendRecoverEmail(inputDto.to, token);
+        if (updateCode && sendEmail) {
+          await this.cache.set(`${inputDto.to}-updaterecoveremail-timeout`, 'true', 600);
+          return true;
+        }
+      } else {
+        const createCode = await this.userRepo.createRecoverCodeById(userId.id, token, expireDate as unknown as Date);
+        const sendEmail = await this.emailprovider.sendRecoverEmail(inputDto.to, token);
+        if (createCode && sendEmail) {
+          await this.cache.set(`${inputDto.to}-updaterecoveremail-timeout`, 'true', 600);
+          return true;
+        }
+      }
     }
+    throw new SendRecoverEmailUserNotFoundException('USER_NOT_FOUND');
   }
 }

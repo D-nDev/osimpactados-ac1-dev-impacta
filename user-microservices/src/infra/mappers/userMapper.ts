@@ -1,8 +1,11 @@
-import { IMapperAdapter } from '@app/application/ports/IMapperAdapter';
+import 'reflect-metadata';
+import { singleton } from 'tsyringe';
+import { IMapperAdapter } from '@application/ports/IMapperAdapter';
 import AddressEntity from '@domain/entities/Address';
 import UserEntity from '@domain/entities/User';
-import { AddressesDto, UserDto } from '@application/ports/userDto';
+import { AddressesDto, UserDto } from '@application/ports/dtos/userDto';
 
+@singleton()
 export class Mapper implements IMapperAdapter {
   public fromUserDtoToEntity(userDto: UserDto): UserEntity {
     const user = {

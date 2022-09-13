@@ -1,15 +1,12 @@
 import GetMyEstablishmentUseCase from '@usecases/getMyEstablishmentUseCase';
-import JwtAdapter from '@infra/adapters/jwt-adapter';
 import GetMyEstablishmentController from '@presentation/controllers/GetMyEstablishmentController';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-import { createEstablishmentRepository } from './CreateEstablishmentRepositoryFactory';
+import { establishmentRepositoryInstance, jwtAdapterInstance, pinoAdapterInstance } from '@app/shared/container';
 
 export const getMyEstablishmentControllerFactory = (): BaseController => {
-  const jwtadapter = new JwtAdapter();
-  const establishmentRepository = createEstablishmentRepository();
-  const useCase = new GetMyEstablishmentUseCase(establishmentRepository, jwtadapter);
+  const useCase = new GetMyEstablishmentUseCase(establishmentRepositoryInstance, jwtAdapterInstance);
 
-  const controller = new GetMyEstablishmentController(useCase);
+  const controller = new GetMyEstablishmentController(useCase, pinoAdapterInstance);
 
   return controller;
 };

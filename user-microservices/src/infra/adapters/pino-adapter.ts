@@ -1,6 +1,9 @@
-import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
+import 'reflect-metadata';
+import { singleton } from 'tsyringe';
+import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
 import pino, { P } from 'pino';
 
+@singleton()
 export default class PinoAdapter implements ILoggerAdapter {
   private readonly logger: P.BaseLogger;
 

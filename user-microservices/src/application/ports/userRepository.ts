@@ -1,38 +1,26 @@
 import UserEntity from '@domain/entities/User';
-import { Address, RecoverCodes } from '@prisma/client';
-import { AddressesDto, userDto } from './userDto';
-
-export interface userWithoutPassword {
-  email: string;
-  name: string;
-  mobileNumber: string;
-  addresses: AddressesDto[];
-  cpf: string;
-}
-
-export interface myUserData {
-  email: string;
-  name: string;
-  cpf: string;
-  mobileNumber: string;
-  addresses: Address[];
-}
+import { MyUserDataDto, RecoverCodes, UserDto, UserWithoutPasswordDto } from './dtos/userDto';
 
 export interface IUserRepository {
   createUser: (user: UserEntity) => Promise<{ id: string; email: string }>;
-  getUser: (id: string) => Promise<userWithoutPassword | null>;
-  getUsers: () => Promise<userWithoutPassword[] | null>;
-  getFullUserData: (id: string) => Promise<userDto | null>;
-  getFullUserDataByEmail: (email: string) => Promise<(userDto & { validate_code: string | null; validate_expire_date: Date | null }) | null>;
+  getUser: (id: string) => Promise<UserWithoutPasswordDto | null>;
+  getUsers: () => Promise<UserWithoutPasswordDto[] | []>;
+  getFullUserData: (id: string) => Promise<(UserDto & { type: string }) | null>;
+  getFullUserDataByEmail: (
+    email: string,
+  ) => Promise<UserDto & { validate_code: string | null; validate_expire_date: Date | null; type: string }>;
+  getFullUserDataByEmailNoThrow: (
+    email: string,
+  ) => Promise<(UserDto & { validate_code: string | null; validate_expire_date: Date | null; type: string }) | null>;
   deleteUser: (id: string) => Promise<void>;
   getUserByEmail: (email: string) => Promise<{ email: string; name: string; type: string } | null>;
   updateValidationCode: (email: string, code: string | null, expire: Date | null) => Promise<void>;
   getUserValidateToken: (email: string) => Promise<{ token: string; expireDate: Date | null } | null>;
   updateUser: (email: string, ...args: any) => Promise<void>;
   updateUserByNumber: (number: string, ...args: any) => Promise<boolean>;
-  updateUserByEmail: (email: string, ...args: any) => Promise<userDto | null>;
+  updateUserByEmail: (email: string, ...args: any) => Promise<UserDto | null>;
   overrideUser: (user: UserEntity) => Promise<{ id: string; email: string }>;
-  getUserDataByEmail: (email: string) => Promise<myUserData | null>;
+  getUserDataByEmail: (email: string) => Promise<MyUserDataDto>;
   deleteUserDataByEmail: (email: string) => Promise<boolean>;
   deleteRecoverCodeById: (id: string, token: string) => Promise<boolean>;
   getUserIdByEmail: (email: string) => Promise<{

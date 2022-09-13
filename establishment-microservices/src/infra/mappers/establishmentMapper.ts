@@ -1,15 +1,18 @@
+import 'reflect-metadata';
+import { singleton } from 'tsyringe';
 import { IMapperAdapter } from '@app/application/ports/IMapperAdapter';
 import SubsidiaryEntity from '@domain/entities/Subsidiary';
 import EstablishmentEntity from '@domain/entities/Establishment';
-import { SubsidiaryDto, EstablishmentDto } from '@application/ports/establishmentDto';
+import { SubsidiaryDto, EstablishmentDto } from '@application/ports/dtos/establishmentDto';
 
+@singleton()
 export class Mapper implements IMapperAdapter {
   public fromEstablishmentDtoToEntity(establishmentDto: EstablishmentDto) {
     const establishment = {
       email: establishmentDto.email,
       name: establishmentDto.name,
       mobileNumber: establishmentDto.mobileNumber,
-      subsidiary: this.fromSubsidiaryDtoToEntity(establishmentDto.subsidiaries),
+      subsidiaries: this.fromSubsidiaryDtoToEntity(establishmentDto.subsidiaries),
       password: establishmentDto.password,
       cnpj: establishmentDto.cnpj,
     };

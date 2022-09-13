@@ -1,6 +1,9 @@
+import 'reflect-metadata';
+import { singleton } from 'tsyringe';
 import { bcryptEncoder } from '@application/ports/bcrypt';
 import * as bcrypt from 'bcrypt';
 
+@singleton()
 export default class BcryptAdapter implements bcryptEncoder {
   public async hash(password: string) {
     try {

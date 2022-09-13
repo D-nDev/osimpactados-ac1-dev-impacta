@@ -1,6 +1,10 @@
+import 'reflect-metadata';
+import { singleton } from 'tsyringe';
 import { ITokenAdapter } from '@app/application/ports/ITokenAdapter';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
+import InvalidJwtException from '../errors/InvalidJwtException';
 
+@singleton()
 export default class jwtAdapter implements ITokenAdapter {
   public verify(token: string): boolean {
     try {
@@ -31,7 +35,7 @@ export default class jwtAdapter implements ITokenAdapter {
       const decodedtoken = verify(token, process.env.SECRET as string) as JwtPayload & { email: string; name: string; type: string };
       return decodedtoken;
     } catch (err: any) {
-      throw new Error(err.message || 'Cannot decode token');
+      throw new InvalidJwtException('INVALID_JWT');
     }
   }
 }

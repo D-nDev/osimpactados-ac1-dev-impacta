@@ -1,27 +1,45 @@
+import UserEntity from '@domain/entities/User';
+import { IMapperAdapter } from '../ports/IMapperAdapter';
+import { IMemoryCacheAdapter } from '../ports/IMemoryCacheAdapter';
 import { useCase } from '../ports/useCase';
+import { UserDto } from '../ports/dtos/userDto';
+import { IDateAdapter } from '../ports/IDateAdapter';
 import { IUserRepository } from '../ports/userRepository';
+import InvalidValidateTokenException from './errors/InvalidValidateToken';
+import ValidateTokenExpired from './errors/ValidateTokenExpired';
+import ValidateTokenNotExistsException from './errors/ValidateTokenNotExists';
+import { ValidateUserDto } from '../ports/dtos/validateUserDto';
 
 export default class ValidateUserUseCase implements useCase {
-  constructor(private readonly userRepo: IUserRepository) {}
+  constructor(
+    private readonly userRepo: IUserRepository,
+    private readonly cache: IMemoryCacheAdapter,
+    private readonly mapper: IMapperAdapter,
+    private readonly dateMoment: IDateAdapter,
+  ) {}
 
-  async execute(email: string, token: string): Promise<boolean> {
-    try {
-      let currentUTCDate: any = new Date();
-      currentUTCDate = new Date(currentUTCDate.toUTCString());
+  async execute(inputDto: ValidateUserDto): Promise<boolean> {
+    const tokenexists = await this.cache.getJson<UserDto & { token: string; expireDate: Date }>(
+      `pending-${inputDto.email}`,
+    );
 
-      const tokenexists = await this.userRepo.getUserValidateToken(email);
-
-      if (tokenexists != null) {
-        if (tokenexists?.token !== token || currentUTCDate > tokenexists.expireDate!) {
-          return false;
-        }
-        await this.userRepo.updateValidationCode(email, null, null);
-        return true;
+    if (tokenexists != null) {
+      if (tokenexists?.token !== inputDto.token) {
+        throw new InvalidValidateTokenException('INVALID_TOKEN');
+      } else if (this.dateMoment.compareWithCurrentUTCDate(new Date(tokenexists.expireDate).toISOString())) {
+        throw new ValidateTokenExpired('EXPIRED_TOKEN');
       }
-
-      return false;
-    } catch (err: any) {
-      return false;
+      const { addresses, token, expireDate, ...rest } = tokenexists;
+      const userAdresses = this.mapper.fromAddressDtoToEntity(addresses);
+      const userEntity = new UserEntity({
+        addresses: userAdresses,
+        ...rest,
+      });
+      await this.userRepo.createUser(userEntity);
+      await this.cache.deleteKey(`pending-${inputDto.email}`);
+      return true;
     }
+
+    throw new ValidateTokenNotExistsException('INVALID_TOKEN');
   }
 }

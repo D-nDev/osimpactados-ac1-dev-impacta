@@ -1,45 +1,62 @@
+/* eslint-disable no-extra-boolean-cast */
 import EstablishmentEntity from '@domain/entities/Establishment';
 import { bcryptEncoder } from '../ports/bcrypt';
 import { IMapperAdapter } from '../ports/IMapperAdapter';
 import { useCase } from '../ports/useCase';
-import { EstablishmentDto } from '../ports/establishmentDto';
+import { EstablishmentDto } from '../ports/dtos/establishmentDto';
 import { IEstablishmentRepository } from '../ports/establishmentRepository';
+import EstablishmentAlreadyExistsException from './errors/EstablishmentAlreadyExists';
+import { IMemoryCacheAdapter } from '../ports/IMemoryCacheAdapter';
 import * as crypto from 'crypto';
+import { IDateAdapter } from '../ports/IDateAdapter';
+import ValidateTokenExpired from './errors/ValidateTokenExpired';
 
 export default class CreateEstablishmentUseCase implements useCase {
   constructor(
     private readonly establishmentRepo: IEstablishmentRepository,
     private readonly encoder: bcryptEncoder,
     private readonly mapper: IMapperAdapter,
+    private readonly cache: IMemoryCacheAdapter,
+    private readonly dateMoment: IDateAdapter,
   ) {}
 
-  async execute(establishment: EstablishmentDto): Promise<boolean | { id: string; email: string }> {
-    const establishmentAddresses = this.mapper.fromSubsidiaryDtoToEntity(establishment.subsidiaries);
+  async execute(establishment: EstablishmentDto): Promise<{ email: string; token: string; expireDate: any }> {
+    const establishmentSubsidiaries = this.mapper.fromSubsidiaryDtoToEntity(establishment.subsidiaries);
     const establishmentEntity = new EstablishmentEntity({
       ...establishment,
-      subsidiary: establishmentAddresses,
+      subsidiaries: establishmentSubsidiaries,
       password: await this.encoder.hash(establishment.password),
     });
-    const establishmentExists = await this.establishmentRepo.getFullEstablishmentDataByEmail(establishment.email);
 
-    if (establishmentExists) {
-      if (!establishmentExists.validate_code && !establishmentExists.validate_expire_date) {
-        return false;
-      } else if (establishmentExists.validate_code && new Date(new Date().toUTCString()) < establishmentExists.validate_expire_date!) {
-        return false;
-      } else if (establishmentExists.validate_code && new Date(new Date().toUTCString()) > establishmentExists.validate_expire_date!) {
-        const newtoken = crypto.randomBytes(20).toString('hex');
+    const establishmentExists = await this.establishmentRepo.getFullEstablishmentDataByEmailNoThrow(
+      establishment.email,
+    );
+    const establishmentPendingValidation = await this.cache.getJson<
+      EstablishmentDto & { token: string; expireDate: any }
+    >(`pending-${establishment.email}`);
 
-        const expireDate = new Date();
-        expireDate.setTime(expireDate.getTime() + 2 * 60 * 60 * 1000);
-
-        const override = await this.establishmentRepo.overrideEstablishment(establishmentEntity);
-        await this.establishmentRepo.updateValidationCode(establishmentEntity.getEmail(), newtoken, expireDate);
-
-        return { id: override.id, email: override.email };
+    if (establishmentExists != null) {
+      if (!establishmentExists.validate_code && establishmentExists.validate_expire_date == null) {
+        throw new EstablishmentAlreadyExistsException('ESTABLISHMENT_ALREADY_EXISTS');
+      }
+    } else if (!!establishmentPendingValidation) {
+      if (
+        !this.dateMoment.compareWithCurrentUTCDate(new Date(establishmentPendingValidation.expireDate).toISOString())
+      ) {
+        throw new EstablishmentAlreadyExistsException('ESTABLISHMENT_ALREADY_EXISTS');
+      } else {
+        throw new ValidateTokenExpired('ESTABLISHMENT_ALREADY_EXISTS');
       }
     }
 
-    return await this.establishmentRepo.createEstablishment(establishmentEntity);
+    const token = crypto.randomBytes(20).toString('hex');
+    const expireDate = this.dateMoment.addHoursToUTCDate(new Date().toISOString(), 2);
+
+    await this.cache.set(
+      `pending-${establishment.email}`,
+      JSON.stringify({ ...establishmentEntity, token, expireDate }),
+      7200,
+    );
+    return { email: establishment.email, token, expireDate };
   }
 }

@@ -1,17 +1,17 @@
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-import BcryptAdapter from '@infra/adapters/bcrypt-adapter';
-import { createUserRepository } from './CreateUserRepositoryFactory';
-import JwtAdapter from '@infra/adapters/jwt-adapter';
-import LoginUserUseCase from '@application/useCases/loginUserUseCase';
+import LoginUserUseCase from '@usecases/loginUserUseCase';
 import LoginUserController from '@presentation/controllers/LoginUserController';
+import {
+  bcryptAdapterInstance,
+  jwtAdapterInstance,
+  pinoAdapterInstance,
+  userRepositoryInstance,
+} from '@shared/container';
 
 export const loginUserControllerFactory = (): BaseController => {
-  const userRepository = createUserRepository();
-  const encoder = new BcryptAdapter();
-  const jwtadapter = new JwtAdapter();
-  const useCase = new LoginUserUseCase(userRepository, encoder, jwtadapter);
+  const useCase = new LoginUserUseCase(userRepositoryInstance, bcryptAdapterInstance, jwtAdapterInstance);
 
-  const controller = new LoginUserController(useCase);
+  const controller = new LoginUserController(useCase, pinoAdapterInstance);
 
   return controller;
 };
