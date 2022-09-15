@@ -20,6 +20,7 @@ export const adaptRoute = (controller: BaseController) => {
       query: { ...(req.query || {}) },
       headers: { ...(req.headers || {}) },
       cookies: { ...(req.cookies || {}) },
+      files: req.files ?? [],
     };
     try {
       const result = await Promise.race<HttpResponse | HttpResponse>([timeout(), controller.handle(request)]);

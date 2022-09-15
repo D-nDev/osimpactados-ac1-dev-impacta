@@ -28,7 +28,7 @@ export class Mapper implements IMapperAdapter {
         addressNumber: eachSubsidiary.addressNumber,
         addressComplement: eachSubsidiary.addressComplement,
         addressDistrict: eachSubsidiary.addressDistrict,
-        products: eachSubsidiary.products,
+        products: [],
         city: eachSubsidiary.city,
         state: eachSubsidiary.state,
         cep: eachSubsidiary.cep,

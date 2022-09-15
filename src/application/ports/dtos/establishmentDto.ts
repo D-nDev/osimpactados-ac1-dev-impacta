@@ -1,24 +1,14 @@
 import { Subsidiary } from '@prisma/client';
 import { IsEmail, IsMobilePhone, IsNotEmpty } from 'class-validator';
-import { JsonValue } from './createProductDto';
-
-export interface SubsidiaryDto {
+export class SubsidiaryDto {
   name: string;
   address: string;
   addressComplement: string | null;
   addressNumber: number;
   addressDistrict: string;
-  products: JsonValue;
   city: string;
   state: string;
   cep: string;
-}
-
-export interface ProductDto {
-  name: string;
-  stock: number;
-  value: number;
-  photo: string;
 }
 
 export interface EstablishmentWithoutPasswordDto {

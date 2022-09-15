@@ -1,6 +1,5 @@
 import EstablishmentEntity from '@domain/entities/Establishment';
-import { Products } from '@prisma/client';
-import { JsonValue } from './dtos/createProductDto';
+import { Products, Subsidiary } from '@prisma/client';
 import {
   EstablishmentDto,
   EstablishmentWithoutPasswordDto,
@@ -11,12 +10,15 @@ import {
 export interface IEstablishmentRepository {
   createEstablishment: (establishment: EstablishmentEntity) => Promise<{ id: string; email: string }>;
   getEstablishment: (id: string) => Promise<EstablishmentWithoutPasswordDto | null>;
+  blackListRecoverToken: (establishmentId: string, tokenId: string) => Promise<boolean>;
   getEstablishments: () => Promise<EstablishmentWithoutPasswordDto[] | []>;
   getFullEstablishmentData: (id: string) => Promise<(EstablishmentDto & { type: string }) | null>;
+  getSubsidiaryByEstablishmentId: (establishmentId: string) => Promise<Subsidiary | null>;
   getFullEstablishmentDataByEmail: (
     email: string,
   ) => Promise<
-    (EstablishmentDto & { validate_code: string | null; validate_expire_date: Date | null; type: string }) | null
+    | (EstablishmentDto & { validate_code: string | null; validate_expire_date: Date | null; type: string; id: string })
+    | null
   >;
   getFullEstablishmentDataByEmailNoThrow: (
     email: string,
@@ -48,6 +50,6 @@ export interface IEstablishmentRepository {
     product: Products,
     subsidiaryId: string,
   ) => Promise<{
-    products: JsonValue[];
+    products: Products[];
   } | null>;
 }

@@ -193,6 +193,7 @@ export default class EstablishmentRepository implements IEstablishmentRepository
         email,
       },
       select: {
+        id: true,
         email: true,
         name: true,
         mobileNumber: true,
@@ -317,6 +318,23 @@ export default class EstablishmentRepository implements IEstablishmentRepository
     return updateEstablishment;
   }
 
+  public async blackListRecoverToken(establishmentId: string, tokenId: string) {
+    const result = await this.prisma.recoverCodes.updateMany({
+      where: {
+        establishmentId,
+        token: tokenId,
+      },
+      data: {
+        is_blacklisted: true,
+      },
+    });
+
+    if (result) {
+      return true;
+    }
+    return false;
+  }
+
   public async updateValidationCode(email: string, code: string | null, expire: Date | null) {
     await this.prisma.establishment.update({
       where: {
@@ -373,6 +391,14 @@ export default class EstablishmentRepository implements IEstablishmentRepository
       },
       select: {
         id: true,
+      },
+    });
+  }
+
+  public async getSubsidiaryByEstablishmentId(establishmentId: string) {
+    return await this.prisma.subsidiary.findUnique({
+      where: {
+        establishmentId,
       },
     });
   }
@@ -452,7 +478,13 @@ export default class EstablishmentRepository implements IEstablishmentRepository
         },
         data: {
           products: {
-            push: product,
+            push: {
+              id: product.id,
+              name: product.name,
+              photo: product.photo,
+              stock: parseInt(product.stock as any),
+              value: parseFloat(product.value as any),
+            },
           },
         },
         select: {
@@ -461,7 +493,6 @@ export default class EstablishmentRepository implements IEstablishmentRepository
       });
       return subsidiaryProduct;
     } catch (err) {
-      console.log(err);
       return null;
     }
   }

@@ -1,8 +1,9 @@
-import { Prisma, Products } from '@prisma/client';
+import { Products } from '@prisma/client';
 
 export interface CreateProductDto {
-  product: Products;
+  products: Products[];
   subsidiaryId: string;
+  token: string;
 }
 
-export type JsonValue = Prisma.JsonValue;
+export type PhotosDto = Express.Multer.File[];

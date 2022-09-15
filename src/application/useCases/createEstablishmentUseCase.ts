@@ -1,6 +1,6 @@
 /* eslint-disable no-extra-boolean-cast */
 import EstablishmentEntity from '@domain/entities/Establishment';
-import { bcryptEncoder } from '../ports/bcrypt';
+import { IHashAdapter } from '../ports/bcrypt';
 import { IMapperAdapter } from '../ports/IMapperAdapter';
 import { useCase } from '../ports/useCase';
 import { EstablishmentDto } from '../ports/dtos/establishmentDto';
@@ -14,7 +14,7 @@ import ValidateTokenExpired from './errors/ValidateTokenExpired';
 export default class CreateEstablishmentUseCase implements useCase {
   constructor(
     private readonly establishmentRepo: IEstablishmentRepository,
-    private readonly encoder: bcryptEncoder,
+    private readonly encoder: IHashAdapter,
     private readonly mapper: IMapperAdapter,
     private readonly cache: IMemoryCacheAdapter,
     private readonly dateMoment: IDateAdapter,

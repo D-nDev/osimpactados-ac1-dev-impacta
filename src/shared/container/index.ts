@@ -12,12 +12,16 @@ import EstablishmentRepository from '@infra/orm/prismaorm/repositories/Establish
 import { PrismaClient } from '@prisma/client';
 import { IEstablishmentRepository } from '@application/ports/establishmentRepository';
 import ValidatorAdapter from '@infra/adapters/classValidator-adapter';
-import IsAdminMiddleware from '@app/presentation/middlewares/isAdminMiddleware';
+import IsAdminMiddleware from '@presentation/middlewares/isAdminMiddleware';
+import AzureBlobAdapter from '@infra/adapters/azureblob-adapter';
+import IsAuthUserMiddleware from '@presentation/middlewares/isAuthUserMiddleware';
+import UUIDProvider from '@app/infra/adapters/uuid-adapter';
 
 const prisma = new PrismaClient();
 
 const establishmentRepositoryClass = new EstablishmentRepository(prisma);
 export const jwtAdapterInstance = container.resolve(jwtAdapter);
+export const uuidAdapterInstance = container.resolve(UUIDProvider);
 export const bcryptAdapterInstance = container.resolve(BcryptAdapter);
 export const emailAdapterInstance = container.resolve(EmailAdapter);
 export const ioredisAdapterInstance = container.resolve(IORedisAdapter);
@@ -26,6 +30,7 @@ export const pinoAdapterInstance = container.resolve(PinoAdapter);
 export const twilioAdapterInstance = container.resolve(TwilioAdapter);
 export const mapperAdapterInstance = container.resolve(Mapper);
 export const validatorAdapterInstance = container.resolve(ValidatorAdapter);
+export const azureblobAdapterInstance = container.resolve(AzureBlobAdapter);
 const establishmentRepositoryRegisterInstance = container.registerInstance(
   'EstablishmentRepository',
   establishmentRepositoryClass,
@@ -38,3 +43,12 @@ const isAdminMiddlewareClass = new IsAdminMiddleware(jwtAdapterInstance);
 const isAdminMiddlewareRegisterInstance = container.registerInstance('AdminMiddleware', isAdminMiddlewareClass);
 export const isAdminMiddlewareInstance =
   isAdminMiddlewareRegisterInstance.resolve<IsAdminMiddleware>('AdminMiddleware');
+
+const isAuthUserMiddlewareClass = new IsAuthUserMiddleware(jwtAdapterInstance);
+
+const isAuthUserMiddlewareRegisterInstance = container.registerInstance(
+  'AuthUserMiddleware',
+  isAuthUserMiddlewareClass,
+);
+export const isAuthUserMiddlewareInstance =
+  isAuthUserMiddlewareRegisterInstance.resolve<IsAuthUserMiddleware>('AuthUserMiddleware');

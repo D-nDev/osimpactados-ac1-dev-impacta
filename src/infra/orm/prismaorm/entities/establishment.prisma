@@ -46,7 +46,7 @@ model Subsidiary {
   addressNumber     Int
   addressComplement String?
   addressDistrict   String
-  products          Json[]
+  products          Products[]
   city              String
   state             String
   cep               String
@@ -54,10 +54,10 @@ model Subsidiary {
   establishmentId   String        @unique
 }
 
-model Products {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  stock        Int
-  value        Float
-  photo        String
+type Products {
+  id    String
+  name  String
+  stock Int
+  value Float
+  photo String
 }
