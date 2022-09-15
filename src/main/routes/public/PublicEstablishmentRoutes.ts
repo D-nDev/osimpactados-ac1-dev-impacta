@@ -1,5 +1,6 @@
 import { changeEstablishmentPassEmailControllerFactory } from '@app/main/factories/ChangeEstablishmentPassEmailControllerFactory';
 import { changeEstablishmentPassSMSControllerFactory } from '@app/main/factories/ChangeEstablishmentPassSMSControllerFactory';
+import { healthCheckControllerFactory } from '@app/main/factories/HealthCheckControllerFactory';
 import { reSendRecoverEmailControllerFactory } from '@app/main/factories/ReSendRecoverEmailControllerFactory';
 import { reSendRecoverSMSControllerFactory } from '@app/main/factories/ReSendRecoverSMSControllerFactory';
 import { reSendValidationEmailControllerFactory } from '@app/main/factories/ReSendValidationEmailControllerFactory';
@@ -30,5 +31,6 @@ export default class PublicEstablishmentRoutes {
     this.router.post('/establishment/resendvalidationemail', adaptRoute(reSendValidationEmailControllerFactory()));
     this.router.post('/establishment/resendrecoveremail', adaptRoute(reSendRecoverEmailControllerFactory()));
     this.router.post('/establishment/resendrecoversms', adaptRoute(reSendRecoverSMSControllerFactory()));
+    this.router.get('/health', adaptRoute(healthCheckControllerFactory()));
   }
 }
