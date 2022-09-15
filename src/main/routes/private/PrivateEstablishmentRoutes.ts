@@ -28,7 +28,7 @@ export default class PrivateEstablishmentRoutes {
       adaptRoute(deleteMyEstablishmentControllerFactory()),
     );
     this.router.post(
-      '/product/:subsidiaryId',
+      '/product',
       adaptMiddleware(isAuthUserMiddlewareInstance),
       adaptMulter,
       adaptRoute(createProductControllerFactory()),

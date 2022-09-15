@@ -18,15 +18,18 @@ export default class CreateProductController implements BaseController {
     try {
       const { products } = request.body;
       const { token } = request.cookies;
-      const { subsidiaryId } = request.params;
+      const { subsidiaryId } = request.query;
       const photos = request.files;
 
       if (token) {
-        if (request.files?.length !== products.length) {
-          return badRequest('Each product should have a photo and vice versa');
-        }
         if (!products) {
           return badRequest('You should send at least one product');
+        }
+        if (!subsidiaryId) {
+          return badRequest('Please provide a subsidiaryId');
+        }
+        if (request.files?.length !== products.length) {
+          return badRequest('Each product should have a photo and vice versa');
         }
         for (let index = 0; index < products.length; index++) {
           if (!products[index].name || !products[index].stock || !products[index].value) {

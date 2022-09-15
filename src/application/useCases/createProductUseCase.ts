@@ -31,7 +31,10 @@ export default class CreateProductUseCase implements useCase {
       product.id = this.uuidprovider.generateUUID();
       product.photo = upload;
       i++;
-      await this.establishmentRepo.createProduct(product, inputDto.subsidiaryId);
+      const result = await this.establishmentRepo.createProduct(product, inputDto.subsidiaryId);
+      if (!result) {
+        return false;
+      }
     }
 
     if (i > 0) {
