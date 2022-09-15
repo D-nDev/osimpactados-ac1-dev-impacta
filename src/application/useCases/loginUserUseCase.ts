@@ -1,4 +1,4 @@
-import { bcryptEncoder } from '../ports/bcrypt';
+import { IHashAdapter } from '../ports/IHashAdapter';
 import { LoginUserDto } from '../ports/dtos/loginUserDto';
 import { ITokenAdapter } from '../ports/ITokenAdapter';
 import { useCase } from '../ports/useCase';
@@ -9,7 +9,7 @@ import UserNotFoundException from './errors/UserNotFound';
 export default class LoginUserUseCase implements useCase {
   constructor(
     private readonly userRepo: IUserRepository,
-    private readonly encoder: bcryptEncoder,
+    private readonly encoder: IHashAdapter,
     private readonly jwtToken: ITokenAdapter,
   ) {}
 
@@ -20,7 +20,12 @@ export default class LoginUserUseCase implements useCase {
       if (!userExists.validate_code && userExists.validate_expire_date == null) {
         const checkpw = await this.encoder.compare(inputDto.password, userExists.password);
         if (checkpw) {
-          const token = this.jwtToken.sign({ email: userExists.email, name: userExists.name, type: userExists.type });
+          const token = this.jwtToken.sign({
+            id: userExists.id,
+            email: userExists.email,
+            name: userExists.name,
+            type: userExists.type,
+          });
           return token;
         }
         throw new InvalidPasswordException('INVALID_PASS_OR_EMAIL');

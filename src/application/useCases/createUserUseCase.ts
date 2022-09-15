@@ -1,6 +1,6 @@
 /* eslint-disable no-extra-boolean-cast */
 import UserEntity from '@domain/entities/User';
-import { bcryptEncoder } from '../ports/bcrypt';
+import { IHashAdapter } from '../ports/IHashAdapter';
 import { IMapperAdapter } from '../ports/IMapperAdapter';
 import { useCase } from '../ports/useCase';
 import { UserDto } from '../ports/dtos/userDto';
@@ -13,7 +13,7 @@ import ValidateTokenExpired from './errors/ValidateTokenExpired';
 export default class CreateUserUseCase implements useCase {
   constructor(
     private readonly userRepo: IUserRepository,
-    private readonly encoder: bcryptEncoder,
+    private readonly encoder: IHashAdapter,
     private readonly mapper: IMapperAdapter,
     private readonly cache: IMemoryCacheAdapter,
     private readonly dateMoment: IDateAdapter,

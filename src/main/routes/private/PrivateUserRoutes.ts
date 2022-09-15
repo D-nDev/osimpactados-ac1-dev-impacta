@@ -1,3 +1,6 @@
+import { adaptMiddleware } from '@app/main/adapters/express-middleware-adapter';
+import { blackListRecoverTokenControllerFactory } from '@app/main/factories/BlackListRecoverTokenControllerFactory';
+import { isAdminMiddlewareInstance, isAuthUserMiddlewareInstance } from '@app/shared/container';
 import { Router } from 'express';
 import { adaptRoute } from '../../adapters/express-router-adapter';
 import { deleteMyUserControllerFactory } from '../../factories/DeleteMyUserControllerFactory';
@@ -12,7 +15,16 @@ export default class PrivateUserRoutes {
   }
 
   public buildRoutes() {
-    this.router.get('/myuser', adaptRoute(getMyUserControllerFactory()));
-    this.router.delete('/myuser', adaptRoute(deleteMyUserControllerFactory()));
+    this.router.get('/myuser', adaptMiddleware(isAuthUserMiddlewareInstance), adaptRoute(getMyUserControllerFactory()));
+    this.router.delete(
+      '/myuser',
+      adaptMiddleware(isAuthUserMiddlewareInstance),
+      adaptRoute(deleteMyUserControllerFactory()),
+    );
+    this.router.post(
+      '/blacklist/recovertoken',
+      adaptMiddleware(isAdminMiddlewareInstance),
+      adaptRoute(blackListRecoverTokenControllerFactory()),
+    );
   }
 }

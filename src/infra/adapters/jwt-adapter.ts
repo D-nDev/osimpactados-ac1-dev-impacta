@@ -14,7 +14,7 @@ export default class jwtAdapter implements ITokenAdapter {
     }
   }
 
-  public sign(user: { email: string; name: string; type: string }) {
+  public sign(user: { id: string; email: string; name: string; type: string }) {
     try {
       const token = sign(
         {
@@ -32,6 +32,7 @@ export default class jwtAdapter implements ITokenAdapter {
   public decode(token: any) {
     try {
       const decodedtoken = verify(token, process.env.SECRET as string) as JwtPayload & {
+        id: string;
         email: string;
         name: string;
         type: string;

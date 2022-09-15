@@ -15,6 +15,7 @@ export class Mapper implements IMapperAdapter {
       addresses: this.fromAddressDtoToEntity(userDto.addresses),
       password: userDto.password,
       cpf: userDto.cpf,
+      photo: userDto.photo,
     };
     return new UserEntity({ ...user });
   }

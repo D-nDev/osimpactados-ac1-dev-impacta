@@ -30,6 +30,7 @@ export default class UserRepository implements IUserRepository {
       },
       select: {
         email: true,
+        photo: true,
         name: true,
         addresses: true,
         cpf: true,
@@ -47,6 +48,7 @@ export default class UserRepository implements IUserRepository {
         cpf: user.getCpf(),
         mobileNumber: user.getMobileNumber(),
         password: user.getPassword(),
+        photo: user.getPhoto(),
         addresses: {
           createMany: {
             data: [
@@ -153,6 +155,7 @@ export default class UserRepository implements IUserRepository {
       select: {
         email: true,
         name: true,
+        photo: true,
         mobileNumber: true,
         password: true,
         type: true,
@@ -178,8 +181,10 @@ export default class UserRepository implements IUserRepository {
         email,
       },
       select: {
+        id: true,
         email: true,
         name: true,
+        photo: true,
         mobileNumber: true,
         type: true,
         password: true,
@@ -201,6 +206,23 @@ export default class UserRepository implements IUserRepository {
     });
   }
 
+  public async blackListRecoverToken(userId: string, tokenId: string) {
+    const result = await this.prisma.recoverCodes.updateMany({
+      where: {
+        userId,
+        token: tokenId,
+      },
+      data: {
+        is_blacklisted: true,
+      },
+    });
+
+    if (result) {
+      return true;
+    }
+    return false;
+  }
+
   public async getFullUserDataByEmailNoThrow(email: string) {
     return await this.prisma.user.findUnique({
       where: {
@@ -209,6 +231,7 @@ export default class UserRepository implements IUserRepository {
       select: {
         email: true,
         name: true,
+        photo: true,
         mobileNumber: true,
         type: true,
         password: true,
@@ -277,6 +300,7 @@ export default class UserRepository implements IUserRepository {
       select: {
         email: true,
         name: true,
+        photo: true,
         mobileNumber: true,
         password: true,
         addresses: {

@@ -1,5 +1,5 @@
 import { IsCpf } from '@decorators/isCpf';
-import { IsEmail, IsMobilePhone, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+import { IsEmail, IsMobilePhone, IsNotEmpty, IsOptional, IsString, Max, Min } from 'class-validator';
 import AddressEntity from './Address';
 
 export default class UserEntity {
@@ -10,6 +10,7 @@ export default class UserEntity {
     addresses,
     password,
     cpf,
+    photo,
   }: {
     email: string;
     name: string;
@@ -17,6 +18,7 @@ export default class UserEntity {
     addresses: AddressEntity[];
     password: string;
     cpf: string;
+    photo: string;
   }) {
     this.email = email;
     this.name = name;
@@ -24,6 +26,7 @@ export default class UserEntity {
     this.addresses = addresses;
     this.password = password;
     this.cpf = cpf;
+    this.photo = photo;
     Object.freeze(this);
   }
 
@@ -52,6 +55,9 @@ export default class UserEntity {
   @IsCpf()
   private readonly cpf: string;
 
+  @IsOptional()
+  private readonly photo: string;
+
   public getEmail(): string {
     return this.email;
   }
@@ -74,5 +80,9 @@ export default class UserEntity {
 
   public getCpf(): string {
     return this.cpf;
+  }
+
+  public getPhoto(): string {
+    return this.photo;
   }
 }

@@ -1,6 +1,6 @@
 import { IsCpf } from '@decorators/isCpf';
 import { Address } from '@prisma/client';
-import { IsEmail, IsMobilePhone, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsMobilePhone, IsNotEmpty, IsOptional } from 'class-validator';
 
 export interface AddressesDto {
   address: string;
@@ -25,6 +25,7 @@ export interface MyUserDataDto {
   name: string;
   cpf: string;
   mobileNumber: string;
+  photo: string;
   addresses: Address[];
 }
 
@@ -43,6 +44,7 @@ export class UserDto {
     addresses: AddressesDto[],
     password: string,
     cpf: string,
+    photo: string = '',
   ) {
     this.email = email;
     this.name = name;
@@ -50,6 +52,7 @@ export class UserDto {
     this.addresses = addresses;
     this.password = password;
     this.cpf = cpf;
+    this.photo = photo;
   }
 
   @IsEmail()
@@ -72,4 +75,7 @@ export class UserDto {
   @IsCpf({ message: 'Invalid CPF' })
   @IsNotEmpty()
   cpf: string;
+
+  @IsOptional()
+  photo: string;
 }

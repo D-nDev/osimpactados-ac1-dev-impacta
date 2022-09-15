@@ -8,11 +8,12 @@ export interface IUserRepository {
   getFullUserData: (id: string) => Promise<(UserDto & { type: string }) | null>;
   getFullUserDataByEmail: (
     email: string,
-  ) => Promise<UserDto & { validate_code: string | null; validate_expire_date: Date | null; type: string }>;
+  ) => Promise<UserDto & { id: string; validate_code: string | null; validate_expire_date: Date | null; type: string }>;
   getFullUserDataByEmailNoThrow: (
     email: string,
   ) => Promise<(UserDto & { validate_code: string | null; validate_expire_date: Date | null; type: string }) | null>;
   deleteUser: (id: string) => Promise<void>;
+  blackListRecoverToken: (userId: string, tokenId: string) => Promise<boolean>;
   getUserByEmail: (email: string) => Promise<{ email: string; name: string; type: string } | null>;
   updateValidationCode: (email: string, code: string | null, expire: Date | null) => Promise<void>;
   getUserValidateToken: (email: string) => Promise<{ token: string; expireDate: Date | null } | null>;

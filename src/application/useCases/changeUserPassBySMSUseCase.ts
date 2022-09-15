@@ -1,5 +1,5 @@
 import UnknownErrorException from '@shared/errors/UnknownError';
-import { bcryptEncoder } from '../ports/bcrypt';
+import { IHashAdapter } from '../ports/IHashAdapter';
 import { ChangePassDtoSMS } from '../ports/dtos/changePassDtoSMS';
 import { IDateAdapter } from '../ports/IDateAdapter';
 import { useCase } from '../ports/useCase';
@@ -8,18 +8,22 @@ import InvalidRecoverTokenException from './errors/InvalidRecoverToken';
 import RecoverTokenExpired from './errors/RecoverTokenExpired';
 import RecoverTokenNotFoundException from './errors/RecoverTokenNotFound';
 import UserNotFoundException from './errors/UserNotFound';
+import BlackListedRecoverTokenException from './errors/BlackListRecoverToken';
 
 export default class ChangeUserPassSMSUseCase implements useCase {
   constructor(
     private readonly userRepo: IUserRepository,
     private readonly dateMoment: IDateAdapter,
-    private readonly encoder: bcryptEncoder,
+    private readonly encoder: IHashAdapter,
   ) {}
 
   async execute(inputDto: ChangePassDtoSMS): Promise<boolean | null> {
     const tokenexists = await this.userRepo.getUserRecoverTokenByNumber(inputDto.mobileNumber);
 
     if (tokenexists) {
+      if (tokenexists.is_blacklisted) {
+        throw new BlackListedRecoverTokenException('INVALID_TOKEN');
+      }
       if (tokenexists?.token !== inputDto.token) {
         throw new InvalidRecoverTokenException('INVALID_TOKEN');
       } else if (this.dateMoment.compareWithCurrentUTCDate(new Date(tokenexists.expires_at).toISOString())) {

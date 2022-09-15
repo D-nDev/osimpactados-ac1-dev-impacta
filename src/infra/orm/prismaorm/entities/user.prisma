@@ -21,6 +21,7 @@ model User {
   addresses            Address[]
   password             String
   cpf                  String
+  photo                String
   type                 userType      @default(USER)
   validate_code        String?
   validate_expire_date DateTime?
