@@ -1,3 +1,4 @@
+import { healthCheckControllerFactory } from '@app/main/factories/GetHealthCheckControllerFactory';
 import { changeUserPassSMSControllerFactory } from '@main/factories/ChangeUserPassSMSControllerFactory';
 import { reSendRecoverEmailControllerFactory } from '@main/factories/ReSendRecoverEmailControllerFactory';
 import { reSendRecoverSMSControllerFactory } from '@main/factories/ReSendRecoverSMSControllerFactory';
@@ -30,5 +31,6 @@ export default class PublicUserRoutes {
     this.router.post('/user/resendvalidationemail', adaptRoute(reSendValidationEmailControllerFactory()));
     this.router.post('/user/resendrecoveremail', adaptRoute(reSendRecoverEmailControllerFactory()));
     this.router.post('/user/resendrecoversms', adaptRoute(reSendRecoverSMSControllerFactory()));
+    this.router.get('/health', adaptRoute(healthCheckControllerFactory()));
   }
 }
