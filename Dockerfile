@@ -11,7 +11,6 @@ RUN apt-get install -y python3 make g++\
 RUN apt-get install -y git openssl
 
 RUN npm i --verbose
-RUN npm run prepareprisma:docker
 
 COPY . .
 

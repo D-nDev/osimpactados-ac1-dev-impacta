@@ -9,9 +9,8 @@
     "build": "npx tsc",
     "build:docker:dev": "npx prisma migrate dev --name init --schema=./src/infra/orm/prismaorm/entities/user.prisma && npm run dev",
     "prepareprisma": "npx prisma migrate dev --name init --schema=./src/infra/orm/prismaorm/entities/user.prisma",
-    "prepareprisma:docker": "npx prisma generate --schema=/usr/app/src/infra/orm/prismaorm/entities/user.prisma",
     "start": "node -r module-alias/register dist/server.js",
-    "prod": "npx tsc && npm run start"
+    "prod": "npm run prepareprisma && npx tsc && npm run start"
   },
   "author": "Os impactados",
   "license": "MIT",
