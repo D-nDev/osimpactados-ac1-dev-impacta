@@ -8,7 +8,7 @@ import {
   momentAdapterInstance,
   pinoAdapterInstance,
   validatorAdapterInstance,
-} from '@app/shared/container';
+} from '@shared/container';
 
 export const validateEstablishmentControllerFactory = (): BaseController => {
   const useCase = new ValidateEstablishmentUseCase(

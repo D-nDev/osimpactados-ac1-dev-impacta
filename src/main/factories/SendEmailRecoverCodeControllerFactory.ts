@@ -7,7 +7,7 @@ import {
   ioredisAdapterInstance,
   momentAdapterInstance,
   pinoAdapterInstance,
-} from '@app/shared/container';
+} from '@shared/container';
 
 export const sendEmailRecoverCodeControllerFactory = (): BaseController => {
   const useCase = new SendRecoverEmailUseCase(

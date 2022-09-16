@@ -4,7 +4,7 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, created, unauthorized, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
-import { CreateProductErrorCodes } from '@app/shared/enums/CreateProductErrorCodes';
+import { CreateProductErrorCodes } from '@shared/enums/CreateProductErrorCodes';
 import { IValidator } from './contracts/validator';
 
 export default class CreateProductController implements BaseController {

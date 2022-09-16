@@ -4,7 +4,7 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { IValidator } from './contracts/validator';
-import { ChangePassDtoEmail } from '@app/application/ports/dtos/changePassDtoEmail';
+import { ChangePassDtoEmail } from '@application/ports/dtos/changePassDtoEmail';
 import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
 import { RecoverEstablishmentPassErrorCodes } from '@shared/enums/RecoverEstablishmentPassErrorCodes';
 

@@ -6,7 +6,7 @@ import { HttpResponse } from './contracts/httpResponse';
 import { IValidator } from './contracts/validator';
 import { badRequest, created, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
-import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
+import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
 
 export default class CreateEstablishmentController implements BaseController {
   constructor(

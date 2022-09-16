@@ -4,7 +4,7 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { IValidator } from './contracts/validator';
-import { ValidateEstablishmentDto } from '@app/application/ports/dtos/validateEstablishmentDto';
+import { ValidateEstablishmentDto } from '@application/ports/dtos/validateEstablishmentDto';
 import { ValidateEstablishmentErrorCodes } from '@shared/enums/ValidateEstablishmentErrorCodes';
 import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
 

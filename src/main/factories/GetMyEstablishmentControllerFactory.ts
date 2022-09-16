@@ -1,7 +1,7 @@
 import GetMyEstablishmentUseCase from '@usecases/getMyEstablishmentUseCase';
 import GetMyEstablishmentController from '@presentation/controllers/GetMyEstablishmentController';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-import { establishmentRepositoryInstance, jwtAdapterInstance, pinoAdapterInstance } from '@app/shared/container';
+import { establishmentRepositoryInstance, jwtAdapterInstance, pinoAdapterInstance } from '@shared/container';
 
 export const getMyEstablishmentControllerFactory = (): BaseController => {
   const useCase = new GetMyEstablishmentUseCase(establishmentRepositoryInstance, jwtAdapterInstance);

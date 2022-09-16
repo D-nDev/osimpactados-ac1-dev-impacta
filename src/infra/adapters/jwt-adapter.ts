@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { singleton } from 'tsyringe';
-import { ITokenAdapter } from '@app/application/ports/ITokenAdapter';
+import { ITokenAdapter } from '@application/ports/ITokenAdapter';
 import { JwtPayload, sign, verify } from 'jsonwebtoken';
 import InvalidJwtException from '../errors/InvalidJwtException';
 

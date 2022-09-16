@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { singleton } from 'tsyringe';
-import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
+import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
 import pino, { P } from 'pino';
 
 @singleton()

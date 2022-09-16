@@ -1,7 +1,7 @@
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
-import { establishmentRepositoryInstance } from '@app/shared/container';
-import BlackListRecoverTokenUseCase from '@app/application/useCases/blackListRecoverTokenUseCase';
-import BlackListRecoverTokenController from '@app/presentation/controllers/blackListRecoverTokenController';
+import { establishmentRepositoryInstance } from '@shared/container';
+import BlackListRecoverTokenUseCase from '@application/useCases/blackListRecoverTokenUseCase';
+import BlackListRecoverTokenController from '@presentation/controllers/blackListRecoverTokenController';
 
 export const blackListRecoverTokenControllerFactory = (): BaseController => {
   const useCase = new BlackListRecoverTokenUseCase(establishmentRepositoryInstance);

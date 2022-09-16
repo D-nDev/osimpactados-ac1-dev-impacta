@@ -1,9 +1,9 @@
-import { changeEstablishmentPassEmailControllerFactory } from '@app/main/factories/ChangeEstablishmentPassEmailControllerFactory';
-import { changeEstablishmentPassSMSControllerFactory } from '@app/main/factories/ChangeEstablishmentPassSMSControllerFactory';
-import { healthCheckControllerFactory } from '@app/main/factories/HealthCheckControllerFactory';
-import { reSendRecoverEmailControllerFactory } from '@app/main/factories/ReSendRecoverEmailControllerFactory';
-import { reSendRecoverSMSControllerFactory } from '@app/main/factories/ReSendRecoverSMSControllerFactory';
-import { reSendValidationEmailControllerFactory } from '@app/main/factories/ReSendValidationEmailControllerFactory';
+import { changeEstablishmentPassEmailControllerFactory } from '@main/factories/ChangeEstablishmentPassEmailControllerFactory';
+import { changeEstablishmentPassSMSControllerFactory } from '@main/factories/ChangeEstablishmentPassSMSControllerFactory';
+import { healthCheckControllerFactory } from '@main/factories/HealthCheckControllerFactory';
+import { reSendRecoverEmailControllerFactory } from '@main/factories/ReSendRecoverEmailControllerFactory';
+import { reSendRecoverSMSControllerFactory } from '@main/factories/ReSendRecoverSMSControllerFactory';
+import { reSendValidationEmailControllerFactory } from '@main/factories/ReSendValidationEmailControllerFactory';
 import { Router } from 'express';
 import { adaptRoute } from '../../adapters/express-router-adapter';
 import { createEstablishmentControllerFactory } from '../../factories/CreateEstablishmentControllerFactory';

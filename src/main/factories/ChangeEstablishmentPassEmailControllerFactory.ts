@@ -1,13 +1,13 @@
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
 import ChangeEstablishmentPassByEmailUseCase from '@usecases/changeEstablishmentPassByEmailUseCase';
-import ChangeEstablishmentPassEmailController from '@app/presentation/controllers/ChangeEstablishmentPassEmailController';
+import ChangeEstablishmentPassEmailController from '@presentation/controllers/ChangeEstablishmentPassEmailController';
 import {
   bcryptAdapterInstance,
   establishmentRepositoryInstance,
   momentAdapterInstance,
   pinoAdapterInstance,
   validatorAdapterInstance,
-} from '@app/shared/container';
+} from '@shared/container';
 
 export const changeEstablishmentPassEmailControllerFactory = (): BaseController => {
   const emailUseCase = new ChangeEstablishmentPassByEmailUseCase(

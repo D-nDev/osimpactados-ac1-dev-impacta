@@ -6,7 +6,7 @@ import {
   establishmentRepositoryInstance,
   jwtAdapterInstance,
   pinoAdapterInstance,
-} from '@app/shared/container';
+} from '@shared/container';
 
 export const loginEstablishmentControllerFactory = (): BaseController => {
   const useCase = new LoginEstablishmentUseCase(

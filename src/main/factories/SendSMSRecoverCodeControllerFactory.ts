@@ -7,7 +7,7 @@ import {
   momentAdapterInstance,
   pinoAdapterInstance,
   twilioAdapterInstance,
-} from '@app/shared/container';
+} from '@shared/container';
 
 export const sendSMSRecoverCodeControllerFactory = (): BaseController => {
   const useCase = new SendRecoverSMSUseCase(

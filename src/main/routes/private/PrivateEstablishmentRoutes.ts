@@ -3,10 +3,10 @@ import { adaptRoute } from '../../adapters/express-router-adapter';
 import { createProductControllerFactory } from '../../factories/CreateProductControllerFactory';
 import { deleteMyEstablishmentControllerFactory } from '../../factories/DeleteMyEstablishmentControllerFactory';
 import { getMyEstablishmentControllerFactory } from '../../factories/GetMyEstablishmentControllerFactory';
-import { adaptMiddleware } from '@app/main/adapters/express-middleware-adapter';
-import { isAdminMiddlewareInstance, isAuthUserMiddlewareInstance } from '@app/shared/container';
-import { adaptMulter } from '@app/presentation/middlewares/MulterTreeFilesMiddleware';
-import { blackListRecoverTokenControllerFactory } from '@app/main/factories/BlackListRecoverTokenControllerFactory';
+import { adaptMiddleware } from '@main/adapters/express-middleware-adapter';
+import { isAdminMiddlewareInstance, isAuthUserMiddlewareInstance } from '@shared/container';
+import { adaptMulter } from '@presentation/middlewares/MulterTreeFilesMiddleware';
+import { blackListRecoverTokenControllerFactory } from '@main/factories/BlackListRecoverTokenControllerFactory';
 
 export default class PrivateEstablishmentRoutes {
   router: Router;

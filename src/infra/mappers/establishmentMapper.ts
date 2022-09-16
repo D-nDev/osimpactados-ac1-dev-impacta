@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { singleton } from 'tsyringe';
-import { IMapperAdapter } from '@app/application/ports/IMapperAdapter';
+import { IMapperAdapter } from '@application/ports/IMapperAdapter';
 import SubsidiaryEntity from '@domain/entities/Subsidiary';
 import EstablishmentEntity from '@domain/entities/Establishment';
 import { SubsidiaryDto, EstablishmentDto } from '@application/ports/dtos/establishmentDto';
