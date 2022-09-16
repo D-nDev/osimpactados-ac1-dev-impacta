@@ -9,6 +9,7 @@
     "build": "npx tsc",
     "build:docker:dev": "npx prisma generate --schema=./src/infra/orm/prismaorm/entities/establishment.prisma && npm run dev",
     "prepareprisma": "npx prisma generate --schema=./src/infra/orm/prismaorm/entities/establishment.prisma",
+    "prepareprism:docker": "npx prisma generate --schema=/usr/app/src/infra/orm/prismaorm/entities/establishment.prisma",
     "start": "node -r module-alias/register dist/server.js",
     "prod": "npx tsc && npm run start"
   },
