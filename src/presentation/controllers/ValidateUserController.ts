@@ -4,7 +4,7 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { IValidator } from './contracts/validator';
-import { ValidateUserDto } from '@app/application/ports/dtos/validateUserDto';
+import { ValidateUserDto } from '@application/ports/dtos/validateUserDto';
 import { ValidateUserErrorCodes } from '@shared/enums/ValidateUserErrorCodes';
 import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
 

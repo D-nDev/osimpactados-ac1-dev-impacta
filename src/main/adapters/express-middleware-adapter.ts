@@ -1,4 +1,4 @@
-import { BaseMiddleware } from '@app/presentation/middlewares/contracts/BaseMiddleware';
+import { BaseMiddleware } from '@presentation/middlewares/contracts/BaseMiddleware';
 import { NextFunction, Request, Response } from 'express';
 
 export const adaptMiddleware = (middleware: BaseMiddleware) => {

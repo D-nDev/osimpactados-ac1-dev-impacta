@@ -1,4 +1,4 @@
-import { pinoAdapterInstance } from '@app/shared/container';
+import { pinoAdapterInstance } from '@shared/container';
 import { ITokenAdapter } from '@application/ports/ITokenAdapter';
 import { Request } from 'express';
 import { noContent, unauthorized } from '../controllers/helpers/httpHelper';

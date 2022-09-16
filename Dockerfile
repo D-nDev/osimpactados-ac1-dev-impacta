@@ -15,4 +15,4 @@ RUN npm i --verbose
 COPY . .
 
 EXPOSE 3001
-CMD [ "npm", "run", "build:docker:dev" ]
+CMD [ "npm", "run", "prod" ]

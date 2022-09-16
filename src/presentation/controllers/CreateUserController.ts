@@ -1,4 +1,4 @@
-import { UserDto } from '@app/application/ports/dtos/userDto';
+import { UserDto } from '@application/ports/dtos/userDto';
 import { useCase } from '@application/ports/useCase';
 import { CreateUserErrorCodes } from '@shared/enums/CreateUserErrorCodes';
 import { BaseController } from './contracts/BaseController';

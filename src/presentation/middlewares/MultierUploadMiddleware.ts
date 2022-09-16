@@ -1,4 +1,4 @@
-import { pinoAdapterInstance } from '@app/shared/container';
+import { pinoAdapterInstance } from '@shared/container';
 import { RequestHandler } from 'express';
 import multer from 'multer';
 

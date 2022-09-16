@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { singleton } from 'tsyringe';
-import { IHashAdapter } from '@app/application/ports/IHashAdapter';
+import { IHashAdapter } from '@application/ports/IHashAdapter';
 import * as bcrypt from 'bcrypt';
 
 @singleton()

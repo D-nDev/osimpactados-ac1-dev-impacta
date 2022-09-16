@@ -15,7 +15,7 @@ import ValidatorAdapter from '@infra/adapters/classValidator-adapter';
 import IsAdminMiddleware from '@presentation/middlewares/isAdminMiddleware';
 import AzureBlobAdapter from '@infra/adapters/azureblob-adapter';
 import IsAuthUserMiddleware from '@presentation/middlewares/isAuthUserMiddleware';
-import UUIDProvider from '@app/infra/adapters/uuid-adapter';
+import UUIDProvider from '@infra/adapters/uuid-adapter';
 
 const prisma = new PrismaClient();
 

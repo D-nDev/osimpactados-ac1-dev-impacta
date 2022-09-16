@@ -1,4 +1,4 @@
-import { healthCheckControllerFactory } from '@app/main/factories/GetHealthCheckControllerFactory';
+import { healthCheckControllerFactory } from '@main/factories/GetHealthCheckControllerFactory';
 import { changeUserPassSMSControllerFactory } from '@main/factories/ChangeUserPassSMSControllerFactory';
 import { reSendRecoverEmailControllerFactory } from '@main/factories/ReSendRecoverEmailControllerFactory';
 import { reSendRecoverSMSControllerFactory } from '@main/factories/ReSendRecoverSMSControllerFactory';

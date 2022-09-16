@@ -1,6 +1,6 @@
-import { adaptMiddleware } from '@app/main/adapters/express-middleware-adapter';
-import { blackListRecoverTokenControllerFactory } from '@app/main/factories/BlackListRecoverTokenControllerFactory';
-import { isAdminMiddlewareInstance, isAuthUserMiddlewareInstance } from '@app/shared/container';
+import { adaptMiddleware } from '@main/adapters/express-middleware-adapter';
+import { blackListRecoverTokenControllerFactory } from '@main/factories/BlackListRecoverTokenControllerFactory';
+import { isAdminMiddlewareInstance, isAuthUserMiddlewareInstance } from '@shared/container';
 import { Router } from 'express';
 import { adaptRoute } from '../../adapters/express-router-adapter';
 import { deleteMyUserControllerFactory } from '../../factories/DeleteMyUserControllerFactory';

@@ -7,9 +7,6 @@ import cookieParser from 'cookie-parser';
 import PublicUserRoutes from '../routes/public/PublicUserRoutes';
 import PrivateUserRoutes from '../routes/private/PrivateUserRoutes';
 dotenv.config();
-if (process.env.NODE_ENV === 'production') {
-  require('module-alias/register');
-}
 
 const app = express();
 app.use(compression());
