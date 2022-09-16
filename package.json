@@ -10,7 +10,7 @@
     "build:docker:dev": "npx prisma generate --schema=./src/infra/orm/prismaorm/entities/establishment.prisma && npm run dev",
     "prepareprisma": "npx prisma generate --schema=./src/infra/orm/prismaorm/entities/establishment.prisma",
     "start": "node -r module-alias/register dist/server.js",
-    "prod": "npx tsc && npm run prepareprisma && npm run start"
+    "prod": "npx tsc && npm run start"
   },
   "author": "Os impactados",
   "license": "MIT",
