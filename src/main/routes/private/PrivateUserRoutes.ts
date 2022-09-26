@@ -1,3 +1,6 @@
+import { create2TokenControllerFactory } from '@app/main/factories/Create2FaTokenControllerFactory';
+import { delete2TokenControllerFactory } from '@app/main/factories/Delete2FaTokenControllerFactory';
+import { validate2TokenControllerFactory } from '@app/main/factories/Validate2FaTokenControllerFactory';
 import { adaptMiddleware } from '@main/adapters/express-middleware-adapter';
 import { blackListRecoverTokenControllerFactory } from '@main/factories/BlackListRecoverTokenControllerFactory';
 import { isAdminMiddlewareInstance, isAuthUserMiddlewareInstance } from '@shared/container';
@@ -25,6 +28,21 @@ export default class PrivateUserRoutes {
       '/blacklist/recovertoken',
       adaptMiddleware(isAdminMiddlewareInstance),
       adaptRoute(blackListRecoverTokenControllerFactory()),
+    );
+    this.router.post(
+      '/create2fatoken',
+      adaptMiddleware(isAuthUserMiddlewareInstance),
+      adaptRoute(create2TokenControllerFactory()),
+    );
+    this.router.post(
+      '/validate2fatoken',
+      adaptMiddleware(isAuthUserMiddlewareInstance),
+      adaptRoute(validate2TokenControllerFactory()),
+    );
+    this.router.delete(
+      '/delete2fatoken',
+      adaptMiddleware(isAuthUserMiddlewareInstance),
+      adaptRoute(delete2TokenControllerFactory()),
     );
   }
 }

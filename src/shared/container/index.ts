@@ -16,6 +16,7 @@ import IsAdminMiddleware from '@presentation/middlewares/isAdminMiddleware';
 import AzureBlobAdapter from '@infra/adapters/azureblob-adapter';
 import IsAuthUserMiddleware from '@presentation/middlewares/isAuthUserMiddleware';
 import UUIDProvider from '@infra/adapters/uuid-adapter';
+import { TwoFactorAdapter } from '@infra/adapters/2fa-adapter';
 
 const prisma = new PrismaClient();
 
@@ -31,6 +32,7 @@ export const twilioAdapterInstance = container.resolve(TwilioAdapter);
 export const mapperAdapterInstance = container.resolve(Mapper);
 export const validatorAdapterInstance = container.resolve(ValidatorAdapter);
 export const azureblobAdapterInstance = container.resolve(AzureBlobAdapter);
+export const twofactorAdapterInstance = container.resolve(TwoFactorAdapter);
 const userRepositoryRegisterInstance = container.registerInstance('UserRepository', userRepositoryClass);
 export const userRepositoryInstance = userRepositoryRegisterInstance.resolve<IUserRepository>('UserRepository');
 

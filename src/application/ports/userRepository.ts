@@ -6,12 +6,26 @@ export interface IUserRepository {
   getUser: (id: string) => Promise<UserWithoutPasswordDto | null>;
   getUsers: () => Promise<UserWithoutPasswordDto[] | []>;
   getFullUserData: (id: string) => Promise<(UserDto & { type: string }) | null>;
-  getFullUserDataByEmail: (
-    email: string,
-  ) => Promise<UserDto & { id: string; validate_code: string | null; validate_expire_date: Date | null; type: string }>;
-  getFullUserDataByEmailNoThrow: (
-    email: string,
-  ) => Promise<(UserDto & { validate_code: string | null; validate_expire_date: Date | null; type: string }) | null>;
+  getFullUserDataByEmail: (email: string) => Promise<
+    UserDto & {
+      id: string;
+      validate_code: string | null;
+      validate_expire_date: Date | null;
+      type: string;
+      twofactor_enabled: boolean;
+      twofactor_secret: string | null;
+    }
+  >;
+  getFullUserDataByEmailNoThrow: (email: string) => Promise<
+    | (UserDto & {
+        validate_code: string | null;
+        validate_expire_date: Date | null;
+        type: string;
+        twofactor_enabled: boolean;
+        twofactor_secret: string | null;
+      })
+    | null
+  >;
   deleteUser: (id: string) => Promise<void>;
   blackListRecoverToken: (userId: string, tokenId: string) => Promise<boolean>;
   getUserByEmail: (email: string) => Promise<{ email: string; name: string; type: string } | null>;
@@ -34,4 +48,6 @@ export interface IUserRepository {
   getUserRecoverTokenByNumber: (mobileNumber: string) => Promise<RecoverCodes | null>;
   updateRecoverCodeById: (id: string, token: string, expires: Date) => Promise<boolean>;
   createRecoverCodeById: (id: string, token: string, expires: Date) => Promise<boolean>;
+  createTwoFactorSecret: (email: string, secret: string) => Promise<boolean>;
+  deleteTwoFactorSecret: (email: string) => Promise<boolean>;
 }

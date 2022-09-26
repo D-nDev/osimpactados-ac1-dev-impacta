@@ -189,6 +189,8 @@ export default class UserRepository implements IUserRepository {
         type: true,
         password: true,
         validate_code: true,
+        twofactor_enabled: true,
+        twofactor_secret: true,
         validate_expire_date: true,
         addresses: {
           select: {
@@ -236,6 +238,8 @@ export default class UserRepository implements IUserRepository {
         type: true,
         password: true,
         validate_code: true,
+        twofactor_enabled: true,
+        twofactor_secret: true,
         validate_expire_date: true,
         addresses: {
           select: {
@@ -445,5 +449,39 @@ export default class UserRepository implements IUserRepository {
       return null;
     }
     return null;
+  }
+
+  public async createTwoFactorSecret(email: string, secret: string) {
+    const result = await this.prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        twofactor_enabled: true,
+        twofactor_secret: secret,
+      },
+    });
+
+    if (result) {
+      return true;
+    }
+    return false;
+  }
+
+  public async deleteTwoFactorSecret(email: string) {
+    const result = await this.prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        twofactor_enabled: false,
+        twofactor_secret: null,
+      },
+    });
+
+    if (result) {
+      return true;
+    }
+    return false;
   }
 }

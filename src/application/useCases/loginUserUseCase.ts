@@ -5,6 +5,7 @@ import { useCase } from '../ports/useCase';
 import { IUserRepository } from '../ports/userRepository';
 import InvalidPasswordException from './errors/InvalidPassword';
 import UserNotFoundException from './errors/UserNotFound';
+import RequiredTwoFactorTokenException from './errors/RequiredTwoFactorToken';
 
 export default class LoginUserUseCase implements useCase {
   constructor(
@@ -20,6 +21,9 @@ export default class LoginUserUseCase implements useCase {
       if (!userExists.validate_code && userExists.validate_expire_date == null) {
         const checkpw = await this.encoder.compare(inputDto.password, userExists.password);
         if (checkpw) {
+          if (userExists.twofactor_enabled && userExists.twofactor_secret) {
+            throw new RequiredTwoFactorTokenException('REQUIRE_TWOFACTOR_CODE');
+          }
           const token = this.jwtToken.sign({
             id: userExists.id,
             email: userExists.email,
