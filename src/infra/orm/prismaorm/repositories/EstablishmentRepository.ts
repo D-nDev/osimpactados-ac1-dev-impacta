@@ -201,6 +201,8 @@ export default class EstablishmentRepository implements IEstablishmentRepository
         validate_code: true,
         validate_expire_date: true,
         type: true,
+        twofactor_enabled: true,
+        twofactor_secret: true,
         subsidiaries: {
           select: {
             name: true,
@@ -495,5 +497,38 @@ export default class EstablishmentRepository implements IEstablishmentRepository
     } catch (err) {
       return null;
     }
+  }
+
+  public async createTwoFactorSecret(email: string, secret: string) {
+    const result = await this.prisma.establishment.update({
+      where: {
+        email,
+      },
+      data: {
+        twofactor_enabled: true,
+        twofactor_secret: secret,
+      },
+    });
+
+    if (result) {
+      return true;
+    }
+    return false;
+  }
+  public async deleteTwoFactorSecret(email: string) {
+    const result = await this.prisma.establishment.update({
+      where: {
+        email,
+      },
+      data: {
+        twofactor_enabled: false,
+        twofactor_secret: null,
+      },
+    });
+
+    if (result) {
+      return true;
+    }
+    return false;
   }
 }

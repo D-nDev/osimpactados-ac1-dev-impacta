@@ -6,14 +6,25 @@ import {
   establishmentRepositoryInstance,
   jwtAdapterInstance,
   pinoAdapterInstance,
+  twofactorAdapterInstance,
 } from '@shared/container';
 
-export const loginEstablishmentControllerFactory = (): BaseController => {
-  const useCase = new LoginEstablishmentUseCase(
-    establishmentRepositoryInstance,
-    bcryptAdapterInstance,
-    jwtAdapterInstance,
-  );
+import { Request } from 'express';
+import LoginEstablishment2FAUseCase from '@app/application/useCases/loginEstablishment2FAUseCase';
+
+export const loginEstablishmentControllerFactory = (req: Request): BaseController => {
+  let useCase: any;
+
+  if (req.body.code) {
+    useCase = new LoginEstablishment2FAUseCase(
+      establishmentRepositoryInstance,
+      bcryptAdapterInstance,
+      jwtAdapterInstance,
+      twofactorAdapterInstance,
+    );
+  } else {
+    useCase = new LoginEstablishmentUseCase(establishmentRepositoryInstance, bcryptAdapterInstance, jwtAdapterInstance);
+  }
 
   const controller = new LoginEstablishmentController(useCase, pinoAdapterInstance);
 

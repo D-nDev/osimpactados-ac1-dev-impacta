@@ -5,9 +5,8 @@ import { reSendRecoverEmailControllerFactory } from '@main/factories/ReSendRecov
 import { reSendRecoverSMSControllerFactory } from '@main/factories/ReSendRecoverSMSControllerFactory';
 import { reSendValidationEmailControllerFactory } from '@main/factories/ReSendValidationEmailControllerFactory';
 import { Router } from 'express';
-import { adaptRoute } from '../../adapters/express-router-adapter';
+import { adaptRoute, adaptLoginRoute } from '../../adapters/express-router-adapter';
 import { createEstablishmentControllerFactory } from '../../factories/CreateEstablishmentControllerFactory';
-import { loginEstablishmentControllerFactory } from '../../factories/LoginEstablishmentControllerFactory';
 import { sendEmailRecoverCodeControllerFactory } from '../../factories/SendEmailRecoverCodeControllerFactory';
 import { sendSMSRecoverCodeControllerFactory } from '../../factories/SendSMSRecoverCodeControllerFactory';
 import { validateEstablishmentControllerFactory } from '../../factories/ValidateEstablishmentControllerFactory';
@@ -22,7 +21,7 @@ export default class PublicEstablishmentRoutes {
 
   public buildRoutes() {
     this.router.post('/create', adaptRoute(createEstablishmentControllerFactory()));
-    this.router.post('/login', adaptRoute(loginEstablishmentControllerFactory()));
+    this.router.post('/login', adaptLoginRoute());
     this.router.post('/validateEstablishment', adaptRoute(validateEstablishmentControllerFactory()));
     this.router.post('/requestpass/sms', adaptRoute(sendSMSRecoverCodeControllerFactory()));
     this.router.post('/requestpass/email', adaptRoute(sendEmailRecoverCodeControllerFactory()));

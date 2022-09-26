@@ -14,10 +14,15 @@ export interface IEstablishmentRepository {
   getEstablishments: () => Promise<EstablishmentWithoutPasswordDto[] | []>;
   getFullEstablishmentData: (id: string) => Promise<(EstablishmentDto & { type: string }) | null>;
   getSubsidiaryByEstablishmentId: (establishmentId: string) => Promise<Subsidiary | null>;
-  getFullEstablishmentDataByEmail: (
-    email: string,
-  ) => Promise<
-    | (EstablishmentDto & { validate_code: string | null; validate_expire_date: Date | null; type: string; id: string })
+  getFullEstablishmentDataByEmail: (email: string) => Promise<
+    | (EstablishmentDto & {
+        validate_code: string | null;
+        validate_expire_date: Date | null;
+        type: string;
+        id: string;
+        twofactor_enabled: boolean;
+        twofactor_secret: string | null;
+      })
     | null
   >;
   getFullEstablishmentDataByEmailNoThrow: (
@@ -52,4 +57,6 @@ export interface IEstablishmentRepository {
   ) => Promise<{
     products: Products[];
   } | null>;
+  createTwoFactorSecret: (email: string, secret: string) => Promise<boolean>;
+  deleteTwoFactorSecret: (email: string) => Promise<boolean>;
 }

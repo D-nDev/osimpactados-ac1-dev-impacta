@@ -7,6 +7,9 @@ import { adaptMiddleware } from '@main/adapters/express-middleware-adapter';
 import { isAdminMiddlewareInstance, isAuthUserMiddlewareInstance } from '@shared/container';
 import { adaptMulter } from '@presentation/middlewares/MulterTreeFilesMiddleware';
 import { blackListRecoverTokenControllerFactory } from '@main/factories/BlackListRecoverTokenControllerFactory';
+import { create2TokenControllerFactory } from '@app/main/factories/Create2FaTokenControllerFactory';
+import { validate2TokenControllerFactory } from '@app/main/factories/Validate2FaTokenControllerFactory';
+import { delete2TokenControllerFactory } from '@app/main/factories/Delete2FaTokenControllerFactory';
 
 export default class PrivateEstablishmentRoutes {
   router: Router;
@@ -37,6 +40,21 @@ export default class PrivateEstablishmentRoutes {
       '/blacklist/recovertoken',
       adaptMiddleware(isAdminMiddlewareInstance),
       adaptRoute(blackListRecoverTokenControllerFactory()),
+    );
+    this.router.post(
+      '/create2fatoken',
+      adaptMiddleware(isAuthUserMiddlewareInstance),
+      adaptRoute(create2TokenControllerFactory()),
+    );
+    this.router.post(
+      '/validate2fatoken',
+      adaptMiddleware(isAuthUserMiddlewareInstance),
+      adaptRoute(validate2TokenControllerFactory()),
+    );
+    this.router.delete(
+      '/delete2fatoken',
+      adaptMiddleware(isAuthUserMiddlewareInstance),
+      adaptRoute(delete2TokenControllerFactory()),
     );
   }
 }

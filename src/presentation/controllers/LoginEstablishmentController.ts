@@ -13,13 +13,15 @@ export default class LoginEstablishmentController implements BaseController {
     try {
       const [, hash]: any = request.headers.authorization?.split(' ');
 
+      const { code } = request.body;
+
       if (!hash) {
         return badRequest('Please provide a login basic auth token');
       }
 
       const [email, password] = Buffer.from(hash, 'base64').toString().split(':');
 
-      const execute = await this.useCase.execute({ email, password });
+      const execute = await this.useCase.execute({ email, password, code });
 
       return ok(execute);
     } catch (err: any) {

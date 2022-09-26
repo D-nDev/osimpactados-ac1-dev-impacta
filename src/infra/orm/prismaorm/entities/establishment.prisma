@@ -28,6 +28,8 @@ model Establishment {
   updated_at           DateTime          @default(now()) @updatedAt
   deleted_at           DateTime?
   RecoverCodes         RecoverCodes?
+  twofactor_enabled    Boolean           @default(false)
+  twofactor_secret     String?
 }
 
 model RecoverCodes {

@@ -1,6 +1,7 @@
 import { HttpResponse } from '@presentation/controllers/contracts/httpResponse';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
 import { Request, Response } from 'express';
+import { loginEstablishmentControllerFactory } from '../factories/LoginEstablishmentControllerFactory';
 
 const timeout = async (): Promise<any> => {
   // eslint-disable-next-line promise/param-names
@@ -22,6 +23,33 @@ export const adaptRoute = (controller: BaseController) => {
       cookies: { ...(req.cookies || {}) },
       files: req.files ?? [],
     };
+    try {
+      const result = await Promise.race<HttpResponse | HttpResponse>([timeout(), controller.handle(request)]);
+      if (result.statusCode >= 200 && result.statusCode <= 299) {
+        res.status(result.statusCode).json(result.body);
+      } else {
+        res.status(result.statusCode).json({
+          statusCode: result.statusCode || 500,
+          error: result.body || 'Unknown error',
+        });
+      }
+    } catch (e: any) {
+      res.status(503).json({ error: 'Service Unavailable - Timeout' });
+    }
+  };
+};
+
+export const adaptLoginRoute = () => {
+  return async (req: Request, res: Response) => {
+    const request = {
+      body: { ...(req.body || {}) },
+      params: { ...(req.body || {}) },
+      query: { ...(req.query || {}) },
+      headers: { ...(req.headers || {}) },
+      cookies: { ...(req.cookies || {}) },
+      files: req.files ?? [],
+    };
+    const controller: BaseController = loginEstablishmentControllerFactory(req);
     try {
       const result = await Promise.race<HttpResponse | HttpResponse>([timeout(), controller.handle(request)]);
       if (result.statusCode >= 200 && result.statusCode <= 299) {
