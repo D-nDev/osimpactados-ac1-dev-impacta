@@ -1,7 +1,7 @@
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
 import { establishmentRepositoryInstance, jwtAdapterInstance, pinoAdapterInstance } from '@shared/container';
 import GetMyProductsUseCase from '@app/application/useCases/getMyProductsUseCase';
-import GetMyProductsController from '@app/presentation/controllers/GetmyProductsController';
+import GetMyProductsController from '@presentation/controllers/GetMyProductsController';
 
 export const getMyProductsControllerFactory = (): BaseController => {
   const useCase = new GetMyProductsUseCase(establishmentRepositoryInstance, jwtAdapterInstance);
