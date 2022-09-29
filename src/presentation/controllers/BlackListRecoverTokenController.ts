@@ -5,7 +5,7 @@ import { ok, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
 
-export default class BlackListRecoverTokenController implements BaseController {
+export class BlackListRecoverTokenController implements BaseController {
   constructor(private readonly useCase: useCase, private readonly logger: ILoggerAdapter) {}
 
   async handle(request: Request): Promise<HttpResponse> {
