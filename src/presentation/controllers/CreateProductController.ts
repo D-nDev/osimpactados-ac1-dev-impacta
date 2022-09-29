@@ -20,36 +20,35 @@ export default class CreateProductController implements BaseController {
       const { token } = request.cookies;
       const { subsidiaryId } = request.query;
       const photos = request.files;
+      if (!products) {
+        return badRequest('You should send at least one product');
+      }
+      if (!subsidiaryId) {
+        return badRequest('Please provide a subsidiaryId');
+      }
+      if (request.files?.length !== products.length) {
+        return badRequest('Each product should have a photo and vice versa');
+      }
+      for (let index = 0; index < products.length; index++) {
+        if (!products[index].name || !products[index].stock || !products[index].value) {
+          return badRequest('Each product should have name, stock and value');
+        }
+      }
 
-      if (token) {
-        if (!products) {
-          return badRequest('You should send at least one product');
-        }
-        if (!subsidiaryId) {
-          return badRequest('Please provide a subsidiaryId');
-        }
-        if (request.files?.length !== products.length) {
-          return badRequest('Each product should have a photo and vice versa');
-        }
-        for (let index = 0; index < products.length; index++) {
-          if (!products[index].name || !products[index].stock || !products[index].value) {
-            return badRequest('Each product should have name, stock and value');
-          }
-        }
+      const execute = await this.useCase.execute(
+        {
+          products: JSON.parse(JSON.stringify(request.body.products)),
+          subsidiaryId,
+          token,
+        },
+        photos,
+      );
 
-        const execute = await this.useCase.execute(
-          {
-            products: JSON.parse(JSON.stringify(request.body.products)),
-            subsidiaryId,
-            token,
-          },
-          photos,
-        );
-
+      if (execute) {
         return created(execute);
       }
 
-      return badRequest('Unauthorized');
+      return badRequest('Subsidiary not found');
     } catch (err: any) {
       this.logger.error('Cannot create product', err);
       const errorType = CreateProductErrorCodes[err.code || err.name || err.message];

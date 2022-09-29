@@ -4,6 +4,8 @@ import { PrismaClient, Products, RecoverCodes } from '@prisma/client';
 import { IEstablishmentRepository } from '@application/ports/establishmentRepository';
 import EstablishmentEntity from '@domain/entities/Establishment';
 import SubsidiaryEntity from '@domain/entities/Subsidiary';
+import { PatchProductDto } from '@application/ports/dtos/patchProductDto';
+import { CreateSubsidiaryDto } from '@application/ports/dtos/createSubsidiaryDto';
 
 @singleton()
 export default class EstablishmentRepository implements IEstablishmentRepository {
@@ -59,6 +61,17 @@ export default class EstablishmentRepository implements IEstablishmentRepository
       },
     });
     return { id: createEstablishment.id, email: createEstablishment.email };
+  }
+
+  public async createSubsidiary(establishmentId: string, productData: CreateSubsidiaryDto) {
+    const result = await this.prisma.subsidiary.create({
+      data: {
+        establishmentId,
+        ...productData,
+      },
+    });
+
+    return result;
   }
 
   public async overrideEstablishment(establishment: EstablishmentEntity) {
@@ -397,12 +410,14 @@ export default class EstablishmentRepository implements IEstablishmentRepository
     });
   }
 
-  public async getSubsidiaryByEstablishmentId(establishmentId: string) {
-    return await this.prisma.subsidiary.findUnique({
+  public async getSubsidiaryByEstablishmentId(establishmentId: string, id: string) {
+    const result = await this.prisma.subsidiary.findFirst({
       where: {
+        id,
         establishmentId,
       },
     });
+    return result;
   }
 
   public async updateRecoverCodeById(id: string, token: string, expires: Date): Promise<boolean> {
@@ -497,6 +512,91 @@ export default class EstablishmentRepository implements IEstablishmentRepository
     } catch (err) {
       return null;
     }
+  }
+
+  public async updateProduct(productId: string, productData: PatchProductDto, subsidiaryId: string) {
+    const result = await this.prisma.subsidiary.updateMany({
+      where: {
+        id: subsidiaryId,
+      },
+      data: {
+        products: {
+          updateMany: {
+            where: {
+              id: productId,
+            },
+            data: {
+              ...productData,
+            },
+          },
+        },
+      },
+    });
+    if (result.count >= 1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public async deleteProduct(establishmentId: string, subsidiaryId: string, productId: string) {
+    const result = await this.prisma.subsidiary.updateMany({
+      where: {
+        establishmentId,
+        id: subsidiaryId,
+        products: {
+          some: {
+            id: productId,
+          },
+        },
+      },
+      data: {
+        products: {
+          deleteMany: {
+            where: {
+              id: productId,
+            },
+          },
+        },
+      },
+    });
+    if (result.count >= 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public async getProductsBySubsidiaryId(subsidiaryId: string) {
+    const result = await this.prisma.subsidiary.findMany({
+      where: {
+        id: subsidiaryId,
+      },
+      select: {
+        products: true,
+      },
+    });
+    return result;
+  }
+
+  public async getProductBySubsidiaryId(subsidiaryId: string, productId: string) {
+    const result = await this.prisma.subsidiary.findFirst({
+      where: {
+        id: subsidiaryId,
+        products: {
+          some: {
+            id: productId,
+          },
+        },
+      },
+      select: {
+        products: true,
+      },
+    });
+
+    const product = result?.products.find((product) => product.id === productId);
+
+    return product ?? null;
   }
 
   public async createTwoFactorSecret(email: string, secret: string) {

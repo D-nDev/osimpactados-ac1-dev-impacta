@@ -1,30 +1,22 @@
-import { HttpResponse } from '@presentation/controllers/contracts/httpResponse';
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
 import { Request, Response } from 'express';
 import { loginEstablishmentControllerFactory } from '../factories/LoginEstablishmentControllerFactory';
-
-const timeout = async (): Promise<any> => {
-  // eslint-disable-next-line promise/param-names
-  return await new Promise((_, reject) => {
-    setTimeout(() => {
-      // eslint-disable-next-line prefer-promise-reject-errors
-      reject();
-    }, (process.env.TIMEOUT as unknown as number) ?? 120000);
-  });
-};
+import opentelemetry from '@opentelemetry/api';
 
 export const adaptRoute = (controller: BaseController) => {
   return async (req: Request, res: Response) => {
     const request = {
       body: { ...(req.body || {}) },
-      params: { ...(req.body || {}) },
+      params: { ...(req.params || {}) },
       query: { ...(req.query || {}) },
       headers: { ...(req.headers || {}) },
       cookies: { ...(req.cookies || {}) },
       files: req.files ?? [],
     };
+
     try {
-      const result = await Promise.race<HttpResponse | HttpResponse>([timeout(), controller.handle(request)]);
+      const result = await controller.handle(request);
+
       if (result.statusCode >= 200 && result.statusCode <= 299) {
         res.status(result.statusCode).json(result.body);
       } else {
@@ -34,7 +26,12 @@ export const adaptRoute = (controller: BaseController) => {
         });
       }
     } catch (e: any) {
-      res.status(503).json({ error: 'Service Unavailable - Timeout' });
+      const tracer = opentelemetry.trace.getTracer('express');
+      const span = tracer.startSpan(e.name ?? 'Unknown Error');
+      span.setStatus({ code: 2 });
+      span.setAttribute('Error message', e.message ?? 'no message');
+      span.end();
+      return res.status(503).json({ error: 'Service Unavailable' });
     }
   };
 };
@@ -43,7 +40,7 @@ export const adaptLoginRoute = () => {
   return async (req: Request, res: Response) => {
     const request = {
       body: { ...(req.body || {}) },
-      params: { ...(req.body || {}) },
+      params: { ...(req.params || {}) },
       query: { ...(req.query || {}) },
       headers: { ...(req.headers || {}) },
       cookies: { ...(req.cookies || {}) },
@@ -51,7 +48,7 @@ export const adaptLoginRoute = () => {
     };
     const controller: BaseController = loginEstablishmentControllerFactory(req);
     try {
-      const result = await Promise.race<HttpResponse | HttpResponse>([timeout(), controller.handle(request)]);
+      const result = await controller.handle(request);
       if (result.statusCode >= 200 && result.statusCode <= 299) {
         res.status(result.statusCode).json(result.body);
       } else {
@@ -61,7 +58,11 @@ export const adaptLoginRoute = () => {
         });
       }
     } catch (e: any) {
-      res.status(503).json({ error: 'Service Unavailable - Timeout' });
+      const tracer = opentelemetry.trace.getTracer('express');
+      const span = tracer.startSpan('error');
+      span.recordException(e);
+      span.setStatus({ code: 2 });
+      res.status(503).json({ error: 'Service Unavailable' });
     }
   };
 };

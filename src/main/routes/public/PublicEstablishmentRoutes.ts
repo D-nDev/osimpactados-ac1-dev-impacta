@@ -1,3 +1,6 @@
+import { limiter } from '@app/presentation/middlewares/RateLimitMiddleware';
+import { adaptObservabilityMiddleware } from '@app/presentation/middlewares/StartObservabilityMiddleware';
+import { observabilityMiddlewareInstance } from '@app/shared/container';
 import { changeEstablishmentPassEmailControllerFactory } from '@main/factories/ChangeEstablishmentPassEmailControllerFactory';
 import { changeEstablishmentPassSMSControllerFactory } from '@main/factories/ChangeEstablishmentPassSMSControllerFactory';
 import { healthCheckControllerFactory } from '@main/factories/HealthCheckControllerFactory';
@@ -20,16 +23,74 @@ export default class PublicEstablishmentRoutes {
   }
 
   public buildRoutes() {
-    this.router.post('/create', adaptRoute(createEstablishmentControllerFactory()));
-    this.router.post('/login', adaptLoginRoute());
-    this.router.post('/validateEstablishment', adaptRoute(validateEstablishmentControllerFactory()));
-    this.router.post('/requestpass/sms', adaptRoute(sendSMSRecoverCodeControllerFactory()));
-    this.router.post('/requestpass/email', adaptRoute(sendEmailRecoverCodeControllerFactory()));
-    this.router.post('/changepass/email', adaptRoute(changeEstablishmentPassEmailControllerFactory()));
-    this.router.post('/changepass/sms', adaptRoute(changeEstablishmentPassSMSControllerFactory()));
-    this.router.post('/establishment/resendvalidationemail', adaptRoute(reSendValidationEmailControllerFactory()));
-    this.router.post('/establishment/resendrecoveremail', adaptRoute(reSendRecoverEmailControllerFactory()));
-    this.router.post('/establishment/resendrecoversms', adaptRoute(reSendRecoverSMSControllerFactory()));
+    this.router.post(
+      '/create',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      limiter,
+      adaptRoute(createEstablishmentControllerFactory()),
+    );
+    this.router.post(
+      '/login',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      limiter,
+      adaptLoginRoute(),
+    );
+    this.router.post(
+      '/validateEstablishment',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      limiter,
+      adaptLoginRoute(),
+      adaptRoute(validateEstablishmentControllerFactory()),
+    );
+    this.router.post(
+      '/requestpass/sms',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      limiter,
+      adaptLoginRoute(),
+      adaptRoute(sendSMSRecoverCodeControllerFactory()),
+    );
+    this.router.post(
+      '/requestpass/email',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      limiter,
+      adaptLoginRoute(),
+      adaptRoute(sendEmailRecoverCodeControllerFactory()),
+    );
+    this.router.post(
+      '/changepass/email',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      limiter,
+      adaptLoginRoute(),
+      adaptRoute(changeEstablishmentPassEmailControllerFactory()),
+    );
+    this.router.post(
+      '/changepass/sms',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      limiter,
+      adaptLoginRoute(),
+      adaptRoute(changeEstablishmentPassSMSControllerFactory()),
+    );
+    this.router.post(
+      '/establishment/resendvalidationemail',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      limiter,
+      adaptLoginRoute(),
+      adaptRoute(reSendValidationEmailControllerFactory()),
+    );
+    this.router.post(
+      '/establishment/resendrecoveremail',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      limiter,
+      adaptLoginRoute(),
+      adaptRoute(reSendRecoverEmailControllerFactory()),
+    );
+    this.router.post(
+      '/establishment/resendrecoversms',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      limiter,
+      adaptLoginRoute(),
+      adaptRoute(reSendRecoverSMSControllerFactory()),
+    );
     this.router.get('/health', adaptRoute(healthCheckControllerFactory()));
   }
 }

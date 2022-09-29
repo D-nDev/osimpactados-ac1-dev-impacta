@@ -1,6 +1,22 @@
 {
   "configurations": [
     {
+      "name": "Attach",
+      "port": 9229,
+      "request": "attach",
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js",
+        "${workspaceFolder}\\node_modules\\**\\*.js",
+        "<node_internals>/**/*.js",
+        "<node_internals>\\**\\*.js",
+        "/<node_internals>/**/*.js",
+        "/<node_internals>\\**\\*.js",
+        "/<node_internals>",
+        "<node_internals>",
+      ],
+      "type": "node"
+    },
+    {
       "name": "Docker: Attach to Node",
       "type": "node",
       "request": "attach",
@@ -8,7 +24,12 @@
       "address": "localhost",
       "localRoot": "${workspaceFolder}",
       "remoteRoot": "/app",
-      "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**/*.js"],
+      "skipFiles": [
+        "${workspaceFolder}/node_modules/**/*.js",
+        "${workspaceFolder}\\node_modules\\**\\*.js",
+        "<node_internals>/**/*.js",
+        "<node_internals>\\**\\*.js",
+      ],
       "protocol": "inspector"
     }
   ]

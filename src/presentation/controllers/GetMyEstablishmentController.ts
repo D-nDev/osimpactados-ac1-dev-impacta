@@ -13,13 +13,9 @@ export default class GetMyEstablishmentController implements BaseController {
     try {
       const { token } = request.cookies;
 
-      if (token) {
-        const execute = await this.useCase.execute({ token });
+      const execute = await this.useCase.execute({ token });
 
-        return ok(execute);
-      }
-
-      return badRequest('Unauthorized');
+      return ok(execute);
     } catch (err: any) {
       this.logger.error('Cannot Delete Establishment', err);
       const errorType = GetMyEstablishmentErrorCodes[err.code || err.name || err.message];

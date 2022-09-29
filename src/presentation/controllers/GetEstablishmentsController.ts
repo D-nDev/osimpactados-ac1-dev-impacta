@@ -1,10 +1,11 @@
+import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
 import { useCase } from '@application/ports/useCase';
 import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
 import { ok, unknownError } from './helpers/httpHelper';
 
 export default class GetEstablishmentsController implements BaseController {
-  constructor(private readonly useCase: useCase) {}
+  constructor(private readonly useCase: useCase, private readonly logger: ILoggerAdapter) {}
 
   async handle(): Promise<HttpResponse> {
     try {
@@ -12,6 +13,7 @@ export default class GetEstablishmentsController implements BaseController {
 
       return ok(execute);
     } catch (err: any) {
+      this.logger.error('Cannot Get Establishments', err);
       return unknownError();
     }
   }

@@ -1,3 +1,4 @@
+import 'tracing';
 import { app } from './main/config/app';
 
 const bootStrap = (): void => {

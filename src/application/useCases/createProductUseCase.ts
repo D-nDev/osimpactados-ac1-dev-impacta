@@ -18,6 +18,7 @@ export default class CreateProductUseCase implements useCase {
 
     const isSubsidiaryFromItsEstablishment = this.establishmentRepo.getSubsidiaryByEstablishmentId(
       currentEstablishment.id,
+      inputDto.subsidiaryId,
     );
 
     if (!isSubsidiaryFromItsEstablishment) {

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "incremental": true,
-    "target": "ES2019",
-    "module": "CommonJS",
+    "target": "ES2021",
+    "module": "Node16",
     "baseUrl": "./src",
     "moduleResolution": "node",
     "experimentalDecorators": true,
@@ -15,6 +15,7 @@
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "useUnknownInCatchVariables": true,
+    "allowJs": true,
     "resolveJsonModule": true,
     "alwaysStrict": true,
     "skipLibCheck": true,
