@@ -45,6 +45,12 @@ registerInstrumentations({
   instrumentations: [
     new HttpInstrumentation({
       enabled: true,
+      ignoreIncomingRequestHook: (req) => {
+        if (req.url === '/health') {
+          return true;
+        }
+        return false;
+      },
     }),
     new PrismaInstrumentation(),
   ],
