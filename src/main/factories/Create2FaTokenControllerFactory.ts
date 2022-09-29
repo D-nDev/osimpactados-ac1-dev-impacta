@@ -5,8 +5,8 @@ import {
   pinoAdapterInstance,
   twofactorAdapterInstance,
 } from '@shared/container';
-import Create2FaUseCase from '@app/application/useCases/create2faUseCase';
-import Create2FaTokenController from '@app/presentation/controllers/Create2FaTokenController';
+import Create2FaUseCase from '@application/useCases/create2faUseCase';
+import Create2FaTokenController from '@presentation/controllers/Create2FaTokenController';
 
 export const create2TokenControllerFactory = (): BaseController => {
   const useCase = new Create2FaUseCase(ioredisAdapterInstance, twofactorAdapterInstance, jwtAdapterInstance);

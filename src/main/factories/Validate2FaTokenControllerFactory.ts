@@ -6,8 +6,8 @@ import {
   pinoAdapterInstance,
   twofactorAdapterInstance,
 } from '@shared/container';
-import Validate2FaUseCase from '@app/application/useCases/validate2faUseCase';
-import Validate2FaTokenController from '@app/presentation/controllers/Validate2FaTokenController';
+import Validate2FaUseCase from '@application/useCases/validate2faUseCase';
+import Validate2FaTokenController from '@presentation/controllers/Validate2FaTokenController';
 
 export const validate2TokenControllerFactory = (): BaseController => {
   const useCase = new Validate2FaUseCase(

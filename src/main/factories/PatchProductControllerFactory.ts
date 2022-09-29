@@ -5,8 +5,8 @@ import {
   jwtAdapterInstance,
   pinoAdapterInstance,
 } from '@shared/container';
-import PatchProductUseCase from '@app/application/useCases/patchProductUseCase';
-import PatchProductController from '@app/presentation/controllers/PatchProductController';
+import PatchProductUseCase from '@application/useCases/patchProductUseCase';
+import PatchProductController from '@presentation/controllers/PatchProductController';
 
 export const patchProductControllerFactory = (): BaseController => {
   const useCase = new PatchProductUseCase(

@@ -4,7 +4,7 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, unauthorized, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
-import { DeleteProductErrorCodes } from '@app/shared/enums/DeleteProductErrorCodes';
+import { DeleteProductErrorCodes } from '@shared/enums/DeleteProductErrorCodes';
 
 export default class DeleteProductController implements BaseController {
   constructor(private readonly useCase: useCase, private readonly logger: ILoggerAdapter) {}

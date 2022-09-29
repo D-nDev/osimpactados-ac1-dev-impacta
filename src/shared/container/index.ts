@@ -17,7 +17,7 @@ import AzureBlobAdapter from '@infra/adapters/azureblob-adapter';
 import IsAuthUserMiddleware from '@presentation/middlewares/isAuthUserMiddleware';
 import UUIDProvider from '@infra/adapters/uuid-adapter';
 import { TwoFactorAdapter } from '@infra/adapters/2fa-adapter';
-import StartObservabilityMiddleware from '@app/presentation/middlewares/StartObservabilityMiddleware';
+import StartObservabilityMiddleware from '@presentation/middlewares/StartObservabilityMiddleware';
 
 const prisma = new PrismaClient({
   log: [{ level: 'query', emit: 'event' }],

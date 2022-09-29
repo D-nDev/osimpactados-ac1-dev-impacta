@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe';
-import { ITwoFactorAdapter } from '@app/application/ports/ITwoFactorAdapter';
+import { ITwoFactorAdapter } from '@application/ports/ITwoFactorAdapter';
 import * as node2fa from 'node-2fa';
 
 @singleton()

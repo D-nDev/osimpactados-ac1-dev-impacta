@@ -16,12 +16,12 @@ import { validate2TokenControllerFactory } from '@main/factories/Validate2FaToke
 import { delete2TokenControllerFactory } from '@main/factories/Delete2FaTokenControllerFactory';
 import { deleteProductControllerFactory } from '@main/factories/DeleteProductControllerFactory';
 import { adaptObservabilityMiddleware } from '@presentation/middlewares/StartObservabilityMiddleware';
-import { limiter } from '@app/presentation/middlewares/RateLimitMiddleware';
-import { patchProductControllerFactory } from '@app/main/factories/PatchProductControllerFactory';
-import { adaptFormDataSingleFile } from '@app/presentation/middlewares/AdaptFormDataSingleFile';
-import { getMyProductsControllerFactory } from '@app/main/factories/GetMyProductsControllerFactory';
-import { getMyProductControllerFactory } from '@app/main/factories/GetMyProductControllerFactory';
-import { createSubsidiaryControllerFactory } from '@app/main/factories/CreateSubsidiaryControllerFactory';
+import { limiter } from '@presentation/middlewares/RateLimitMiddleware';
+import { patchProductControllerFactory } from '@main/factories/PatchProductControllerFactory';
+import { adaptFormDataSingleFile } from '@presentation/middlewares/AdaptFormDataSingleFile';
+import { getMyProductsControllerFactory } from '@main/factories/GetMyProductsControllerFactory';
+import { getMyProductControllerFactory } from '@main/factories/GetMyProductControllerFactory';
+import { createSubsidiaryControllerFactory } from '@main/factories/CreateSubsidiaryControllerFactory';
 
 export default class PrivateEstablishmentRoutes {
   router: Router;

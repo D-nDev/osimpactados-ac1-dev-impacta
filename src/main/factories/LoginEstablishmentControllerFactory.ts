@@ -10,7 +10,7 @@ import {
 } from '@shared/container';
 
 import { Request } from 'express';
-import LoginEstablishment2FAUseCase from '@app/application/useCases/loginEstablishment2FAUseCase';
+import LoginEstablishment2FAUseCase from '@application/useCases/loginEstablishment2FAUseCase';
 
 export const loginEstablishmentControllerFactory = (req: Request): BaseController => {
   let useCase: any;

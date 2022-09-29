@@ -3,8 +3,8 @@ import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, unauthorized, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
-import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
-import { Validate2FaErrorCodes } from '@app/shared/enums/Validate2FaErrorCodes';
+import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
+import { Validate2FaErrorCodes } from '@shared/enums/Validate2FaErrorCodes';
 
 export default class Validate2FaTokenController implements BaseController {
   constructor(private readonly useCase: useCase, private readonly logger: ILoggerAdapter) {}

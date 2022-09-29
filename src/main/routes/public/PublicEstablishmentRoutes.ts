@@ -1,6 +1,6 @@
-import { limiter } from '@app/presentation/middlewares/RateLimitMiddleware';
-import { adaptObservabilityMiddleware } from '@app/presentation/middlewares/StartObservabilityMiddleware';
-import { observabilityMiddlewareInstance } from '@app/shared/container';
+import { limiter } from '@presentation/middlewares/RateLimitMiddleware';
+import { adaptObservabilityMiddleware } from '@presentation/middlewares/StartObservabilityMiddleware';
+import { observabilityMiddlewareInstance } from '@shared/container';
 import { changeEstablishmentPassEmailControllerFactory } from '@main/factories/ChangeEstablishmentPassEmailControllerFactory';
 import { changeEstablishmentPassSMSControllerFactory } from '@main/factories/ChangeEstablishmentPassSMSControllerFactory';
 import { healthCheckControllerFactory } from '@main/factories/HealthCheckControllerFactory';

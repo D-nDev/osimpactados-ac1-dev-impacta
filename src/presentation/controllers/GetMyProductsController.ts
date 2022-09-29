@@ -1,4 +1,4 @@
-import { ILoggerAdapter } from '@app/application/ports/ILoggerAdapter';
+import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
 import { useCase } from '@application/ports/useCase';
 import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
