@@ -4,3 +4,4 @@ node_modules/
 .DS_STORE
 fixs.txt
 dist/
+aspecto.log
