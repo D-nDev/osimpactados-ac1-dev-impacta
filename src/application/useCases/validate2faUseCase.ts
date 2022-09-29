@@ -1,4 +1,4 @@
-import jwtAdapter from '@app/infra/adapters/jwt-adapter';
+import jwtAdapter from '@infra/adapters/jwt-adapter';
 import { IUserRepository } from '../ports/userRepository';
 import { IMemoryCacheAdapter } from '../ports/IMemoryCacheAdapter';
 import { ITwoFactorAdapter } from '../ports/ITwoFactorAdapter';

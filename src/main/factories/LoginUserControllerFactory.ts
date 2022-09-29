@@ -9,7 +9,7 @@ import {
   userRepositoryInstance,
 } from '@shared/container';
 import { Request } from 'express';
-import LoginUser2FAUseCase from '@app/application/useCases/loginUser2FAUseCase';
+import LoginUser2FAUseCase from '@application/useCases/loginUser2FAUseCase';
 
 export const loginUserControllerFactory = (req: Request): BaseController => {
   let useCase: any;

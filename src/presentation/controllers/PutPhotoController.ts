@@ -4,7 +4,7 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, notFound, ok, unauthorized, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
-import { PutPhotoErrorCodes } from '@app/shared/enums/PutPhotoErrorCodes';
+import { PutPhotoErrorCodes } from '@shared/enums/PutPhotoErrorCodes';
 
 export default class PutPhotoController implements BaseController {
   constructor(private readonly useCase: useCase, private readonly logger: ILoggerAdapter) {}

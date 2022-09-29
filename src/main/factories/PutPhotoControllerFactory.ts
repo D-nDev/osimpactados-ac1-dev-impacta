@@ -5,8 +5,8 @@ import {
   pinoAdapterInstance,
   userRepositoryInstance,
 } from '@shared/container';
-import PutPhotoUseCase from '@app/application/useCases/putPhotoUseCase';
-import PutPhotoController from '@app/presentation/controllers/PutPhotoController';
+import PutPhotoUseCase from '@application/useCases/putPhotoUseCase';
+import PutPhotoController from '@presentation/controllers/PutPhotoController';
 
 export const putPhotoControllerFactory = (): BaseController => {
   const useCase = new PutPhotoUseCase(userRepositoryInstance, azureblobAdapterInstance, jwtAdapterInstance);

@@ -4,7 +4,7 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, notFound, ok, unauthorized, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
-import { PatchAddressErrorCodes } from '@app/shared/enums/PatchAddressErrorCodes';
+import { PatchAddressErrorCodes } from '@shared/enums/PatchAddressErrorCodes';
 
 export default class PatchAddressController implements BaseController {
   constructor(private readonly useCase: useCase, private readonly logger: ILoggerAdapter) {}

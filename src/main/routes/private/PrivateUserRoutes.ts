@@ -1,12 +1,12 @@
-import { create2TokenControllerFactory } from '@app/main/factories/Create2FaTokenControllerFactory';
-import { createAddressControllerFactory } from '@app/main/factories/CreateAddressControllerFactory';
-import { delete2TokenControllerFactory } from '@app/main/factories/Delete2FaTokenControllerFactory';
-import { patchAddressControllerFactory } from '@app/main/factories/PatchAddressControllerFactory';
-import { putPhotoControllerFactory } from '@app/main/factories/PutPhotoControllerFactory';
-import { validate2TokenControllerFactory } from '@app/main/factories/Validate2FaTokenControllerFactory';
-import { adaptFormDataSingleFile } from '@app/presentation/middlewares/AdaptFormDataSingleFile';
-import { limiter } from '@app/presentation/middlewares/RateLimitMiddleware';
-import { adaptObservabilityMiddleware } from '@app/presentation/middlewares/StartObservabilityMiddleware';
+import { create2TokenControllerFactory } from '@main/factories/Create2FaTokenControllerFactory';
+import { createAddressControllerFactory } from '@main/factories/CreateAddressControllerFactory';
+import { delete2TokenControllerFactory } from '@main/factories/Delete2FaTokenControllerFactory';
+import { patchAddressControllerFactory } from '@main/factories/PatchAddressControllerFactory';
+import { putPhotoControllerFactory } from '@main/factories/PutPhotoControllerFactory';
+import { validate2TokenControllerFactory } from '@main/factories/Validate2FaTokenControllerFactory';
+import { adaptFormDataSingleFile } from '@presentation/middlewares/AdaptFormDataSingleFile';
+import { limiter } from '@presentation/middlewares/RateLimitMiddleware';
+import { adaptObservabilityMiddleware } from '@presentation/middlewares/StartObservabilityMiddleware';
 import { adaptMiddleware } from '@main/adapters/express-middleware-adapter';
 import { blackListRecoverTokenControllerFactory } from '@main/factories/BlackListRecoverTokenControllerFactory';
 import {

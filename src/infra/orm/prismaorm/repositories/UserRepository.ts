@@ -4,8 +4,8 @@ import { PrismaClient, RecoverCodes } from '@prisma/client';
 import { IUserRepository } from '@application/ports/userRepository';
 import UserEntity from '@domain/entities/User';
 import AddressEntity from '@domain/entities/Address';
-import { PatchAddressDto } from '@app/application/ports/dtos/patchAddressDto';
-import { CreateAddressDto } from '@app/application/ports/dtos/createAddressDto';
+import { PatchAddressDto } from '@application/ports/dtos/patchAddressDto';
+import { CreateAddressDto } from '@application/ports/dtos/createAddressDto';
 
 @singleton()
 export default class UserRepository implements IUserRepository {
