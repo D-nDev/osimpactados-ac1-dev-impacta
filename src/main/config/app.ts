@@ -8,6 +8,11 @@ import PublicEstablishmentRoutes from '../routes/public/PublicEstablishmentRoute
 import PrivateEstablishmentRoutes from '../routes/private/PrivateEstablishmentRoutes';
 dotenv.config();
 
+const corsOption = {
+  origin: [process.env.FRONT_URL as unknown as string],
+  credentials: true,
+};
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -21,7 +26,7 @@ const privateestablishmentRoutes = new PrivateEstablishmentRoutes();
 
 app.disable('x-powered-by');
 app.use(cookieParser());
-app.use(cors());
+app.use(cors(corsOption));
 app.use(establishmentRoutes.router);
 app.use(privateestablishmentRoutes.router);
 
