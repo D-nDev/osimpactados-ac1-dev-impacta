@@ -1,4 +1,7 @@
 import UserEntity from '@domain/entities/User';
+import { Address } from '@prisma/client';
+import { CreateAddressDto } from './dtos/createAddressDto';
+import { PatchAddressDto } from './dtos/patchAddressDto';
 import { MyUserDataDto, RecoverCodes, UserDto, UserWithoutPasswordDto } from './dtos/userDto';
 
 export interface IUserRepository {
@@ -50,4 +53,12 @@ export interface IUserRepository {
   createRecoverCodeById: (id: string, token: string, expires: Date) => Promise<boolean>;
   createTwoFactorSecret: (email: string, secret: string) => Promise<boolean>;
   deleteTwoFactorSecret: (email: string) => Promise<boolean>;
+  updatePhoto: (
+    userId: string,
+    photo: string,
+  ) => Promise<{
+    photo: string;
+  }>;
+  createAddress: (userId: string, dataAddress: CreateAddressDto) => Promise<Address>;
+  updateAddress: (userId: string, addressId: string, dataAddress: PatchAddressDto) => Promise<Address | null>;
 }

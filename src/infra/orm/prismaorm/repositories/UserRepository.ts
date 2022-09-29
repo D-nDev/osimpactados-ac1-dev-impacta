@@ -4,6 +4,8 @@ import { PrismaClient, RecoverCodes } from '@prisma/client';
 import { IUserRepository } from '@application/ports/userRepository';
 import UserEntity from '@domain/entities/User';
 import AddressEntity from '@domain/entities/Address';
+import { PatchAddressDto } from '@app/application/ports/dtos/patchAddressDto';
+import { CreateAddressDto } from '@app/application/ports/dtos/createAddressDto';
 
 @singleton()
 export default class UserRepository implements IUserRepository {
@@ -122,6 +124,37 @@ export default class UserRepository implements IUserRepository {
     });
 
     return user;
+  }
+
+  public async createAddress(userId: string, dataAddress: CreateAddressDto) {
+    const result = await this.prisma.address.create({
+      data: {
+        userId,
+        ...dataAddress,
+      },
+    });
+
+    return result;
+  }
+
+  public async updateAddress(userId: string, addressId: string, dataAddress: PatchAddressDto) {
+    await this.prisma.address.updateMany({
+      where: {
+        userId,
+        id: addressId,
+      },
+      data: {
+        ...dataAddress,
+      },
+    });
+
+    const updatedAddress = await this.prisma.address.findFirst({
+      where: {
+        id: addressId,
+      },
+    });
+
+    return updatedAddress;
   }
 
   public async getUsers() {
@@ -334,6 +367,22 @@ export default class UserRepository implements IUserRepository {
         validate_expire_date: expire,
       },
     });
+  }
+
+  public async updatePhoto(userId: string, photo: string) {
+    const result = await this.prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        photo,
+      },
+      select: {
+        photo: true,
+      },
+    });
+
+    return result;
   }
 
   public async getUserValidateToken(email: string): Promise<{ token: string; expireDate: Date } | null> {

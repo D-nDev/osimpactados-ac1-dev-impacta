@@ -20,6 +20,11 @@ export const forbidden = (error: Error | any): HttpResponse => ({
   body: error,
 });
 
+export const notFound = (error: Error | any): HttpResponse => ({
+  statusCode: 404,
+  body: error,
+});
+
 export const badRequest = (error: Error | any): HttpResponse => ({
   statusCode: 400,
   body: error,

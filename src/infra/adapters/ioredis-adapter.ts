@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { singleton } from 'tsyringe';
 import { IMemoryCacheAdapter } from '@application/ports/IMemoryCacheAdapter';
 import Redis from 'ioredis';
+import opentelemetry from '@opentelemetry/api';
 
 @singleton()
 export default class IORedisAdapter implements IMemoryCacheAdapter {
@@ -12,7 +13,13 @@ export default class IORedisAdapter implements IMemoryCacheAdapter {
   });
 
   public async get(key: string) {
-    return await this.redis.get(key);
+    const tracer = opentelemetry.trace.getTracer('redis');
+    const span = tracer.startSpan('redisget');
+    span.setAttribute('redis:get', key);
+
+    const result = await this.redis.get(key);
+    span.end();
+    return result;
   }
 
   public async getJson<T>(key: string): Promise<Awaited<T> | null> {
@@ -21,26 +28,37 @@ export default class IORedisAdapter implements IMemoryCacheAdapter {
       const jsonedResult: Awaited<T> = JSON.parse(result);
       return jsonedResult;
     }
-    await this.redis.ttl(key);
     return null;
   }
 
   public async set(key: string, value: any, extime?: number) {
+    const tracer = opentelemetry.trace.getTracer('redis');
+    const span = tracer.startSpan('redisset');
+    span.setAttributes({ key, value, extime: extime ?? 'none' });
     if (extime) {
       await this.redis.set(key, value, 'EX', extime);
     } else {
       await this.redis.set(key, value);
     }
+    span.end();
     return true;
   }
 
   public async deleteKey(key: string) {
+    const tracer = opentelemetry.trace.getTracer('redis');
+    const span = tracer.startSpan('redisdel');
+    span.setAttribute('rediskey', key);
     await this.redis.del(key);
+    span.end();
     return true;
   }
 
   public async getTTL(key: string) {
+    const tracer = opentelemetry.trace.getTracer('redis');
+    const span = tracer.startSpan('redisttl');
     const ttl = await this.redis.ttl(key);
+    span.setAttributes({ key, ttl });
+    span.end();
     return ttl;
   }
 }

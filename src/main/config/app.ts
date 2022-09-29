@@ -9,16 +9,20 @@ import PrivateUserRoutes from '../routes/private/PrivateUserRoutes';
 dotenv.config();
 
 const app = express();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 app.use(compression());
 app.use(helmet());
+
 const userRoutes = new PublicUserRoutes();
 const privateUserRoutes = new PrivateUserRoutes();
 
 app.disable('x-powered-by');
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+
 app.use(cors());
 app.use(cookieParser());
 app.use(userRoutes.router);
 app.use(privateUserRoutes.router);
+
 export { app };

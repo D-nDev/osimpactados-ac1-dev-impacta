@@ -17,8 +17,11 @@ import AzureBlobAdapter from '@infra/adapters/azureblob-adapter';
 import IsAuthUserMiddleware from '@presentation/middlewares/isAuthUserMiddleware';
 import UUIDProvider from '@infra/adapters/uuid-adapter';
 import { TwoFactorAdapter } from '@infra/adapters/2fa-adapter';
+import StartObservabilityMiddleware from '@presentation/middlewares/StartObservabilityMiddleware';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: [{ level: 'query', emit: 'event' }],
+});
 
 const userRepositoryClass = new UserRepository(prisma);
 export const jwtAdapterInstance = container.resolve(jwtAdapter);
@@ -33,6 +36,7 @@ export const mapperAdapterInstance = container.resolve(Mapper);
 export const validatorAdapterInstance = container.resolve(ValidatorAdapter);
 export const azureblobAdapterInstance = container.resolve(AzureBlobAdapter);
 export const twofactorAdapterInstance = container.resolve(TwoFactorAdapter);
+export const observabilityMiddlewareInstance = container.resolve(StartObservabilityMiddleware);
 const userRepositoryRegisterInstance = container.registerInstance('UserRepository', userRepositoryClass);
 export const userRepositoryInstance = userRepositoryRegisterInstance.resolve<IUserRepository>('UserRepository');
 

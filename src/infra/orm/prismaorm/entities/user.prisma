@@ -1,6 +1,7 @@
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native"]
+  previewFeatures = ["tracing"]
 }
 
 datasource db {
@@ -51,5 +52,5 @@ model Address {
   state             String
   cep               String
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId            String  @unique
+  userId            String
 }
