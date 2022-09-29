@@ -3,7 +3,11 @@ import { RequestHandler } from 'express';
 import multer from 'multer';
 
 export const adaptMulter: RequestHandler = (req, res, next) => {
-  const upload = multer().array('files', 3);
+  const upload = multer({
+    limits: {
+      fileSize: 8000000,
+    },
+  }).array('files', 3);
   upload(req, res, (error) => {
     if (error !== undefined) {
       pinoAdapterInstance.error('Multer error', error);
