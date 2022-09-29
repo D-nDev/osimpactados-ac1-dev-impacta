@@ -8,6 +8,11 @@ import PublicUserRoutes from '../routes/public/PublicUserRoutes';
 import PrivateUserRoutes from '../routes/private/PrivateUserRoutes';
 dotenv.config();
 
+const corsOption = {
+  origin: [process.env.FRONT_URL as unknown as string],
+  credentials: true,
+};
+
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -20,7 +25,7 @@ const privateUserRoutes = new PrivateUserRoutes();
 
 app.disable('x-powered-by');
 
-app.use(cors());
+app.use(cors(corsOption));
 app.use(cookieParser());
 app.use(userRoutes.router);
 app.use(privateUserRoutes.router);
