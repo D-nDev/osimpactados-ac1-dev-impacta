@@ -21,7 +21,7 @@ export default class GetMyUserController implements BaseController {
 
       return badRequest('Unauthorized');
     } catch (err: any) {
-      this.logger.error('Cannot Delete User', err);
+      this.logger.error('Cannot Get User', err);
       const errorType = GetMyUserErrorCodes[err.code || err.name || err.message];
 
       if (errorType) {
