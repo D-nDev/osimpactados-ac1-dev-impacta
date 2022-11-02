@@ -1,4 +1,4 @@
-import { BaseController } from '@presentation/controllers/contracts/BaseController';
+/* import { BaseController } from '@presentation/controllers/contracts/BaseController';
 import SendRecoverEmailUseCase from '@usecases/sendRecoverEmailUseCase';
 import SendEmailRecoverCodeController from '@presentation/controllers/SendEmailRecoverCodeController';
 import {
@@ -20,4 +20,4 @@ export const sendEmailRecoverCodeControllerFactory = (): BaseController => {
   const controller = new SendEmailRecoverCodeController(useCase, pinoAdapterInstance);
 
   return controller;
-};
+}; */
