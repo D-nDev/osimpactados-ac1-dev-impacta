@@ -4,15 +4,15 @@ import EmailAdapter from '@infra/adapters/email-adapter';
 import jwtAdapter from '@infra/adapters/jwt-adapter';
 import MomentAdapter from '@infra/adapters/moment-adapter';
 import PinoAdapter from '@infra/adapters/pino-adapter';
-import PurchaseRepository from '@app/infra/orm/prismaorm/repositories/PurchaseRepository';
+import PurchaseRepository from '@infra/orm/prismaorm/repositories/PurchaseRepository';
 import { PrismaClient } from '@prisma/client';
-import { IPurchaseRepository } from '@app/application/ports/purchaseRepository';
+import { IPurchaseRepository } from '@application/ports/purchaseRepository';
 import ValidatorAdapter from '@infra/adapters/classValidator-adapter';
 import IsAdminMiddleware from '@presentation/middlewares/isAdminMiddleware';
 import IsAuthUserMiddleware from '@presentation/middlewares/isAuthUserMiddleware';
 import UUIDProvider from '@infra/adapters/uuid-adapter';
 import StartObservabilityMiddleware from '@presentation/middlewares/StartObservabilityMiddleware';
-import MercadoPagoAdapter from '@app/infra/adapters/mercadopago-adapter';
+import MercadoPagoAdapter from '@infra/adapters/mercadopago-adapter';
 
 const prisma = new PrismaClient({
   log: [{ level: 'query', emit: 'event' }],

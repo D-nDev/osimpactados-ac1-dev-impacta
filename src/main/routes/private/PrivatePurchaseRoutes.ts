@@ -1,6 +1,6 @@
 import { adaptObservabilityMiddleware } from '@presentation/middlewares/StartObservabilityMiddleware';
 import { adaptMiddleware } from '@main/adapters/express-middleware-adapter';
-import { webhookPurchaseControllerFactory } from '@app/main/factories/CreatePurchaseControllerFactory';
+import { webhookPurchaseControllerFactory } from '@main/factories/CreatePurchaseControllerFactory';
 import { isAuthUserMiddlewareInstance, observabilityMiddlewareInstance } from '@shared/container';
 import { Router } from 'express';
 import { adaptRoute } from '../../adapters/express-router-adapter';

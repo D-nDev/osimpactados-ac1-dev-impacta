@@ -1,9 +1,9 @@
 import { adaptObservabilityMiddleware } from '@presentation/middlewares/StartObservabilityMiddleware';
-import { webhookPurchaseControllerFactory } from '@app/main/factories/CreatePurchaseControllerFactory';
+import { webhookPurchaseControllerFactory } from '@main/factories/CreatePurchaseControllerFactory';
 import { observabilityMiddlewareInstance } from '@shared/container';
 import { Router } from 'express';
 import { adaptRoute } from '../../adapters/express-router-adapter';
-import { webhookUpdatePurchaseControllerFactory } from '@app/main/factories/UpdatePurchaseControllerFactory';
+import { webhookUpdatePurchaseControllerFactory } from '@main/factories/UpdatePurchaseControllerFactory';
 
 export default class PrivatePurchaseRoutes {
   router: Router;

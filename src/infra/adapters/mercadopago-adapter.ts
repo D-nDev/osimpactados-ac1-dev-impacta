@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { singleton } from 'tsyringe';
 import axios from 'axios';
 import { PaymentGetResponse } from 'mercadopago/resources/payment';
-import { IPaymentdapter } from '@app/application/ports/IPaymentAdapter';
+import { IPaymentdapter } from '@application/ports/IPaymentAdapter';
 
 @singleton()
 export default class MercadoPagoAdapter implements IPaymentdapter {

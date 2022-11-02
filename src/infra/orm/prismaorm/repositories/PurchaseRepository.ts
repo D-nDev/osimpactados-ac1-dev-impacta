@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { singleton } from 'tsyringe';
 import { PrismaClient, purchaseStatus } from '@prisma/client';
-import { CreatePurchase, IPurchaseRepository } from '@app/application/ports/purchaseRepository';
+import { CreatePurchase, IPurchaseRepository } from '@application/ports/purchaseRepository';
 
 @singleton()
 export default class PurchaseRepository implements IPurchaseRepository {
