@@ -1,0 +1,19 @@
+version: '3'
+services:
+  user-api:
+    container_name: user-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+    env_file:
+      - .env
+    platform: "linux/amd64"
+    volumes:
+        - .:/usr/app
+        - /usr/app/node_modules/
+
+volumes:
+  pgdata:
+    driver: local

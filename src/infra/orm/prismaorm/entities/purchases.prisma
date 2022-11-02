@@ -1,0 +1,42 @@
+generator client {
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native"]
+  previewFeatures = ["tracing"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL_PURCHASES")
+}
+
+enum purchaseStatus {
+  pending
+  approved
+  authorized
+  in_process
+  in_mediation
+  rejected
+  cancelled
+  refunded
+  charged_back
+}
+
+type Products {
+  productId String
+  quantity  Int
+  price     Float
+}
+
+model Purchases {
+  meli_purchaseId   String         @id @default(auto()) @map("_id") @db.ObjectId
+  establishmentId   String
+  subsidiaryId      String
+  userId            String
+  establishmentName String
+  subsidiaryName    String
+  products          Products[]
+  scheduled_date    DateTime?
+  status            purchaseStatus @default(pending)
+  delivered_date    DateTime?
+  is_delivered      Boolean        @default(false)
+}

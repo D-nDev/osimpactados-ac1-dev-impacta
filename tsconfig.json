@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "target": "ES2019",
+    "module": "CommonJS",
+    "baseUrl": "./src",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "declaration": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "useUnknownInCatchVariables": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "alwaysStrict": true,
+    "skipLibCheck": true,
+    "paths": {
+      "@app/*": ["*"],
+      "@infra/*": ["infra/*"],
+      "@domain/*": ["domain/*"],
+      "@logs/*": ["logs/*"],
+      "@application/*": ["application/*"],
+      "@validations/*": ["validations/*"],
+      "@utils/*": ["utils/*"],
+      "@shared/*": ["shared/*"],
+      "@main/*": ["main/*"],
+      "@presentation/*": ["presentation/*"],
+      "@decorators/*": ["main/decorators/*"],
+      "@usecases/*": ["application/useCases/*"]
+    }
+  },
+  "include": ["./src", "./test", "."],
+  "exclude": ["./node_modules", "./dist"]
+}
