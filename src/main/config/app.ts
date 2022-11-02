@@ -3,7 +3,6 @@ import compression from 'compression';
 import helmet from 'helmet';
 import * as dotenv from 'dotenv';
 import cors from 'cors';
-import cookieParser from 'cookie-parser';
 import PublicPurchaseRoutes from '../routes/public/PublicPurchaseRoutes';
 import PrivatePurchaseRoutes from '../routes/private/PrivatePurchaseRoutes';
 import mercadopago from 'mercadopago';
@@ -66,13 +65,12 @@ app.use(express.json());
 app.use(compression());
 app.use(helmet());
 
-const userRoutes = new PublicPurchaseRoutes();
-const privateUserRoutes = new PrivatePurchaseRoutes();
+const publicRoutes = new PublicPurchaseRoutes();
+const privateRoutes = new PrivatePurchaseRoutes();
 
 app.disable('x-powered-by');
 
-app.use(cookieParser());
-app.use(userRoutes.router);
-app.use(privateUserRoutes.router);
+app.use(publicRoutes.router);
+app.use(privateRoutes.router);
 
 export { app };
