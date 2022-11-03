@@ -22,9 +22,11 @@ enum purchaseStatus {
 }
 
 type Products {
-  productId String
-  quantity  Int
-  price     Float
+  id          String
+  title       String
+  quantity    Int?   @default(1)
+  unit_price  Float
+  picture_url String
 }
 
 model Purchases {

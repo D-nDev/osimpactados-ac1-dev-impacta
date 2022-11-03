@@ -2,7 +2,8 @@ import 'reflect-metadata';
 import { singleton } from 'tsyringe';
 import axios from 'axios';
 import { PaymentGetResponse } from 'mercadopago/resources/payment';
-import { IPaymentdapter } from '@application/ports/IPaymentAdapter';
+import { IPaymentdapter, PreferenceDataDto } from '@application/ports/IPaymentAdapter';
+import mercadopago from 'mercadopago';
 
 @singleton()
 export default class MercadoPagoAdapter implements IPaymentdapter {
@@ -14,6 +15,12 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
         Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESSTOKEN as string}`,
       },
     });
+  }
+
+  public async createPreference(data: PreferenceDataDto) {
+    const result = await mercadopago.preferences.create(data);
+    console.log(result);
+    return result.body;
   }
 
   public async getFormattedPayment(id: string) {

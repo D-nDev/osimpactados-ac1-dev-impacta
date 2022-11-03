@@ -4,6 +4,7 @@ import { observabilityMiddlewareInstance } from '@shared/container';
 import { Router } from 'express';
 import { adaptRoute } from '../../adapters/express-router-adapter';
 import { webhookUpdatePurchaseControllerFactory } from '@main/factories/UpdatePurchaseControllerFactory';
+import { createPreferenceControllerFactory } from '@app/main/factories/CreatePreferenceControllerFactory';
 
 export default class PrivatePurchaseRoutes {
   router: Router;
@@ -23,6 +24,11 @@ export default class PrivatePurchaseRoutes {
       '/webhook/updatepurchase',
       adaptObservabilityMiddleware(observabilityMiddlewareInstance),
       adaptRoute(webhookUpdatePurchaseControllerFactory()),
+    );
+    this.router.post(
+      '/createPreference',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      adaptRoute(createPreferenceControllerFactory()),
     );
   }
 }
