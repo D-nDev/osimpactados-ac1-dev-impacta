@@ -56,7 +56,10 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
         Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESSTOKEN as string}`,
       },
     });
-    return paymentData.data.payment_method_id;
+    return {
+      payment_method_id: paymentData.data.payment_method_id,
+      payment_type_id: paymentData.data.payment_type_id,
+    };
   }
 
   public async getPaymentStatus(id: string) {

@@ -10,7 +10,7 @@ export default class CreatePurchaseUseCase implements useCase {
 
     await this.purchaseRepo.createPurchase(paymentData);
 
-    if (paymentType === 'credit_card') {
+    if (paymentType.payment_type_id === 'credit_card') {
       setTimeout(async () => {
         const result = await this.payment.getPaymentStatus(id);
         await this.purchaseRepo.updatePurchase(id, result);
