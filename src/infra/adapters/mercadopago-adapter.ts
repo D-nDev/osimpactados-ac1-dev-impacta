@@ -31,7 +31,7 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
         Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESSTOKEN as string}`,
       },
     });
-    console.log('paymentFormattedData', paymentData);
+    console.log('paymentFormattedData', paymentData.data);
     const result = {
       meli_purchaseId: paymentData.data.body.id,
       establishmentId: paymentData.data.body.metadata.establishmentId,
@@ -53,6 +53,7 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
         Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESSTOKEN as string}`,
       },
     });
-    return paymentData.data.body.payment_type_id;
+    console.log('paymentTypeuwu', paymentData.data);
+    return paymentData.data.body.payment_method_id;
   }
 }
