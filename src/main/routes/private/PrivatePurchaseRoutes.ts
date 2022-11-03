@@ -1,9 +1,8 @@
 import { adaptObservabilityMiddleware } from '@presentation/middlewares/StartObservabilityMiddleware';
-import { adaptMiddleware } from '@main/adapters/express-middleware-adapter';
-import { webhookPurchaseControllerFactory } from '@main/factories/CreatePurchaseControllerFactory';
-import { isAuthUserMiddlewareInstance, observabilityMiddlewareInstance } from '@shared/container';
+import { observabilityMiddlewareInstance } from '@shared/container';
 import { Router } from 'express';
 import { adaptRoute } from '../../adapters/express-router-adapter';
+import { createPreferenceControllerFactory } from '@app/main/factories/CreatePreferenceControllerFactory';
 
 export default class PrivatePurchaseRoutes {
   router: Router;
@@ -17,8 +16,7 @@ export default class PrivatePurchaseRoutes {
     this.router.post(
       '/createpurchase',
       adaptObservabilityMiddleware(observabilityMiddlewareInstance),
-      adaptMiddleware(isAuthUserMiddlewareInstance),
-      adaptRoute(webhookPurchaseControllerFactory()),
+      adaptRoute(createPreferenceControllerFactory()),
     );
   }
 }
