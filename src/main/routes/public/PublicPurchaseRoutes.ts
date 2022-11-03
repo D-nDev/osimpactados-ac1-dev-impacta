@@ -26,7 +26,7 @@ export default class PrivatePurchaseRoutes {
       adaptRoute(webhookUpdatePurchaseControllerFactory()),
     );
     this.router.post(
-      '/createPreference',
+      '/createpreference',
       adaptObservabilityMiddleware(observabilityMiddlewareInstance),
       adaptRoute(createPreferenceControllerFactory()),
     );
