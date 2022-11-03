@@ -15,13 +15,11 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
         Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESSTOKEN as string}`,
       },
     });
-    console.log('getpayment', result);
     return result;
   }
 
   public async createPreference(data: PreferenceDataDto) {
     const result = await mercadopago.preferences.create(data);
-    // console.log(result);
     return result.body;
   }
 
@@ -31,7 +29,6 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
         Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESSTOKEN as string}`,
       },
     });
-    console.log('paymentFormattedData', paymentData.data);
     const result = {
       meli_purchaseId: paymentData.data.id.toString(),
       establishmentId: paymentData.data.metadata.establishment_id,
@@ -50,7 +47,6 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
       delete item.category_id;
       delete item.description;
     });
-    console.log('theresult', result);
     return result;
   }
 
@@ -60,7 +56,6 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
         Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESSTOKEN as string}`,
       },
     });
-    console.log('paymentTypeuwu', paymentData.data);
     return paymentData.data.payment_method_id;
   }
 
@@ -70,7 +65,6 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
         Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESSTOKEN as string}`,
       },
     });
-    console.log('paymentstatusuwu', paymentData.data);
     return paymentData.data.status;
   }
 }

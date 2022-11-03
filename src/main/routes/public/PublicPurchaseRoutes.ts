@@ -4,7 +4,7 @@ import { Router } from 'express';
 import { adaptPaymentRoute, adaptRoute } from '../../adapters/express-router-adapter';
 import { createPreferenceControllerFactory } from '@main/factories/CreatePreferenceControllerFactory';
 
-export default class PrivatePurchaseRoutes {
+export default class PublicPurchaseRoutes {
   router: Router;
 
   constructor() {

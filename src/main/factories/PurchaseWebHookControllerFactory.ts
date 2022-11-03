@@ -2,7 +2,7 @@ import { BaseController } from '@presentation/controllers/contracts/BaseControll
 import { mercadopagoAdapterInstance, pinoAdapterInstance, purchaseRepositoryInstance } from '@shared/container';
 import { WebHookPurchaseController } from '@presentation/controllers/WebHookPurchaseController';
 import CreatePurchaseUseCase from '@application/useCases/createPurchaseUseCase';
-import UpdatePurchaseUseCase from '@app/application/useCases/updatePurchaseUseCase';
+import UpdatePurchaseUseCase from '@application/useCases/updatePurchaseUseCase';
 
 export const webhookPurchaseControllerFactory = (event: string): BaseController => {
   let useCase: any;

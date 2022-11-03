@@ -8,7 +8,7 @@ export default class IsAuthUserMiddleware implements BaseMiddleware {
   constructor(private readonly jwt: ITokenAdapter) {}
 
   public handle(req: Request) {
-    const { token } = req.cookies;
+    const { token } = req.headers;
 
     if (!token) {
       return unauthorized('Unauthorized');

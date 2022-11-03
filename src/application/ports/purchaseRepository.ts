@@ -1,3 +1,4 @@
+import PurchaseEntity from '@domain/entities/Purchase';
 import { purchaseStatus } from '@prisma/client';
 
 export interface CreatePurchase {
@@ -16,4 +17,6 @@ export interface CreatePurchase {
 export interface IPurchaseRepository {
   updatePurchase: (purchaseId: string, status: purchaseStatus) => Promise<void>;
   createPurchase: (data: CreatePurchase) => Promise<void>;
+  getPurchases: (userId: string) => Promise<PurchaseEntity[]>;
+  getPurchase: (userId: string, purchaseId: string) => Promise<PurchaseEntity | null>;
 }

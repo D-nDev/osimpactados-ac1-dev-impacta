@@ -11,31 +11,6 @@ mercadopago.configure({
   access_token: process.env.MERCADO_PAGO_ACCESSTOKEN as unknown as string,
 });
 
-/* const preference = {
-  items: [
-    {
-      title: 'Meu produto',
-      unit_price: 1,
-      quantity: 1,
-    },
-  ],
-}; */
-
-/* mercadopago.preferences
-  .create(preference)
-  .then(function (response) {
-    // Este valor substituirá a string "<%= global.id %>" no seu HTML
-    console.log(response);
-    global.id = response.body.id;
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-
-/* mercadopago.payment.update({ id: 1309430620, status: 'approved' }, {}, () => {
-  console.log('ok');
-}); */
-
 dotenv.config();
 
 const corsConfig = {

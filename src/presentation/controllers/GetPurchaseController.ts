@@ -1,25 +1,26 @@
 import { useCase } from '@application/ports/useCase';
 import { BaseController } from './contracts/BaseController';
 import { HttpResponse } from './contracts/httpResponse';
-import { ok, unknownError } from './helpers/httpHelper';
+import { notFound, ok, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
 
-export class WebHookPurchaseController implements BaseController {
+export class GetPurchaseController implements BaseController {
   constructor(private readonly useCase: useCase, private readonly logger: ILoggerAdapter) {}
 
   async handle(request: Request): Promise<HttpResponse> {
     try {
-      if (request.body.data) {
-        const { data } = request.body;
-        const execute = await this.useCase.execute(data.id);
+      const { token } = request.headers;
+      const { purchaseId } = request.params;
+      const execute = await this.useCase.execute(token, purchaseId);
 
+      if (execute) {
         return ok(execute);
       } else {
-        return ok('null');
+        return notFound('Product not found');
       }
     } catch (err: any) {
-      this.logger.error('Cannot Create Purchase', err);
+      this.logger.error('Cannot Get User Purchase', err);
       return unknownError();
     }
   }
