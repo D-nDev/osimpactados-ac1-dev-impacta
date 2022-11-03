@@ -1,7 +1,9 @@
-FROM node:lts-slim
-WORKDIR /usr/app
+FROM arm64v8/node
 
-COPY package*.json ./
+WORKDIR /home/node/app
+RUN chown -R node:node /home/node/app
+
+COPY --chown=node:node package*.json ./
 
 RUN apt-get update
 
@@ -11,8 +13,10 @@ RUN apt-get install -y python3 make g++\
 RUN apt-get install -y git openssl
 
 RUN npm i --verbose
+COPY --chown=node:node . .
 
-COPY . .
+USER node
 
 EXPOSE 3001
-CMD [ "npm", "run", "prod" ]
+
+CMD [ "npm", "run", "dev2" ]
