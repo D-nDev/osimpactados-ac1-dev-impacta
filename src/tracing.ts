@@ -21,7 +21,7 @@ const contextManager = new AsyncHooksContextManager().enable();
 api.context.setGlobalContextManager(contextManager);
 
 if (process.env.NODE_ENV === 'development') {
-  provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
+  // provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
 }
 
 if (!process.env.ASPECTO_KEY) {

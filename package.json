@@ -6,6 +6,7 @@
   "scripts": {
     "test": "npx jest",
     "dev": "ts-node-dev --trace-warnings -r tsconfig-paths/register -r dotenv/config --inspect=0.0.0.0:9229 src/server.ts",
+    "dev2": "npm run prepareprisma && npm run dev",
     "build": "npx tsc",
     "build:docker:dev": "npx prisma generate --schema=./src/infra/orm/prismaorm/entities/purchases.prisma && npm run dev",
     "prepareprisma": "npx prisma generate --schema=./src/infra/orm/prismaorm/entities/purchases.prisma",
