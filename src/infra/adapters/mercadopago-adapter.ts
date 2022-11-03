@@ -10,16 +10,18 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
   client = process.env.PAYMENT_API_URL as string;
 
   public async getPayment(id: string) {
-    return await axios.get<PaymentGetResponse>(`${this.client}/${id}`, {
+    const result = await axios.get<PaymentGetResponse>(`${this.client}/${id}`, {
       headers: {
         Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESSTOKEN as string}`,
       },
     });
+    console.log('getpayment', result);
+    return result;
   }
 
   public async createPreference(data: PreferenceDataDto) {
     const result = await mercadopago.preferences.create(data);
-    console.log(result);
+    // console.log(result);
     return result.body;
   }
 
@@ -29,6 +31,7 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
         Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESSTOKEN as string}`,
       },
     });
+    console.log('paymentFormattedData', paymentData);
     const result = {
       meli_purchaseId: paymentData.data.body.id,
       establishmentId: paymentData.data.body.metadata.establishmentId,

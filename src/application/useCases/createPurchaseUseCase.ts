@@ -5,6 +5,7 @@ import { IPaymentdapter } from '../ports/IPaymentAdapter';
 export default class CreatePurchaseUseCase implements useCase {
   constructor(private readonly purchaseRepo: IPurchaseRepository, private readonly payment: IPaymentdapter) {}
   public async execute(id: string): Promise<void> {
+    console.log('usecase_ID', id);
     const paymentData = await this.payment.getFormattedPayment(id);
     const paymentType = await this.payment.getPaymentType(id);
 
