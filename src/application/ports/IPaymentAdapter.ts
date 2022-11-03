@@ -23,5 +23,6 @@ export interface IPaymentdapter {
   getPayment: (id: string) => Promise<AxiosResponse<any, any>>;
   getFormattedPayment: (id: string) => Promise<GetFormattedPurchaseDto>;
   getPaymentType: (id: string) => Promise<any>;
+  getPaymentStatus: (id: string) => Promise<any>;
   createPreference: (data: PreferenceDataDto) => Promise<any>;
 }

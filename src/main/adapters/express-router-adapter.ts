@@ -1,6 +1,7 @@
 import { BaseController } from '@presentation/controllers/contracts/BaseController';
 import { Request, Response } from 'express';
 import opentelemetry from '@opentelemetry/api';
+import { webhookPurchaseControllerFactory } from '../factories/PurchaseWebHookControllerFactory';
 
 export const adaptRoute = (controller: BaseController) => {
   return async (req: Request, res: Response) => {
@@ -30,6 +31,36 @@ export const adaptRoute = (controller: BaseController) => {
       span.setAttribute('Error message', e.message ?? 'no message');
       span.end();
       return res.status(503).json({ error: 'Service Unavailable' });
+    }
+  };
+};
+
+export const adaptPaymentRoute = () => {
+  return async (req: Request, res: Response) => {
+    const request = {
+      body: { ...(req.body || {}) },
+      params: { ...(req.params || {}) },
+      query: { ...(req.query || {}) },
+      headers: { ...(req.headers || {}) },
+      cookies: { ...(req.cookies || {}) },
+    };
+    const controller: BaseController = webhookPurchaseControllerFactory(req.body.action);
+    try {
+      const result = await controller.handle(request);
+      if (result.statusCode >= 200 && result.statusCode <= 299) {
+        res.status(result.statusCode).json(result.body);
+      } else {
+        res.status(result.statusCode).json({
+          statusCode: result.statusCode || 500,
+          error: result.body || 'Unknown error',
+        });
+      }
+    } catch (e: any) {
+      const tracer = opentelemetry.trace.getTracer('express');
+      const span = tracer.startSpan('error');
+      span.recordException(e);
+      span.setStatus({ code: 2 });
+      res.status(503).json({ error: 'Service Unavailable' });
     }
   };
 };

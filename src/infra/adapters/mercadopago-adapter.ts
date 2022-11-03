@@ -63,4 +63,14 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
     console.log('paymentTypeuwu', paymentData.data);
     return paymentData.data.payment_method_id;
   }
+
+  public async getPaymentStatus(id: string) {
+    const paymentData = await axios.get<any>(`${this.client}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${process.env.MERCADO_PAGO_ACCESSTOKEN as string}`,
+      },
+    });
+    console.log('paymentstatusuwu', paymentData.data);
+    return paymentData.data.status;
+  }
 }
