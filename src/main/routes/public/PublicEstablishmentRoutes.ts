@@ -13,6 +13,8 @@ import { createEstablishmentControllerFactory } from '../../factories/CreateEsta
 import { sendEmailRecoverCodeControllerFactory } from '../../factories/SendEmailRecoverCodeControllerFactory';
 import { sendSMSRecoverCodeControllerFactory } from '../../factories/SendSMSRecoverCodeControllerFactory';
 import { validateEstablishmentControllerFactory } from '../../factories/ValidateEstablishmentControllerFactory';
+import { getProductsControllerFactory } from '@main/factories/GetProductsControllerFactory';
+import { getProductControllerFactory } from '@main/factories/GetProductControllerFactory';
 
 export default class PublicEstablishmentRoutes {
   router: Router;
@@ -92,5 +94,15 @@ export default class PublicEstablishmentRoutes {
       adaptRoute(reSendRecoverSMSControllerFactory()),
     );
     this.router.get('/health', adaptRoute(healthCheckControllerFactory()));
+    this.router.get(
+      '/public/products/:subsidiaryId',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      adaptRoute(getProductsControllerFactory()),
+    );
+    this.router.get(
+      '/public/product/:productId/:subsidiaryId',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      adaptRoute(getProductControllerFactory()),
+    );
   }
 }

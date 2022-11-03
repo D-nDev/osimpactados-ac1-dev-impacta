@@ -1,6 +1,6 @@
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native"]
+  provider        = "prisma-client-js"
+  binaryTargets   = ["native"]
   previewFeatures = ["tracing"]
 }
 
@@ -31,6 +31,7 @@ model Establishment {
   RecoverCodes         RecoverCodes?
   twofactor_enabled    Boolean           @default(false)
   twofactor_secret     String?
+  purchasesId          String?           @db.ObjectId
 }
 
 model RecoverCodes {
@@ -55,6 +56,21 @@ model Subsidiary {
   cep               String
   establishment     Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
   establishmentId   String        @unique
+  Purchases         Sales?
+}
+
+model Sales {
+  id             String          @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String
+  productId      String
+  subsidiary     Subsidiary      @relation(fields: [subsidiaryId], references: [id], onDelete: Cascade)
+  subsidiaryId   String          @unique
+  quantity       Int
+  price          Float
+  scheduled_date DateTime
+  is_finished    Boolean         @default(false)
+  delivered_date DateTime
+  is_delivered   Boolean         @default(false)
 }
 
 type Products {
