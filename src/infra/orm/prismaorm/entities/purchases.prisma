@@ -30,7 +30,8 @@ type Products {
 }
 
 model Purchases {
-  meli_purchaseId   String         @id @default(auto()) @map("_id") @db.ObjectId
+  id                String         @id @default(auto()) @map("_id") @db.ObjectId
+  meli_purchaseId   String
   establishmentId   String
   subsidiaryId      String
   userId            String
