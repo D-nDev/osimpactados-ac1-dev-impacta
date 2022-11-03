@@ -39,6 +39,14 @@ provider.addSpanProcessor(
   ),
 );
 
+provider.addSpanProcessor(
+  new SimpleSpanProcessor(
+    new OTLPTraceExporter({
+      url: 'http://129.159.60.190:4318/v1/traces',
+    }),
+  ),
+);
+
 provider.register();
 
 registerInstrumentations({

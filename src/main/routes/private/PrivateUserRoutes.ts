@@ -18,6 +18,7 @@ import { Router } from 'express';
 import { adaptRoute } from '../../adapters/express-router-adapter';
 import { deleteMyUserControllerFactory } from '../../factories/DeleteMyUserControllerFactory';
 import { getMyUserControllerFactory } from '../../factories/GetMyUserControllerFactory';
+import { createUserPurchaseControllerFactory } from '@main/factories/CreateUserPurchaseControllerFactory';
 
 export default class PrivateUserRoutes {
   router: Router;
@@ -91,6 +92,12 @@ export default class PrivateUserRoutes {
       limiter,
       adaptMiddleware(isAuthUserMiddlewareInstance),
       adaptRoute(createAddressControllerFactory()),
+    );
+    this.router.post(
+      '/userpurchase',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      adaptMiddleware(isAuthUserMiddlewareInstance),
+      adaptRoute(createUserPurchaseControllerFactory()),
     );
   }
 }
