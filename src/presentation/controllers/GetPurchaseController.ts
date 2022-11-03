@@ -17,7 +17,7 @@ export class GetPurchaseController implements BaseController {
       if (execute) {
         return ok(execute);
       } else {
-        return notFound('Product not found');
+        return notFound('Purchase not found');
       }
     } catch (err: any) {
       this.logger.error('Cannot Get User Purchase', err);
