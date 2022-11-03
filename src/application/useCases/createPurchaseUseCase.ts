@@ -9,6 +9,7 @@ export default class CreatePurchaseUseCase implements useCase {
     const paymentData = await this.payment.getFormattedPayment(id);
     const paymentType = await this.payment.getPaymentType(id);
 
+    console.log('usecase_result', paymentData);
     await this.purchaseRepo.createPurchase(paymentData);
 
     if (paymentType === 'credit_card') {

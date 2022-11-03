@@ -44,6 +44,7 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
       delivered_date: paymentData.data.metadata.scheduled_date,
       is_delivered: paymentData.data.metadata.is_delivered,
     };
+    console.log('theresult', result);
     return result;
   }
 
