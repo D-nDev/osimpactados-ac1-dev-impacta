@@ -10,11 +10,15 @@ export class WebHookPurchaseController implements BaseController {
 
   async handle(request: Request): Promise<HttpResponse> {
     try {
-      const { data } = request.body;
-      console.log('purchaseiD', request.body.data);
-      const execute = await this.useCase.execute(data.id);
+      if (request.body.data) {
+        const { data } = request.body;
+        console.log('purchaseiD', request.body.data);
+        const execute = await this.useCase.execute(data.id);
 
-      return ok(execute);
+        return ok(execute);
+      } else {
+        return ok('null');
+      }
     } catch (err: any) {
       this.logger.error('Cannot Create Purchase', err);
       return unknownError();
