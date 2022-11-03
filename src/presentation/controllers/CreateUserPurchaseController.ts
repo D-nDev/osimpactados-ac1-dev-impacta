@@ -4,7 +4,7 @@ import { HttpResponse } from './contracts/httpResponse';
 import { badRequest, ok, unknownError } from './helpers/httpHelper';
 import { Request } from 'express';
 import { ILoggerAdapter } from '@application/ports/ILoggerAdapter';
-import { PurchaseDataDto } from '@app/application/ports/dtos/purchaseDataDto';
+import { PurchaseDataDto } from '@application/ports/dtos/purchaseDataDto';
 import { IValidator } from './contracts/validator';
 
 export default class CreateUserPurchaseController implements BaseController {

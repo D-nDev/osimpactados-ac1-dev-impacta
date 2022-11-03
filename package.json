@@ -9,7 +9,7 @@
     "build": "npx tsc",
     "build:docker:dev": "npx prisma migrate dev --name init --schema=./src/infra/orm/prismaorm/entities/user.prisma && npm run dev",
     "prepareprisma": "npx prisma migrate dev --name init --schema=./src/infra/orm/prismaorm/entities/user.prisma",
-    "prepareprisma:prod": "npx prisma migrate deploy --schema=./src/infra/orm/prismaorm/entities/user.prisma",
+    "prepareprisma:prod": "npx prisma generate --schema ./src/infra/orm/prismaorm/entities/user.prisma && npx prisma migrate deploy --schema=./src/infra/orm/prismaorm/entities/user.prisma",
     "start": "node -r module-alias/register -r dotenv/config dist/server.js",
     "prod": "npm run prepareprisma:prod && npx tsc && npm run start"
   },
