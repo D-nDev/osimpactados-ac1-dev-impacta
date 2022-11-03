@@ -33,7 +33,7 @@ export default class MercadoPagoAdapter implements IPaymentdapter {
     });
     console.log('paymentFormattedData', paymentData.data);
     const result = {
-      meli_purchaseId: paymentData.data.id,
+      meli_purchaseId: paymentData.data.id.toString(),
       establishmentId: paymentData.data.metadata.establishmentId,
       subsidiaryId: paymentData.data.metadata.subsidiaryId,
       userId: paymentData.data.metadata.userId,
