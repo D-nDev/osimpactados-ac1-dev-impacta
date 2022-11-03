@@ -11,6 +11,7 @@ export class WebHookPurchaseController implements BaseController {
   async handle(request: Request): Promise<HttpResponse> {
     try {
       const { data } = request.body;
+      console.log(data);
       const execute = await this.useCase.execute(data.id);
 
       return ok(execute);
