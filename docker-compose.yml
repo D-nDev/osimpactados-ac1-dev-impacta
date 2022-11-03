@@ -1,7 +1,7 @@
 version: '3'
 services:
-  user-api:
-    container_name: user-api
+  purchases-api:
+    container_name: purchases-api
     build:
       context: .
       dockerfile: Dockerfile
