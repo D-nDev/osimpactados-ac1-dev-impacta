@@ -15,6 +15,8 @@ import { sendSMSRecoverCodeControllerFactory } from '../../factories/SendSMSReco
 import { validateEstablishmentControllerFactory } from '../../factories/ValidateEstablishmentControllerFactory';
 import { getProductsControllerFactory } from '@main/factories/GetProductsControllerFactory';
 import { getProductControllerFactory } from '@main/factories/GetProductControllerFactory';
+import { getEstablishmentsControllerFactory } from '@app/main/factories/GetEstablishmentsControllerFactory';
+import { getSubsidiariesControllerFactory } from '@app/main/factories/GetSubsidiariesControllerFactory';
 
 export default class PublicEstablishmentRoutes {
   router: Router;
@@ -103,6 +105,16 @@ export default class PublicEstablishmentRoutes {
       '/public/product/:productId/:subsidiaryId',
       adaptObservabilityMiddleware(observabilityMiddlewareInstance),
       adaptRoute(getProductControllerFactory()),
+    );
+    this.router.get(
+      '/public/establishments',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      adaptRoute(getEstablishmentsControllerFactory()),
+    );
+    this.router.get(
+      '/public/subsidiaries/:id',
+      adaptObservabilityMiddleware(observabilityMiddlewareInstance),
+      adaptRoute(getSubsidiariesControllerFactory()),
     );
   }
 }

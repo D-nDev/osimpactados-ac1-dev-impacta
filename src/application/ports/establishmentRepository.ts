@@ -5,6 +5,8 @@ import {
   EstablishmentDto,
   EstablishmentWithoutPasswordDto,
   MyEstablishmentDataDto,
+  PublicEstablishments,
+  PublicSubsidiaries,
   RecoverCodes,
 } from './dtos/establishmentDto';
 import { PatchProductDto } from './dtos/patchProductDto';
@@ -13,7 +15,8 @@ export interface IEstablishmentRepository {
   createEstablishment: (establishment: EstablishmentEntity) => Promise<{ id: string; email: string }>;
   getEstablishment: (id: string) => Promise<EstablishmentWithoutPasswordDto | null>;
   blackListRecoverToken: (establishmentId: string, tokenId: string) => Promise<boolean>;
-  getEstablishments: () => Promise<EstablishmentWithoutPasswordDto[] | []>;
+  getEstablishments: () => Promise<PublicEstablishments[] | []>;
+  getSubsidiaries: (establishmentId: string) => Promise<PublicSubsidiaries | null>;
   getFullEstablishmentData: (id: string) => Promise<(EstablishmentDto & { type: string }) | null>;
   getSubsidiaryByEstablishmentId: (establishmentId: string, id: string) => Promise<Subsidiary | null>;
   getFullEstablishmentDataByEmail: (email: string) => Promise<

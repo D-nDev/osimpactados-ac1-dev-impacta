@@ -29,6 +29,29 @@ export interface EstablishmentWithoutPasswordDto {
   cnpj: string;
 }
 
+export interface PublicEstablishments {
+  id: string;
+  name: string;
+  email: string;
+  mobileNumber: string;
+  cnpj: string;
+}
+
+export interface PublicSubsidiaries {
+  subsidiaries: Array<{
+    id: string;
+    name: string;
+    address: string;
+    addressComplement: string | null;
+    addressDistrict: string;
+    addressNumber: number;
+    cep: string;
+    city: string;
+    state: string;
+    establishmentId: string;
+  }>;
+}
+
 export interface MyEstablishmentDataDto {
   name: string;
   email: string;

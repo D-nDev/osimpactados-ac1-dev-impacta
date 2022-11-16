@@ -150,25 +150,41 @@ export default class EstablishmentRepository implements IEstablishmentRepository
   public async getEstablishments() {
     return await this.prisma.establishment.findMany({
       select: {
+        id: true,
         email: true,
         name: true,
         mobileNumber: true,
+        cnpj: true,
+      },
+    });
+  }
+
+  public async getSubsidiaries(establishmentid: string) {
+    const result = await this.prisma.establishment.findMany({
+      where: {
+        id: establishmentid,
+      },
+      select: {
         subsidiaries: {
           select: {
+            id: true,
             name: true,
             address: true,
             addressComplement: true,
             addressDistrict: true,
-            products: true,
             addressNumber: true,
             cep: true,
             city: true,
             state: true,
+            establishmentId: true,
           },
         },
-        cnpj: true,
       },
     });
+    if (result.length >= 1) {
+      return result[0];
+    }
+    return null;
   }
 
   public async getFullEstablishmentData(id: string) {
