@@ -37,6 +37,7 @@ export default class UserRepository implements IUserRepository {
         addresses: true,
         cpf: true,
         mobileNumber: true,
+        twofactor_enabled: true,
       },
     });
     return user;

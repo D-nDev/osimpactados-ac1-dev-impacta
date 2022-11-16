@@ -27,6 +27,7 @@ export interface MyUserDataDto {
   mobileNumber: string;
   photo: string;
   addresses: Address[];
+  twofactor_enabled: boolean;
 }
 
 export interface RecoverCodes {
